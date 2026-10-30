@@ -19,7 +19,7 @@
   --white: #fff;
 
   --font-ui: "Pixelify Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --font-ar: "Cairo", "Noto Naskh Arabic", "Segoe UI", "Tahoma", sans-serif;
+  --font-ar: "Handjet", "Cairo", "Noto Naskh Arabic", "Segoe UI", sans-serif;
 
   --shadow-card: 0 18px 44px rgba(104, 56, 85, 0.28);
   --shadow-soft: 0 6px 18px rgba(104, 56, 85, 0.16);
@@ -295,8 +295,9 @@ body {
 
 .ar {
   font-family: var(--font-ar);
+  font-weight: 700; /* Handjet reads thin below this */
   text-align: right;
-  line-height: 2;
+  line-height: 2.05;
   letter-spacing: 0;
 }
 
@@ -913,9 +914,10 @@ body {
 
 .poem {
   font-family: var(--font-ar);
+  font-weight: 700;
   white-space: pre-wrap; /* every line break and trailing space preserved */
   text-align: right;
-  line-height: 2.15;
+  line-height: 2.25; /* pixel letterforms need a touch more air */
   color: var(--plum);
   font-size: inherit;
 }
