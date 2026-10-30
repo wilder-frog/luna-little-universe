@@ -16,34 +16,24 @@ import { progress } from "../game/systems/Progress.js";
 import { PHOTOS, PHOTO_CAPTIONS } from "../data/photos.js";
 import { PLAYLIST_URL, PLAYLIST_NAME, PLAYLIST_DESCRIPTION, asset } from "../config.js";
 
-/** A framed photo, or a soft pink placeholder if there is no photo yet. */
+/**
+ * A framed photo, or `null` when this slot has no photo — callers simply
+ * don't render anything, so an empty slot leaves no trace in the panel.
+ */
 export function photoFrame(slot) {
+  const file = slot ? PHOTOS[slot] : null;
+  if (!file) return null;
+
   const wrap = document.createElement("figure");
   wrap.className = "photo";
-  const file = slot ? PHOTOS[slot] : null;
-
-  if (!file) {
-    wrap.classList.add("photo--empty");
-    const ph = document.createElement("div");
-    ph.className = "photo__placeholder";
-    ph.innerHTML = `<span>♡</span><small>${t("photoPlaceholder")}</small>`;
-    wrap.appendChild(ph);
-    return wrap;
-  }
 
   const img = document.createElement("img");
   img.src = asset(`photos/${file}`);
   img.alt = "";
   img.loading = "lazy";
-  // A missing file must never show a broken-image icon.
-  img.addEventListener("error", () => {
-    wrap.classList.add("photo--empty");
-    img.remove();
-    const ph = document.createElement("div");
-    ph.className = "photo__placeholder";
-    ph.innerHTML = `<span>♡</span><small>${t("photoPlaceholder")}</small>`;
-    wrap.appendChild(ph);
-  });
+  // A missing or broken file removes the whole frame rather than showing a
+  // broken-image icon or an empty box.
+  img.addEventListener("error", () => wrap.remove());
   img.addEventListener("click", () => openPhotoLightbox(img.src));
   img.tabIndex = 0;
   img.setAttribute("role", "button");
@@ -143,7 +133,8 @@ export function openLetter(cp, handlers = {}) {
   // --- step 1: the note -----------------------------------------------------
   function renderNote() {
     stepArea.innerHTML = "";
-    stepArea.appendChild(photoFrame(cp.photoSlot));
+    const photo = photoFrame(cp.photoSlot);
+    if (photo) stepArea.appendChild(photo);
 
     const noteWrap = document.createElement("div");
     noteWrap.className = "note";

@@ -18,7 +18,7 @@
   --ink: #56394a;
   --white: #fff;
 
-  --font-ui: "Quicksand", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-ui: "Pixelify Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
   --font-ar: "Cairo", "Noto Naskh Arabic", "Segoe UI", "Tahoma", sans-serif;
 
   --shadow-card: 0 18px 44px rgba(104, 56, 85, 0.28);
@@ -760,36 +760,6 @@ body {
   font-size: 13px;
   color: var(--mauve);
   text-align: center;
-}
-
-.photo--empty {
-  max-width: 230px;
-}
-
-.photo__placeholder {
-  display: grid;
-  place-items: center;
-  gap: 4px;
-  aspect-ratio: 4 / 3;
-  border-radius: 8px;
-  background: repeating-linear-gradient(
-    45deg,
-    #ffeef5,
-    #ffeef5 10px,
-    #ffe3ee 10px,
-    #ffe3ee 20px
-  );
-  color: var(--powder);
-}
-
-.photo__placeholder span {
-  font-size: 26px;
-  color: var(--rose);
-}
-
-.photo__placeholder small {
-  font-size: 11px;
-  color: var(--mauve);
 }
 
 .card--lightbox {

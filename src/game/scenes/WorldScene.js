@@ -256,7 +256,7 @@ export class WorldScene extends Phaser.Scene {
     for (const s of SIGN_LABELS) {
       const cp = CHECKPOINTS_BY_ID[s.id];
       const txt = this.add.text(s.x, s.y - 54, pick(cp, "sign"), {
-        fontFamily: '"Quicksand", "Segoe UI", system-ui, sans-serif',
+        fontFamily: '"Pixelify Sans", "Segoe UI", system-ui, sans-serif',
         fontSize: "15px",
         color: "#56394A",
         align: "center",
@@ -267,11 +267,19 @@ export class WorldScene extends Phaser.Scene {
       txt.setDepth(s.y + 420);
       this.signTexts.push({ txt, cp });
     }
+
+    // Phaser rasterises canvas text once, so a sign built before the webfont
+    // arrives would keep the fallback face forever. Redraw them when it lands.
+    document.fonts?.ready.then(() => {
+      if (!this.scene.isActive()) return;
+      for (const { txt } of this.signTexts) txt.updateText();
+      this.promptText?.updateText();
+    });
   }
 
   buildPrompt() {
     this.promptText = this.add.text(0, 0, "", {
-      fontFamily: '"Quicksand", "Segoe UI", system-ui, sans-serif',
+      fontFamily: '"Pixelify Sans", "Segoe UI", system-ui, sans-serif',
       fontSize: "17px",
       color: "#FFF9F6",
       backgroundColor: "rgba(68,52,82,0.92)",

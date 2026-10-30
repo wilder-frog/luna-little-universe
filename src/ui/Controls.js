@@ -619,7 +619,8 @@ export function showFinale({ onLeave, sanctuary } = {}) {
     h.setAttribute("dir", isArabic() ? "rtl" : "ltr");
 
     if (FINALE.showPhoto) {
-      ov.body.appendChild(photoFrame(FINALE.photoSlot));
+      const photo = photoFrame(FINALE.photoSlot);
+      if (photo) ov.body.appendChild(photo);
     }
 
     // The note, in one language at a time, with a switch to read the other.

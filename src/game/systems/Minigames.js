@@ -895,7 +895,8 @@ function actReflections(cp) {
   });
 
   // If a photo exists for this place, it belongs here.
-  stage.appendChild(photoFrame(cp?.photoSlot));
+  const photo = photoFrame(cp?.photoSlot);
+  if (photo) stage.appendChild(photo);
 
   closeRow(ov);
   ov.open();
