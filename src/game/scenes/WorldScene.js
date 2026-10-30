@@ -34,6 +34,7 @@ import {
   onLanguageChange
 } from "../../ui/Controls.js";
 import { onOverlayChange, overlaysOpen, toast } from "../../ui/Overlay.js";
+import { TouchControls, isTouchDevice } from "../../ui/TouchControls.js";
 import { t, pick, isArabic } from "../../ui/translations.js";
 
 const INTERACT_RADIUS = 72;
@@ -74,7 +75,8 @@ export class WorldScene extends Phaser.Scene {
 
     // Zoom 2 keeps the pixel grid whole (art is already drawn at 2x), so the
     // world stays chunky and crisp rather than shimmering on half-pixels.
-    this.cameras.main.setZoom(2);
+    this.applyZoom();
+    this.scale.on("resize", this.applyZoom, this);
     this.cameras.main.startFollow(this.player, true, 0.12, 0.12);
     this.cameras.main.fadeIn(600, 255, 231, 240);
 
@@ -332,6 +334,16 @@ export class WorldScene extends Phaser.Scene {
 
   // --- input ---------------------------------------------------------------
 
+  /**
+   * Art is already drawn at 2x, so these zooms land on 4x and 3x of the
+   * source pixel grid — both whole numbers, so nothing shimmers.
+   * A phone gets the smaller one or it would see barely a room's worth.
+   */
+  applyZoom() {
+    const narrow = this.scale.width < 760;
+    this.cameras.main.setZoom(narrow ? 1.5 : 2);
+  }
+
   setupInput() {
     this.keys = this.input.keyboard.addKeys({
       up: Phaser.Input.Keyboard.KeyCodes.W,
@@ -376,15 +388,22 @@ export class WorldScene extends Phaser.Scene {
       window.removeEventListener("blur", release);
     });
 
+    // On a phone there is no keyboard, so give her a stick and a button.
+    if (isTouchDevice()) {
+      this.touch = new TouchControls({ onAction: () => this.tryInteract() });
+    }
+
     this.offOverlay = onOverlayChange((open) => {
       if (!this.player) return;
       if (open) {
         this.input.keyboard.resetKeys();
+        this.touch?.release();
         this.player.freeze();
         this.promptText.setVisible(false);
       } else {
         this.player.unfreeze();
       }
+      this.touch?.setVisible(!open);
     });
   }
 
@@ -406,6 +425,9 @@ export class WorldScene extends Phaser.Scene {
     this.events.once("shutdown", () => {
       this.offOverlay?.();
       this.offLang?.();
+      this.scale.off("resize", this.applyZoom, this);
+      this.touch?.destroy();
+      this.touch = null;
     });
   }
 
@@ -591,12 +613,18 @@ export class WorldScene extends Phaser.Scene {
 
     const k = this.keys;
     const paused = overlaysOpen();
-    this.player.move({
-      up: !paused && (k.up.isDown || k.up2.isDown),
-      down: !paused && (k.down.isDown || k.down2.isDown),
-      left: !paused && (k.left.isDown || k.left2.isDown),
-      right: !paused && (k.right.isDown || k.right2.isDown)
-    });
+    const stick = this.touch?.vector;
+
+    if (stick && (stick.x || stick.y) && !paused) {
+      this.player.move({ vx: stick.x, vy: stick.y });
+    } else {
+      this.player.move({
+        up: !paused && (k.up.isDown || k.up2.isDown),
+        down: !paused && (k.down.isDown || k.down2.isDown),
+        left: !paused && (k.left.isDown || k.left2.isDown),
+        right: !paused && (k.right.isDown || k.right2.isDown)
+      });
+    }
 
     this.player.setDepth(this.player.y);
 
@@ -608,6 +636,7 @@ export class WorldScene extends Phaser.Scene {
     const near = this.nearest();
     if (!near) {
       this.promptText.setVisible(false);
+      this.touch?.setActionLabel(null);
       return;
     }
     const label =
@@ -619,5 +648,8 @@ export class WorldScene extends Phaser.Scene {
     this.promptText.setText(label);
     this.promptText.setPosition(near.x, near.y - 58);
     this.promptText.setVisible(true);
+
+    // The button says what it will open, with the keyboard hint stripped.
+    this.touch?.setActionLabel(label.replace(/^E\s*[—-]\s*/, ""));
   }
 }

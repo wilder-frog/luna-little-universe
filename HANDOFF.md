@@ -57,6 +57,8 @@ it. If a task seems to require editing it, stop and ask.
 - World artwork is generated in code at boot; one approved personal photo
   is now included for the ending.
 - Tested 1366×768, 1280×720, 1024×600; no horizontal scroll; no console errors
+- Plays on phones: analog thumbstick + context action button (`src/ui/TouchControls.js`),
+  shown only on touch devices; camera zoom drops to 1.5 under 760px wide
 
 Full detail: `VERIFICATION.md`.
 

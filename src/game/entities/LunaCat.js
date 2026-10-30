@@ -69,7 +69,14 @@ export class LunaCat extends Phaser.Physics.Arcade.Sprite {
     this.frozen = false;
   }
 
-  /** @param {{up:boolean,down:boolean,left:boolean,right:boolean}} input */
+  /**
+   * @param {object} input
+   * @param {boolean} [input.up] @param {boolean} [input.down]
+   * @param {boolean} [input.left] @param {boolean} [input.right]
+   * @param {number} [input.vx] @param {number} [input.vy]
+   *   Analog direction from the thumbstick, each -1..1. When present these
+   *   win over the key flags, so a half-pushed stick walks slowly.
+   */
   move(input) {
     if (this.frozen) {
       this.setVelocity(0, 0);
@@ -77,20 +84,28 @@ export class LunaCat extends Phaser.Physics.Arcade.Sprite {
     }
     let vx = 0;
     let vy = 0;
-    if (input.left) vx -= 1;
-    if (input.right) vx += 1;
-    if (input.up) vy -= 1;
-    if (input.down) vy += 1;
+    const analog = input.vx !== undefined || input.vy !== undefined;
 
-    if (vx === 0 && vy === 0) {
+    if (analog) {
+      vx = input.vx || 0;
+      vy = input.vy || 0;
+    } else {
+      if (input.left) vx -= 1;
+      if (input.right) vx += 1;
+      if (input.up) vy -= 1;
+      if (input.down) vy += 1;
+    }
+
+    const len = Math.hypot(vx, vy);
+    if (len < 0.001) {
       this.setVelocity(0, 0);
       this.anims.play(`cat-idle-${this.facing}`, true);
       return;
     }
 
-    // Normalise so diagonals aren't faster.
-    const len = Math.hypot(vx, vy);
-    this.setVelocity((vx / len) * SPEED, (vy / len) * SPEED);
+    // Normalise so diagonals aren't faster; keep the magnitude for analog.
+    const power = analog ? Math.min(1, len) : 1;
+    this.setVelocity((vx / len) * SPEED * power, (vy / len) * SPEED * power);
 
     // Horizontal intent wins for the facing, it reads better while turning.
     if (vx < 0) this.facing = "left";

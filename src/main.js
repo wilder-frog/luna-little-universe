@@ -12,6 +12,7 @@ import { progress } from "./game/systems/Progress.js";
 import { audio } from "./game/systems/Audio.js";
 import { setLanguage } from "./ui/translations.js";
 import { showTitle, setHudVisible } from "./ui/Controls.js";
+import { isTouchDevice } from "./ui/TouchControls.js";
 import { POEM_INTACT } from "./data/poem.js";
 
 // A loud warning in the console if the poem ever stops reconstructing exactly.
@@ -23,6 +24,9 @@ if (!POEM_INTACT) {
 }
 
 setLanguage(progress.state.preferredLanguage);
+
+// Lets the stylesheet show the on-screen controls only where they belong.
+if (isTouchDevice()) document.body.classList.add("is-touch");
 
 // Handy while developing; stripped from production builds.
 if (import.meta.env.DEV) {

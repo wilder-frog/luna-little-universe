@@ -101,13 +101,23 @@ export class Overlay {
     audio.duck(true);
     // Capture phase so Escape reaches us before the game's own handlers.
     document.addEventListener("keydown", this.onKeyDown, true);
-    requestAnimationFrame(() => {
+
+    // A background tab never runs requestAnimationFrame, which would leave
+    // the panel stuck at opacity 0 until the tab is looked at. The timer is
+    // a backstop so the panel is always really open, visible or not.
+    let revealed = false;
+    const reveal = () => {
+      if (revealed || !this.isOpen) return;
+      revealed = true;
       this.el.classList.add("is-in");
       const target =
         this.card.querySelector("[data-autofocus]") ||
         this.card.querySelector(FOCUSABLE);
       if (target) target.focus();
-    });
+    };
+    requestAnimationFrame(reveal);
+    setTimeout(reveal, 60);
+
     return this;
   }
 

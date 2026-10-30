@@ -60,6 +60,20 @@ file is actually on disk. It runs in CI before every deploy.
 
 Everything is also clickable, and every panel can be reached with `Tab`.
 
+### On a phone
+
+It plays on a phone too. The on-screen controls appear automatically on any
+touch device and stay hidden on a laptop:
+
+- **Thumbstick**, bottom left — drag anywhere inside the pad; it drops under
+  your thumb wherever you touch. It's analog, so a small push walks slowly.
+- **Action button**, bottom right — it lights up and names whatever she's
+  standing next to, and stays dim when there's nothing to open.
+
+The camera zooms out a little on narrow screens so there's enough world in
+view, and panels go full-width. Portrait is the better way to read the poem;
+landscape works but the reading window is shorter.
+
 Progress saves itself. You can collect the ten memories **in any order**, and
 re-read any of them as often as you like without changing the count. The three
 minigames and the five hidden secrets are **optional** — they never block the

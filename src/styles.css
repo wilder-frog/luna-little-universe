@@ -36,6 +36,8 @@ body {
   padding: 0;
   height: 100%;
   overflow: hidden; /* never a horizontal page scroll */
+  overscroll-behavior: none; /* no pull-to-refresh mid-walk */
+  -webkit-text-size-adjust: 100%;
   background: var(--milk);
   font-family: var(--font-ui);
   color: var(--ink);
@@ -45,6 +47,7 @@ body {
 #game {
   position: fixed;
   inset: 0;
+  touch-action: none; /* dragging the world shouldn't scroll the page */
 }
 
 #game canvas {
@@ -2202,4 +2205,290 @@ body {
 /* `hidden` must win over the flex/inline-flex display on buttons. */
 [hidden] {
   display: none !important;
+}
+
+/* ==========================================================================
+   Touch controls (phones and tablets)
+   ========================================================================== */
+
+#touch {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 45;
+  display: none;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 16px calc(18px + env(safe-area-inset-bottom)) 16px;
+  pointer-events: none;
+  touch-action: none;
+}
+
+body.is-touch #touch {
+  display: flex;
+}
+
+#touch.is-hidden {
+  display: none;
+}
+
+.touch__pad {
+  position: relative;
+  width: 168px;
+  height: 168px;
+  border-radius: 50%;
+  pointer-events: auto;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.touch__base {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 120px;
+  height: 120px;
+  margin: -60px 0 0 -60px;
+  border-radius: 50%;
+  background: rgba(255, 249, 246, 0.42);
+  border: 3px solid rgba(234, 132, 172, 0.55);
+  box-shadow: 0 6px 20px rgba(104, 56, 85, 0.22);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.touch__base.is-active {
+  background: rgba(255, 249, 246, 0.66);
+  border-color: var(--rose);
+}
+
+.touch__knob {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 56px;
+  height: 56px;
+  margin: 0;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--rose);
+  border: 3px solid var(--cream);
+  box-shadow: 0 4px 14px rgba(104, 56, 85, 0.35);
+}
+
+.touch__action {
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-width: 96px;
+  max-width: 150px;
+  min-height: 96px;
+  padding: 10px 14px;
+  border-radius: 50% / 40%;
+  border: 3px solid var(--powder);
+  background: rgba(255, 249, 246, 0.5);
+  color: var(--mauve);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  transition: transform 0.12s ease, background 0.18s ease, opacity 0.18s ease;
+  opacity: 0.45;
+}
+
+.touch__action.is-ready {
+  opacity: 1;
+  background: var(--rose);
+  border-color: var(--cream);
+  color: var(--white);
+  box-shadow: 0 6px 20px rgba(234, 132, 172, 0.55);
+  animation: readyPulse 2s ease-in-out infinite;
+}
+
+.touch__action:active {
+  transform: scale(0.93);
+}
+
+.touch__actionIcon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.touch__actionLabel {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@keyframes readyPulse {
+  0%,
+  100% {
+    box-shadow: 0 6px 20px rgba(234, 132, 172, 0.45);
+  }
+  50% {
+    box-shadow: 0 6px 26px rgba(234, 132, 172, 0.85);
+  }
+}
+
+/* ==========================================================================
+   Phone layout
+   ========================================================================== */
+
+@media (max-width: 760px) {
+  .card {
+    width: 100%;
+    max-height: 100%;
+    border-radius: 18px;
+  }
+
+  .overlay {
+    padding: 10px;
+  }
+
+  .card__body {
+    padding: 18px 16px 16px;
+  }
+
+  .playlist__embed {
+    height: 232px;
+  }
+
+  .card--book {
+    height: 100%;
+  }
+
+  .book__page {
+    padding: 16px 14px 8px;
+  }
+
+  .letter__title {
+    font-size: 20px;
+  }
+
+  .letter__icon {
+    font-size: 28px;
+  }
+
+  .fragment__text {
+    font-size: 19px;
+    padding: 14px 15px;
+  }
+
+  .title__cat {
+    width: 78px;
+    height: 78px;
+  }
+
+  .title__name {
+    font-size: clamp(30px, 11vw, 44px);
+  }
+
+  .photo {
+    max-width: 100%;
+  }
+
+  /* Keep the HUD clear of the notch and the controls clear of the HUD. */
+  #hud {
+    padding: calc(6px + env(safe-area-inset-top)) 8px 6px;
+  }
+
+  .hud__counter {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .hud__btn {
+    width: 38px;
+    height: 38px;
+  }
+
+  .mg__stage {
+    padding: 12px 8px;
+  }
+
+  .mg-glance__field {
+    height: 150px;
+  }
+
+  .act-records__sleeve {
+    width: 96px;
+  }
+}
+
+/* Leave room for the thumbstick under short overlays on a phone. */
+@media (max-width: 760px) and (pointer: coarse) {
+  #toast {
+    bottom: calc(210px + env(safe-area-inset-bottom));
+  }
+}
+
+/* A phone held sideways: claw back every pixel for the poem itself. */
+@media (max-height: 460px) {
+  .overlay {
+    padding: 6px;
+  }
+
+  /* Percentages resolve against the overlay's padded box, which is the
+     thing that actually constrains the card — vh maths misses the padding
+     and the browser chrome. */
+  .card {
+    max-height: 100%;
+  }
+
+  .card--book {
+    height: 100%;
+  }
+
+  .card__body {
+    padding: 12px 16px 10px;
+  }
+
+  .book__head {
+    padding-bottom: 6px;
+  }
+
+  .book__title {
+    font-size: 17px;
+  }
+
+  .book__subtitle {
+    font-size: 12px;
+  }
+
+  .book__scroll {
+    margin-top: 8px;
+  }
+
+  .book__page {
+    padding: 12px 14px 6px;
+  }
+
+  .card__actions {
+    margin-top: 10px;
+  }
+
+  .card--book .card__actions .btn {
+    padding: 7px 18px;
+  }
+
+  .touch__pad {
+    width: 140px;
+    height: 140px;
+  }
+
+  .touch__base {
+    width: 104px;
+    height: 104px;
+    margin: -52px 0 0 -52px;
+  }
+
+  .touch__action {
+    min-height: 76px;
+    min-width: 84px;
+  }
 }
