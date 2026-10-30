@@ -25,7 +25,7 @@ const STRINGS = {
     songCard: "A song that belongs here",
     openPlaylist: "Open our playlist ↗",
     playlistNote:
-      "These are notes about songs on the playlist — the music playing in the game is separate, freely-licensed music.",
+      "Your real playlist, played by Spotify. The background music in the game is separate, freely-licensed music.",
     interactHint: "E — Open letter",
     interactHintGeneric: "E — Look closer",
     mapTitle: "Our little universe",
@@ -91,7 +91,7 @@ const STRINGS = {
     songCard: "أغنية تنتمي لهنا",
     openPlaylist: "افتحي قائمة أغانينا ↗",
     playlistNote:
-      "هذي ملاحظات عن أغاني القائمة — الموسيقى اللي تشتغل باللعبة موسيقى ثانية مرخّصة بحرّية.",
+      "قائمتك الحقيقية، تشتغل عبر Spotify. وموسيقى اللعبة الخلفية موسيقى ثانية مرخّصة بحرّية.",
     interactHint: "E — افتحي الرسالة",
     interactHintGeneric: "E — تطلّعي أقرب",
     mapTitle: "كوننا الصغير",

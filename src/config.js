@@ -7,11 +7,22 @@ export const GAME_SUBTITLE_EN = "To my Artemis, from your Orion ♡";
 export const GAME_SUBTITLE_AR = "إلى أرتميس، من أوريون تبعك ♡";
 
 /**
- * Paste the real "To my Artemis 🌑" playlist link here to turn on the
- * "Open our playlist" button in the Record Shop. Leave it as an empty
- * string and the button stays hidden — nothing else breaks.
+ * The real "To my Artemis 🌑" playlist. Clearing this string hides the
+ * "Open our playlist" button again; nothing else breaks.
+ *
+ * The ?si= share token is deliberately left off — it identifies the account
+ * that shared the link, and this repository is public.
  */
-export const PLAYLIST_URL = "";
+export const PLAYLIST_URL =
+  "https://open.spotify.com/playlist/05jv34x9n5paB852F88f8q";
+
+/**
+ * Spotify's own embed player for the same playlist. This is Spotify's
+ * official widget, so playback is theirs and rights-cleared — nothing is
+ * rehosted here. Set to "" to show only the link button.
+ */
+export const PLAYLIST_EMBED_URL =
+  "https://open.spotify.com/embed/playlist/05jv34x9n5paB852F88f8q";
 
 export const PLAYLIST_NAME = "To my Artemis 🌑";
 export const PLAYLIST_DESCRIPTION =

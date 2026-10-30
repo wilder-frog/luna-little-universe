@@ -14,7 +14,13 @@ import { t, pick, isArabic, getLanguage } from "./translations.js";
 import { audio } from "../game/systems/Audio.js";
 import { progress } from "../game/systems/Progress.js";
 import { PHOTOS, PHOTO_CAPTIONS } from "../data/photos.js";
-import { PLAYLIST_URL, PLAYLIST_NAME, PLAYLIST_DESCRIPTION, asset } from "../config.js";
+import {
+  PLAYLIST_URL,
+  PLAYLIST_EMBED_URL,
+  PLAYLIST_NAME,
+  PLAYLIST_DESCRIPTION,
+  asset
+} from "../config.js";
 
 /**
  * A framed photo, or `null` when this slot has no photo — callers simply
@@ -219,6 +225,20 @@ export function openLetter(cp, handlers = {}) {
       desc.textContent = PLAYLIST_DESCRIPTION;
       pl.appendChild(name);
       pl.appendChild(desc);
+
+      // Spotify's own player. It needs the network, so the link below it is
+      // always there as the thing that definitely works.
+      if (PLAYLIST_EMBED_URL) {
+        const frame = document.createElement("iframe");
+        frame.className = "playlist__embed";
+        frame.src = PLAYLIST_EMBED_URL;
+        frame.title = PLAYLIST_NAME;
+        frame.loading = "lazy";
+        frame.allow =
+          "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+        frame.setAttribute("frameborder", "0");
+        pl.appendChild(frame);
+      }
 
       if (PLAYLIST_URL) {
         const link = document.createElement("a");

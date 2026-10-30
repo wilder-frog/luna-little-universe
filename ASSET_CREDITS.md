@@ -108,9 +108,13 @@ This project does **not**:
 - generate covers of copyrighted songs,
 - or claim that any of those tracks play in the game.
 
-The music that actually plays is the separate CC0 set listed above. If you set
-`PLAYLIST_URL` in `src/config.js`, the Record Shop shows a button that opens
-your real playlist in a new tab — a plain link, nothing embedded.
+The Record Shop does show the real playlist, through **Spotify's own official
+embed player** (`PLAYLIST_EMBED_URL` in `src/config.js`) plus a link that opens
+it in a new tab. Playback is entirely Spotify's — their player, their licence,
+their servers. No audio is copied, rehosted or proxied by this project, and the
+embed can be removed by clearing that one string.
+
+The music that plays *in the game itself* is the separate CC0 set listed above.
 
 ---
 
