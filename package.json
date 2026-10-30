@@ -1,0 +1,19 @@
+{
+  "name": "luna-little-universe",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "LUNA — A Little Universe for You. A personal anniversary game.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "node scripts/verify.mjs"
+  },
+  "devDependencies": {
+    "vite": "^5.4.11"
+  },
+  "dependencies": {
+    "phaser": "^3.87.0"
+  }
+}

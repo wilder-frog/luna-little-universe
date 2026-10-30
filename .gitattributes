@@ -1,0 +1,3 @@
+# Preserve the original poem bytes on every platform, including Windows.
+src/data/poem.js -text
+src/data/poem.source.txt -text
