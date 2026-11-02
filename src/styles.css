@@ -2492,3 +2492,21 @@ body.is-touch #touch {
     min-width: 84px;
   }
 }
+
+/* The HUD music toggle, struck through when music is off. */
+.hud__btn.is-off {
+  position: relative;
+  color: var(--powder);
+}
+
+.hud__btn.is-off::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 24px;
+  height: 2px;
+  background: var(--deep-rose);
+  border-radius: 2px;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}

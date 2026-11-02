@@ -48,17 +48,22 @@ function boot() {
 
   setHudVisible(false);
 
+  audio.preload();
+
+  // Queue the title music now. Nothing plays yet — playMusic holds it as the
+  // pending track until a gesture unlocks audio. If the game has already
+  // started by then, the pending track is whatever the game asked for last,
+  // so unlocking can never drag the world back to the menu loop.
+  audio.playMusic("menu");
+
   // Audio only ever starts from a genuine user gesture.
   const unlock = () => {
     audio.unlock();
-    audio.playMusic("menu");
     window.removeEventListener("pointerdown", unlock);
     window.removeEventListener("keydown", unlock);
   };
-  window.addEventListener("pointerdown", unlock, { once: false });
-  window.addEventListener("keydown", unlock, { once: false });
-
-  audio.preload();
+  window.addEventListener("pointerdown", unlock);
+  window.addEventListener("keydown", unlock);
 
   showTitle(() => {
     audio.playMusic("world");

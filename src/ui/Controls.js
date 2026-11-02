@@ -195,6 +195,7 @@ export function showIntro(onDone) {
 let hudEl = null;
 let hudStars = null;
 let hudCount = null;
+let musicBtn = null;
 
 let hudCleanup = null;
 
@@ -240,6 +241,14 @@ export function buildHud({ onMap, onSettings, onHelp }) {
     return b;
   };
 
+  // Music on/off right on the HUD. The full controls still live in Settings,
+  // but muting is the one thing you want without digging for it.
+  musicBtn = mk("♪", t("music"), () => {
+    audio.setMusicEnabled(!progress.state.audio.musicEnabled);
+    refreshMusicBtn();
+  });
+  right.appendChild(musicBtn);
+
   right.appendChild(mk("🗺", t("mapHint"), onMap));
   right.appendChild(mk("⚙", t("settings"), onSettings));
   right.appendChild(mk("?", t("help"), onHelp));
@@ -251,9 +260,10 @@ export function buildHud({ onMap, onSettings, onHelp }) {
   const offProgress = progress.onChange(refreshHud);
   const offLang = onLanguageChange(() => {
     const btns = right.querySelectorAll(".hud__btn");
-    btns[0].title = t("mapHint");
-    btns[1].title = t("settings");
-    btns[2].title = t("help");
+    btns[0].title = t("music");
+    btns[1].title = t("mapHint");
+    btns[2].title = t("settings");
+    btns[3].title = t("help");
     refreshHud();
   });
   hudCleanup = () => {
@@ -265,8 +275,19 @@ export function buildHud({ onMap, onSettings, onHelp }) {
   return hudEl;
 }
 
+/** Show whether music is on, so the button never lies about the state. */
+function refreshMusicBtn() {
+  if (!musicBtn) return;
+  const on = progress.state.audio.musicEnabled;
+  musicBtn.classList.toggle("is-off", !on);
+  musicBtn.setAttribute("aria-pressed", String(on));
+  musicBtn.title = `${t("music")}: ${on ? t("on") : t("off")}`;
+  musicBtn.setAttribute("aria-label", musicBtn.title);
+}
+
 export function refreshHud() {
   if (!hudEl) return;
+  refreshMusicBtn();
   const n = progress.count;
   hudCount.textContent = `${t("memories")} ${num(n)}/${num(progress.total)}`;
   hudCount.setAttribute("dir", isArabic() ? "rtl" : "ltr");
