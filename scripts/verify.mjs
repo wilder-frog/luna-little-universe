@@ -139,6 +139,28 @@ check(
 check("the finale note is editable text", typeof FINALE.bodyEn === "string");
 check("the finale has an Arabic version too", typeof FINALE.bodyAr === "string");
 
+// --- 4b. audio is only ever set up once -----------------------------------
+// A second audio.preload() builds a fresh set of Audio elements and leaves the
+// old ones playing where the mute button cannot reach them, so you hear two
+// copies of the same track. Guard both halves of that.
+console.log("\nAudio wiring");
+const { readFileSync: readSrc } = await import("node:fs");
+const audioSrc = readSrc(join(root, "src/game/systems/Audio.js"), "utf8");
+check(
+  "preload() refuses to run twice",
+  /preload\(\)\s*\{[\s\S]{0,400}?if \(this\.preloaded\) return;/.test(audioSrc)
+);
+const preloadCallers = [
+  "src/main.js",
+  "src/game/scenes/BootScene.js",
+  "src/game/scenes/WorldScene.js"
+].filter((f) => /audio\.preload\(\)/.test(readSrc(join(root, f), "utf8")));
+check(
+  "exactly one place calls audio.preload()",
+  preloadCallers.length === 1,
+  preloadCallers.join(", ") || "none"
+);
+
 // --- 5. audio files are really on disk ------------------------------------
 console.log("\nAudio files on disk");
 const { statSync } = await import("node:fs");

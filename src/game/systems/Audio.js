@@ -54,8 +54,17 @@ class AudioSystem {
     this.loadFailures = [];
   }
 
-  /** Create the elements. Safe to call once at boot; no playback happens. */
+  /**
+   * Create the elements. No playback happens here.
+   *
+   * Idempotent on purpose: a second call used to build a whole new set of
+   * Audio elements and leave the old ones playing, unreachable by the mute
+   * button — two copies of the same track a second out of phase.
+   */
   preload() {
+    if (this.preloaded) return;
+    this.preloaded = true;
+
     for (const [key, path] of Object.entries(SFX_FILES)) {
       // Small round-robin pool so overlapping clicks don't cut each other off.
       this.sfxPools[key] = Array.from({ length: 3 }, () => {
