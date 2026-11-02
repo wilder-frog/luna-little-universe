@@ -62,8 +62,9 @@ Everything is also clickable, and every panel can be reached with `Tab`.
 
 ### On a phone
 
-It plays on a phone too. The on-screen controls appear automatically on any
-touch device and stay hidden on a laptop:
+It plays on a phone too. The phone layout and the on-screen controls appear
+on phones and tablets only — they key off the *device*, not the window size,
+so dragging a laptop window narrow keeps the desktop layout:
 
 - **Thumbstick**, bottom left — drag anywhere inside the pad; it drops under
   your thumb wherever you touch. It's analog, so a small push walks slowly.

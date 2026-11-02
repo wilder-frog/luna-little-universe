@@ -2169,24 +2169,24 @@ body {
 }
 
 @media (max-width: 700px) {
-  #hud {
+  body.is-touch #hud {
     padding: 8px;
   }
 
-  .hud__stars {
+  body.is-touch .hud__stars {
     display: none;
   }
 
-  .card__actions {
+  body.is-touch .card__actions {
     flex-direction: column;
   }
 
-  .card__actions .btn {
+  body.is-touch .card__actions .btn {
     width: 100%;
     justify-content: center;
   }
 
-  .mg-glance__img {
+  body.is-touch .mg-glance__img {
     width: 52px;
     height: 72px;
   }
@@ -2340,154 +2340,154 @@ body.is-touch #touch {
    ========================================================================== */
 
 @media (max-width: 760px) {
-  .card {
+  body.is-touch .card {
     width: 100%;
     max-height: 100%;
     border-radius: 18px;
   }
 
-  .overlay {
+  body.is-touch .overlay {
     padding: 10px;
   }
 
-  .card__body {
+  body.is-touch .card__body {
     padding: 18px 16px 16px;
   }
 
-  .playlist__embed {
+  body.is-touch .playlist__embed {
     height: 232px;
   }
 
-  .card--book {
+  body.is-touch .card--book {
     height: 100%;
   }
 
-  .book__page {
+  body.is-touch .book__page {
     padding: 16px 14px 8px;
   }
 
-  .letter__title {
+  body.is-touch .letter__title {
     font-size: 20px;
   }
 
-  .letter__icon {
+  body.is-touch .letter__icon {
     font-size: 28px;
   }
 
-  .fragment__text {
+  body.is-touch .fragment__text {
     font-size: 19px;
     padding: 14px 15px;
   }
 
-  .title__cat {
+  body.is-touch .title__cat {
     width: 78px;
     height: 78px;
   }
 
-  .title__name {
+  body.is-touch .title__name {
     font-size: clamp(30px, 11vw, 44px);
   }
 
-  .photo {
+  body.is-touch .photo {
     max-width: 100%;
   }
 
   /* Keep the HUD clear of the notch and the controls clear of the HUD. */
-  #hud {
+  body.is-touch #hud {
     padding: calc(6px + env(safe-area-inset-top)) 8px 6px;
   }
 
-  .hud__counter {
+  body.is-touch .hud__counter {
     padding: 6px 12px;
     font-size: 13px;
   }
 
-  .hud__btn {
+  body.is-touch .hud__btn {
     width: 38px;
     height: 38px;
   }
 
-  .mg__stage {
+  body.is-touch .mg__stage {
     padding: 12px 8px;
   }
 
-  .mg-glance__field {
+  body.is-touch .mg-glance__field {
     height: 150px;
   }
 
-  .act-records__sleeve {
+  body.is-touch .act-records__sleeve {
     width: 96px;
   }
 }
 
 /* Leave room for the thumbstick under short overlays on a phone. */
-@media (max-width: 760px) and (pointer: coarse) {
-  #toast {
+@media (max-width: 760px) {
+  body.is-touch #toast {
     bottom: calc(210px + env(safe-area-inset-bottom));
   }
 }
 
 /* A phone held sideways: claw back every pixel for the poem itself. */
 @media (max-height: 460px) {
-  .overlay {
+  body.is-touch .overlay {
     padding: 6px;
   }
 
   /* Percentages resolve against the overlay's padded box, which is the
      thing that actually constrains the card — vh maths misses the padding
      and the browser chrome. */
-  .card {
+  body.is-touch .card {
     max-height: 100%;
   }
 
-  .card--book {
+  body.is-touch .card--book {
     height: 100%;
   }
 
-  .card__body {
+  body.is-touch .card__body {
     padding: 12px 16px 10px;
   }
 
-  .book__head {
+  body.is-touch .book__head {
     padding-bottom: 6px;
   }
 
-  .book__title {
+  body.is-touch .book__title {
     font-size: 17px;
   }
 
-  .book__subtitle {
+  body.is-touch .book__subtitle {
     font-size: 12px;
   }
 
-  .book__scroll {
+  body.is-touch .book__scroll {
     margin-top: 8px;
   }
 
-  .book__page {
+  body.is-touch .book__page {
     padding: 12px 14px 6px;
   }
 
-  .card__actions {
+  body.is-touch .card__actions {
     margin-top: 10px;
   }
 
-  .card--book .card__actions .btn {
+  body.is-touch .card--book .card__actions .btn {
     padding: 7px 18px;
   }
 
-  .touch__pad {
+  body.is-touch .touch__pad {
     width: 140px;
     height: 140px;
   }
 
-  .touch__base {
+  body.is-touch .touch__base {
     width: 104px;
     height: 104px;
     margin: -52px 0 0 -52px;
   }
 
-  .touch__action {
+  body.is-touch .touch__action {
     min-height: 76px;
     min-width: 84px;
   }

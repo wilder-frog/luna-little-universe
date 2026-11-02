@@ -34,7 +34,7 @@ import {
   onLanguageChange
 } from "../../ui/Controls.js";
 import { onOverlayChange, overlaysOpen, toast } from "../../ui/Overlay.js";
-import { TouchControls, isTouchDevice } from "../../ui/TouchControls.js";
+import { TouchControls, isHandheld } from "../../ui/TouchControls.js";
 import { t, pick, isArabic } from "../../ui/translations.js";
 
 const INTERACT_RADIUS = 72;
@@ -340,8 +340,10 @@ export class WorldScene extends Phaser.Scene {
    * A phone gets the smaller one or it would see barely a room's worth.
    */
   applyZoom() {
-    const narrow = this.scale.width < 760;
-    this.cameras.main.setZoom(narrow ? 1.5 : 2);
+    // Only a genuinely small *device* zooms out. A laptop window dragged
+    // narrow keeps the desktop framing.
+    const smallScreen = isHandheld() && this.scale.width < 760;
+    this.cameras.main.setZoom(smallScreen ? 1.5 : 2);
   }
 
   setupInput() {
@@ -389,7 +391,7 @@ export class WorldScene extends Phaser.Scene {
     });
 
     // On a phone there is no keyboard, so give her a stick and a button.
-    if (isTouchDevice()) {
+    if (isHandheld()) {
       this.touch = new TouchControls({ onAction: () => this.tryInteract() });
     }
 

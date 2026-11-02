@@ -10,12 +10,19 @@
 
 import { overlaysOpen } from "./Overlay.js";
 
-/** True on phones and tablets; false for a mouse-driven laptop. */
-export function isTouchDevice() {
-  return (
-    window.matchMedia?.("(pointer: coarse)").matches ||
-    navigator.maxTouchPoints > 0
-  );
+/**
+ * True on a phone or tablet, false on a laptop — including a laptop with a
+ * touchscreen, and including a laptop whose window has been dragged narrow.
+ *
+ * `hover: none` is what separates them: a handheld has no pointer that can
+ * hover, while a touchscreen laptop still reports a hovering mouse. Width is
+ * deliberately not part of this, because a narrow window is still a laptop.
+ */
+export function isHandheld() {
+  const mq = window.matchMedia;
+  if (mq) return mq("(pointer: coarse) and (hover: none)").matches;
+  // No matchMedia (very old browser): fall back to the touch point count.
+  return navigator.maxTouchPoints > 0;
 }
 
 const DEAD_ZONE = 0.16;
