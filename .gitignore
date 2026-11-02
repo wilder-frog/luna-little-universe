@@ -10,3 +10,6 @@ dist/
 # Personal photos are NOT ignored by default — you choose what to commit.
 # If you want to keep a staging folder private, put it here:
 public/assets/photos/_private/
+
+# Scratch work from other tasks — never part of the game.
+tmp/
