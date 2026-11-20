@@ -2,950 +2,1184 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Condensed:wght@500;700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=Bricolage+Grotesque:wght@600;800&family=Inter:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
-/* Layout: one technical-manual "sheet" column, chapter blocks with code tabs, callouts before steps, wide tables scroll in place */
+/* Layout: brand-first dark world. Every visual is split into two halves (red = you, violet = them). Full-width bands, centered 1080px content, phone mock strips scroll sideways in place. Single dark theme by design. */
 :root{
-  --paper:#EEF1F4; --sheet:#FFFFFF; --ink:#14202B; --muted:#55636F; --rule:#CBD3DB; --strong:#14202B;
-  --code:#1F5FA8; --shade:#F5F7F9;
-  --warn:#B3261E; --warn-bg:#FCEBEA; --caut:#8A5300; --caut-bg:#FFF3DC; --note:#1F5FA8; --note-bg:#E7EFF9;
-  --ok:#1E7A46; --ok-bg:#E5F4EA;
-  --you:#D93A50; --them:#6A5AE0;
-  --f-head:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
-  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark;
+  --bg:#130F1A; --ink:#1A1424; --raise:#211A2D; --raise2:#2A2138; --line:#3A2F4C;
+  --text:#F4EFF6; --muted:#B8AFC8; --dim:#8A809B;
+  --you:#E0475B; --you-soft:#3A1A26; --them:#7B6CF6; --them-soft:#241F47;
+  --blush:#F9E3E6; --paper:#FBF9FB;
+  --warn:#FF7A59; --warn-bg:#2C1712; --caut:#FFC24B; --caut-bg:#2A2310; --note:#7FD1FF; --note-bg:#0F2330; --ok:#5EE0A0; --ok-bg:#0F2A1F;
+  --f-display:"Bricolage Grotesque",system-ui,sans-serif;
+  --f-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
-  --f-brand:"Bricolage Grotesque",system-ui,sans-serif;
-  --f-brandbody:"Inter",system-ui,sans-serif;
 }
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --paper:#0B1116; --sheet:#121A21; --ink:#E4EAF0; --muted:#98A6B3; --rule:#2B3742; --strong:#C9D3DC;
-  --code:#7FB0F0; --shade:#18222B;
-  --warn:#FF8A80; --warn-bg:#2B1615; --caut:#F2B45A; --caut-bg:#2A2010; --note:#8AB8F5; --note-bg:#13233A;
-  --ok:#6FD39A; --ok-bg:#12271B; --you:#F0607A; --them:#9A8CFF; color-scheme:dark }}
-:root[data-theme="dark"]{
-  --paper:#0B1116; --sheet:#121A21; --ink:#E4EAF0; --muted:#98A6B3; --rule:#2B3742; --strong:#C9D3DC;
-  --code:#7FB0F0; --shade:#18222B;
-  --warn:#FF8A80; --warn-bg:#2B1615; --caut:#F2B45A; --caut-bg:#2A2010; --note:#8AB8F5; --note-bg:#13233A;
-  --ok:#6FD39A; --ok-bg:#12271B; --you:#F0607A; --them:#9A8CFF; color-scheme:dark }
-
 *{box-sizing:border-box}
-body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 64px}
-.sheet{max-width:980px;margin:0 auto;background:var(--sheet);border:1px solid var(--rule);}
-.inner{padding:28px clamp(16px,4vw,44px)}
-h1,h2,h3{font-family:var(--f-head);text-wrap:balance;margin:0}
-h2{font-size:24px;letter-spacing:.02em;text-transform:uppercase}
-h3{font-size:17px;letter-spacing:.02em;text-transform:uppercase;margin-top:26px;margin-bottom:8px}
-p{margin:0 0 10px;max-width:68ch}
-a{color:var(--code)}
-code,.mono{font-family:var(--f-mono);font-size:.9em}
-:focus-visible{outline:2px solid var(--code);outline-offset:2px}
+body{background:var(--bg);color:var(--text);font-family:var(--f-body);font-size:16px;line-height:1.55}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3,h4{font-family:var(--f-display);margin:0;text-wrap:balance}
+p{margin:0 0 10px}
+a{color:var(--note)}
+:focus-visible{outline:2px solid var(--note);outline-offset:3px}
+.mono{font-family:var(--f-mono)}
+.kicker{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.lead{font-size:18px;color:var(--muted);max-width:60ch}
+.you{color:var(--you)} .them{color:var(--them)}
+.row{display:flex;flex-wrap:wrap;gap:16px}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:14px}
+.g4{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:12px}
+.g2>*,.g3>*,.g4>*{min-width:0}
+.card{background:var(--raise);border:1px solid var(--line);border-radius:18px;padding:18px}
+.card h4{font-size:19px;font-weight:800;margin-bottom:6px}
+.card p{color:var(--muted);font-size:15px}
+.sub{font-size:22px;font-weight:800;margin:40px 0 14px;letter-spacing:-.01em}
+.chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:12px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--raise);color:var(--muted);white-space:nowrap}
+.chip.y{border-color:var(--you);color:var(--blush);background:var(--you-soft)}
+.chip.t{border-color:var(--them);color:#DCD6FF;background:var(--them-soft)}
+.stamp{display:inline-block;font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.1em;padding:3px 9px;border:1.5px solid;border-radius:6px;text-transform:uppercase;transform:rotate(-2deg)}
+.s-ok{color:var(--ok);border-color:var(--ok)} .s-no{color:var(--warn);border-color:var(--warn)} .s-mid{color:var(--caut);border-color:var(--caut)}
+ul.clean{list-style:none;padding:0;margin:0}
+ul.dots{margin:6px 0;padding-left:18px} ul.dots li{margin:4px 0}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-/* Title block */
-.titleblock{border-bottom:2px solid var(--strong)}
-.tb-top{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;padding:28px clamp(16px,4vw,44px) 20px}
-.tb-top h1{font-size:clamp(28px,5vw,42px);line-height:1.05;text-transform:uppercase;letter-spacing:.01em}
-.tb-top .sub{font-family:var(--f-mono);font-size:12px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
-.tb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));border-top:1px solid var(--rule)}
-.tb-grid div{padding:10px 16px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);min-width:0}
-.tb-grid span{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
-.tb-grid b{font-family:var(--f-mono);font-weight:600;font-size:13px}
+/* HERO */
+.hero{position:relative;overflow:hidden;margin-top:calc(-1 * env(safe-area-inset-top,0px));padding-top:calc(env(safe-area-inset-top,0px) + 56px);padding-bottom:64px;background:var(--ink)}
+.hero .hl,.hero .hr{position:absolute;top:0;bottom:0;width:50%}
+.hero .hl{left:0;background:var(--you);animation:inl .9s ease-out both}
+.hero .hr{right:0;top:34px;bottom:-34px;background:var(--them);animation:inr .9s ease-out both}
+@keyframes inl{from{transform:translateX(-14px)}to{transform:none}}
+@keyframes inr{from{transform:translateX(14px)}to{transform:none}}
+.hero .wrap{position:relative;text-align:center}
+.hero .kicker{color:rgba(255,255,255,.85)}
+.hero h1{font-weight:800;font-size:clamp(76px,17vw,190px);letter-spacing:-.05em;line-height:.85;color:var(--paper);margin:18px 0 8px}
+.hero .tag{font-family:var(--f-display);font-weight:600;font-size:clamp(22px,3.6vw,34px);color:var(--paper)}
+.hero .say{max-width:520px;margin:10px auto 0;color:rgba(255,255,255,.9)}
+.hero .facts{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:26px}
+.hero .facts span{font-family:var(--f-mono);font-size:12.5px;padding:6px 12px;border-radius:999px;background:rgba(19,15,26,.72);color:var(--paper);border:1px solid rgba(255,255,255,.18)}
 
 /* TOC */
-.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0;border:1px solid var(--rule);margin-top:6px}
-.toc a{display:flex;gap:10px;padding:9px 12px;border-bottom:1px solid var(--rule);border-right:1px solid var(--rule);text-decoration:none;color:var(--ink)}
-.toc a:hover{background:var(--shade)}
-.toc .c{font-family:var(--f-mono);color:var(--code);font-size:13px;min-width:44px}
+.toc{display:flex;flex-wrap:wrap;gap:8px;padding-block:22px}
+.toc a{text-decoration:none;color:var(--text);font-size:14px;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--raise)}
+.toc a b{font-family:var(--f-mono);font-weight:500;color:var(--them);margin-right:6px}
+.toc a:hover{border-color:var(--them)}
 
-/* Chapters */
-.ch{border-top:2px solid var(--strong);padding-top:0;margin-top:34px}
-.ch-head{display:flex;align-items:stretch;gap:0;margin-bottom:16px;flex-wrap:wrap}
-.ch-code{font-family:var(--f-mono);font-weight:600;background:var(--strong);color:var(--sheet);padding:6px 12px;font-size:13px;letter-spacing:.06em;display:flex;align-items:center}
-.ch-head h2{padding:8px 14px 0;font-size:22px}
-.lead{font-size:16px;color:var(--muted);max-width:68ch}
+/* CHAPTER */
+section.ch{padding-block:56px;border-top:1px solid var(--line)}
+.ch-head{display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap;margin-bottom:18px}
+.ch-num{font-family:var(--f-display);font-weight:800;font-size:clamp(56px,9vw,88px);line-height:.85;color:transparent;-webkit-text-stroke:1.5px var(--them)}
+.ch-head h2{font-weight:800;font-size:clamp(30px,5vw,48px);letter-spacing:-.025em;line-height:1}
+.ch-head .kicker{margin-bottom:4px}
 
-/* Callouts */
-.call{border:2px solid;margin:14px 0;max-width:100%}
-.call .lab{font-family:var(--f-head);font-weight:700;letter-spacing:.14em;font-size:13px;padding:4px 12px;text-align:center}
-.call .body{padding:10px 14px}
-.call .body p:last-child,.call .body ul:last-child{margin-bottom:0}
-.call ul{margin:4px 0 0;padding-left:20px}
-.warn{border-color:var(--warn);background:var(--warn-bg)} .warn .lab{background:var(--warn);color:var(--sheet)}
-.caut{border-color:var(--caut);background:var(--caut-bg)} .caut .lab{background:var(--caut);color:var(--sheet)}
-.note{border-color:var(--note);background:var(--note-bg)} .note .lab{background:var(--note);color:var(--sheet)}
+/* CALLOUTS */
+.call{border:1.5px solid;border-radius:16px;padding:14px 16px;margin:14px 0;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+.call .lab{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.14em;padding:4px 8px;border-radius:6px;font-weight:500}
+.call p{margin:0 0 6px}.call p:last-child{margin:0}
+.call ul{margin:0;padding-left:18px}
+.warn{border-color:var(--warn);background:var(--warn-bg)} .warn .lab{background:var(--warn);color:#1A0E0A}
+.caut{border-color:var(--caut);background:var(--caut-bg)} .caut .lab{background:var(--caut);color:#1E1704}
+.note{border-color:var(--note);background:var(--note-bg)} .note .lab{background:var(--note);color:#062030}
+@media (max-width:520px){.call{grid-template-columns:1fr}}
 
-/* Tables */
-.tw{overflow-x:auto;margin:10px 0 14px;border:1px solid var(--rule)}
-table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
-th,td{padding:8px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
-th{font-family:var(--f-head);text-transform:uppercase;letter-spacing:.05em;font-size:12.5px;background:var(--shade)}
+/* TABLE */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin:12px 0}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:14.5px}
+th,td{padding:10px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{font-family:var(--f-mono);font-weight:500;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--raise)}
 tr:last-child td{border-bottom:0}
-td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--f-mono);font-size:13px}
-.pill{display:inline-block;font-family:var(--f-mono);font-size:11px;padding:1px 7px;border:1px solid;white-space:nowrap}
-.p-ok{color:var(--ok);background:var(--ok-bg)} .p-no{color:var(--warn);background:var(--warn-bg)} .p-mid{color:var(--caut);background:var(--caut-bg)}
-.tag{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+td.n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
 
-/* Steps */
-ol.steps{list-style:none;padding:0;margin:8px 0 14px;counter-reset:s}
-ol.steps>li{counter-increment:s;display:grid;grid-template-columns:42px 1fr;gap:10px;padding:7px 0;border-bottom:1px dashed var(--rule)}
-ol.steps>li::before{content:counter(s);font-family:var(--f-mono);font-weight:600;border:1px solid var(--strong);text-align:center;height:26px;line-height:24px;font-size:13px}
-ol.steps>li>div{min-width:0}
+/* PHONE */
+.strip{display:flex;gap:20px;overflow-x:auto;padding:6px 2px 18px;scroll-snap-type:x proximity}
+.shot{flex:none;width:240px;scroll-snap-align:start;display:flex;flex-direction:column;gap:10px}
+.shot .cap{font-size:14px;color:var(--muted)}
+.shot .cap b{color:var(--text)}
+.sid{font-family:var(--f-mono);font-size:12px;padding:2px 8px;border-radius:6px;margin-right:6px;color:#fff}
+.sid.a{background:var(--you)} .sid.b{background:var(--them)}
+.phone{width:240px;max-width:100%;border-radius:36px;background:#0B0810;padding:9px;border:1px solid #3A2F4C;box-shadow:0 24px 50px rgba(0,0,0,.45)}
+.scr{border-radius:28px;background:var(--ink);height:470px;padding:30px 14px 16px;display:flex;flex-direction:column;gap:9px;overflow:hidden;position:relative;font-size:13px}
+.scr::before{content:"";position:absolute;top:9px;left:50%;width:62px;height:16px;margin-left:-31px;border-radius:10px;background:#0B0810}
+.scr .t{font-family:var(--f-display);font-weight:800;font-size:22px;line-height:1.08;letter-spacing:-.01em}
+.scr .m{color:var(--muted);font-size:12.5px}
+.scr .k{font-family:var(--f-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.scr .in{border:1px solid var(--line);border-radius:12px;padding:9px 10px;background:var(--raise)}
+.scr .in small{display:block;font-size:10px;color:var(--dim)}
+.scr .btn{margin-top:auto;border-radius:14px;padding:12px;text-align:center;font-weight:600;background:var(--you);color:#fff}
+.scr .btn.v{background:var(--them)}
+.scr .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text);margin-top:0}
+.scr .fine{font-size:10.5px;color:var(--muted);text-align:center}
+.scr .prog{height:5px;border-radius:3px;background:var(--raise2);overflow:hidden}
+.scr .prog i{display:block;height:100%;background:linear-gradient(90deg,var(--you) 50%,var(--them) 50%)}
+.scr .opt{border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:var(--raise)}
+.scr .opt.on{border-color:var(--you);background:var(--you-soft)}
+.scr .opt.onv{border-color:var(--them);background:var(--them-soft)}
+.scr .card2{border:1px solid var(--line);border-radius:12px;padding:9px 10px;background:var(--raise)}
+.scr .lock{position:relative;color:transparent;text-shadow:0 0 7px rgba(251,249,251,.55);user-select:none}
+.scr .lock::after{content:"LOCKED";position:absolute;right:9px;top:8px;font-family:var(--f-mono);font-size:9px;letter-spacing:.12em;color:var(--muted);text-shadow:none}
+.scr .msg{border:1px dashed var(--you);border-radius:12px;padding:9px 10px;color:var(--blush)}
+.big{font-family:var(--f-display);font-weight:800;font-size:54px;line-height:.95;letter-spacing:-.03em}
+.big small{font-size:18px;letter-spacing:0}
+.split{display:flex;height:8px;border-radius:4px;overflow:hidden}
+.split i:first-child{background:var(--you)} .split i:last-child{background:var(--them)}
+.dm{align-self:flex-end;max-width:85%;background:var(--them);color:#fff;border-radius:16px 16px 4px 16px;padding:8px 11px}
+.dm.l{align-self:flex-start;background:var(--raise2);border-radius:16px 16px 16px 4px}
+.lp{align-self:flex-end;width:85%;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--raise)}
+.lp .img{height:84px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,var(--you) 50%,var(--them) 50%)}
+.lp .tx{padding:8px 10px;font-size:11.5px}
+.lp .tx b{display:block;font-size:12.5px}
+.tick{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--muted)}
+.tick i{flex:none;width:16px;height:16px;border-radius:4px;background:var(--them);margin-top:1px;position:relative}
+.tick i::after{content:"";position:absolute;left:5px;top:2px;width:4px;height:8px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
 
-/* Spec list */
-.spec{display:grid;grid-template-columns:minmax(120px,190px) 1fr;border:1px solid var(--rule);margin:10px 0}
-.spec>div{padding:7px 12px;border-bottom:1px solid var(--rule);min-width:0}
-.spec>div:nth-child(odd){font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--shade)}
-.spec>div:nth-last-child(-n+2){border-bottom:0}
+/* BRAND */
+.logo-sheet{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px}
+.ls{border-radius:18px;border:1px solid var(--line);min-height:170px;display:flex;flex-direction:column;justify-content:space-between;padding:16px;overflow:hidden}
+.ls .lab{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ls .art{flex:1;display:flex;align-items:center;justify-content:center;gap:12px}
+.ls.paper{background:var(--paper)} .ls.paper .lab{color:#6B6176}
+.wm{font-family:var(--f-display);font-weight:800;letter-spacing:-.04em;line-height:1}
+.appicon{width:92px;height:92px;border-radius:22px;background:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 24px rgba(0,0,0,.5),inset 0 0 0 1px #3A2F4C}
+.fav{display:flex;align-items:flex-end;gap:14px}
+.fav div{background:var(--ink);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;border-radius:6px}
+.sw{border-radius:18px;overflow:hidden;border:1px solid var(--line);display:flex;flex-direction:column;min-height:150px}
+.sw .c{flex:1;min-height:90px}
+.sw .meta{padding:10px 12px;background:var(--raise)}
+.sw .meta b{display:block;font-family:var(--f-display);font-size:17px}
+.sw .meta span{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+.namebar{display:grid;grid-template-columns:110px 1fr 46px;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
+.namebar b{font-family:var(--f-display);font-size:17px}
+.namebar .bar{height:10px;border-radius:5px;background:var(--raise2);overflow:hidden}
+.namebar .bar i{display:block;height:100%;background:var(--them)}
+.namebar.win .bar i{background:linear-gradient(90deg,var(--you),var(--them))}
+.namebar span{font-family:var(--f-mono);font-size:13px;text-align:right}
+.namebar small{grid-column:2/4;color:var(--dim);font-size:12.5px;margin-top:-4px}
+.poster{border-radius:18px;padding:22px 20px;min-height:170px;display:flex;align-items:flex-end;font-family:var(--f-display);font-weight:800;font-size:clamp(24px,3vw,30px);line-height:1.05;letter-spacing:-.02em}
+.wordcloud{display:flex;flex-wrap:wrap;gap:7px}
+.wordcloud span{padding:5px 11px;border-radius:999px;font-size:14px}
+.use span{background:var(--you-soft);color:var(--blush);border:1px solid rgba(224,71,91,.5)}
+.avoid span{background:var(--raise);color:var(--dim);border:1px solid var(--line);text-decoration:line-through}
 
-/* Flow lanes */
-.lanes{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule);margin:12px 0}
-.lane-h{font-family:var(--f-head);text-transform:uppercase;letter-spacing:.06em;padding:8px 12px;border-bottom:1px solid var(--rule);font-weight:700}
-.lane-h.a{color:var(--you)} .lane-h.b{color:var(--them);border-left:1px solid var(--rule)}
-.cell{padding:8px 12px;border-bottom:1px solid var(--rule);min-width:0;font-size:14px}
-.cell.b{border-left:1px solid var(--rule)}
-.cell .id{font-family:var(--f-mono);font-weight:600;font-size:12px;margin-right:6px}
-.cell.a .id{color:var(--you)} .cell.b .id{color:var(--them)}
-.cell.empty{background:repeating-linear-gradient(45deg,transparent 0 6px,var(--shade) 6px 12px)}
-.cell.both{grid-column:1/-1;text-align:center;background:var(--shade);border-left:0}
-@media (max-width:620px){.lanes{grid-template-columns:1fr}.lane-h.b,.cell.b{border-left:0}.cell.empty{display:none}.lane-h.b{display:none}.cell.b{border-left:4px solid var(--them)}.cell.a{border-left:4px solid var(--you)}}
+/* Instagram + story */
+.ig-head{display:flex;gap:12px;align-items:center}
+.ig-av{width:58px;height:58px;border-radius:50%;background:var(--ink);border:2px solid var(--you);display:flex;align-items:center;justify-content:center;flex:none}
+.ig-stats{display:flex;gap:8px;font-size:10px;color:var(--muted);min-width:0}
+.ig-stats b{display:block;color:var(--text);font-size:13px}
+.ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:4px}
+.ig-grid div{aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;text-align:center;font-family:var(--f-display);font-weight:800;font-size:11.5px;line-height:1.05;padding:4px;color:#fff;border-radius:2px}
+.story{width:220px;max-width:100%;aspect-ratio:9/16;border-radius:22px;overflow:hidden;position:relative;flex:none;box-shadow:0 24px 50px rgba(0,0,0,.45)}
+.story .l,.story .r{position:absolute;top:0;bottom:0;width:50%}
+.story .l{left:0;background:var(--you)} .story .r{right:0;top:22px;bottom:-22px;background:var(--them)}
+.story .in{position:relative;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:16px;gap:6px}
+.story .in .big{font-size:64px}
+.story .cta{position:absolute;bottom:16px;left:16px;right:16px;background:rgba(19,15,26,.85);border-radius:12px;padding:8px;font-size:12px;text-align:center;color:#fff}
 
-/* Brand */
-.brandrow{display:flex;flex-wrap:wrap;gap:22px;align-items:center;margin:12px 0}
-.logo-box{border:1px solid var(--rule);padding:18px 22px;display:flex;gap:14px;align-items:center;min-width:0}
-.logo-box.dark{background:#1A1424;border-color:#1A1424}
-.wordmark{font-family:var(--f-brand);font-weight:800;font-size:40px;letter-spacing:-.02em;line-height:1}
-.logo-box .wordmark{color:#1A1424} .logo-box.dark .wordmark{color:#FBF9FB}
-.swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:10px 0}
-.sw{border:1px solid var(--rule);min-width:0}
-.sw .chip{height:64px}
-.sw .meta{padding:7px 10px;font-size:13px}
-.sw .meta b{display:block;font-family:var(--f-head);text-transform:uppercase;letter-spacing:.04em}
-.sw .meta span{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
-.typespec{border:1px solid var(--rule);padding:14px;margin:8px 0}
-.typespec .h{font-family:var(--f-brand);font-weight:800;font-size:30px;line-height:1.1;letter-spacing:-.01em}
-.typespec .b{font-family:var(--f-brandbody);font-size:16px;margin-top:6px}
-blockquote{margin:10px 0;padding:10px 14px;border-left:4px solid var(--you);background:var(--shade);font-family:var(--f-brand);font-weight:600;font-size:17px;max-width:68ch}
+/* ENGINE */
+.pipe{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}
+.pipe .node{flex:1 1 140px;border-radius:14px;padding:12px;background:var(--raise);border:1px solid var(--line);position:relative}
+.pipe .node b{display:block;font-family:var(--f-display);font-size:16px}
+.pipe .node span{font-size:12.5px;color:var(--muted)}
+.pipe .node em{font-style:normal;font-family:var(--f-mono);font-size:11px;color:var(--them)}
+.pipe .arr{flex:0 0 auto;align-self:center;color:var(--them);font-family:var(--f-mono)}
+.dim-card{border-radius:16px;border:1px solid var(--line);background:var(--raise);overflow:hidden}
+.dim-card .top{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}
+.dim-card .top b{font-family:var(--f-display);font-size:17px}
+.dim-card .q{padding:9px 14px;font-size:13.5px;border-left:3px solid;margin:10px 12px;border-radius:4px;background:var(--bg)}
+.dim-card .q.a{border-color:var(--you)} .dim-card .q.b{border-color:var(--them)}
+.dim-card .q small{display:block;font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;color:var(--muted)}
+.formula{font-family:var(--f-mono);font-size:13.5px;line-height:1.7;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:14px;overflow-x:auto}
+.formula .c{color:var(--dim)}
+.spine{display:flex;flex-direction:column;gap:6px}
+.spine div{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;border:1px solid var(--line);background:var(--raise);font-size:14.5px}
+.spine div.free{border-color:var(--ok);background:var(--ok-bg)}
+.spine div em{font-style:normal;font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;white-space:nowrap}
+.spine div.free em{color:var(--ok)} .spine div.paid em{color:var(--caut)}
+.hbar{display:grid;grid-template-columns:90px 1fr 70px;gap:10px;align-items:center;margin:7px 0}
+.hbar .b{height:14px;border-radius:7px;background:var(--raise2);overflow:hidden}
+.hbar .b i{display:block;height:100%;border-radius:7px}
+.hbar span{font-family:var(--f-mono);font-size:12.5px;text-align:right}
+.type-card{border-radius:18px;padding:16px;border:1px solid var(--line);background:var(--raise);display:flex;flex-direction:column;gap:8px}
+.type-card .glyph{width:44px;height:44px}
+.type-card b{font-family:var(--f-display);font-size:18px;line-height:1.1}
+.type-card p{margin:0;font-size:14px;color:var(--muted)}
+.type-card .rule{font-family:var(--f-mono);font-size:11px;color:var(--dim)}
+.axis{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.axis b{font-family:var(--f-display);font-size:15.5px}
+.axis .track{position:relative;height:8px;border-radius:4px;background:linear-gradient(90deg,var(--raise2),var(--them))}
+.axis .track i{position:absolute;top:-5px;width:18px;height:18px;border-radius:50%;background:var(--paper);border:3px solid var(--you);margin-left:-9px}
+.axis small{grid-column:2;color:var(--dim);font-size:12.5px;margin-top:-4px}
+@media (max-width:520px){.axis{grid-template-columns:1fr}.axis small{grid-column:1}}
 
-/* Phone mock (fixed brand look, single theme by design) */
-.mockrow{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start}
-.phone{width:280px;max-width:100%;border-radius:34px;background:#1A1424;padding:14px;border:6px solid #2A2236;color:#FBF9FB;font-family:var(--f-brandbody)}
-.phone .scr{border-radius:22px;background:#1A1424;padding:16px 14px 18px}
-.phone .k{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#B8AFC8}
-.phone .big{font-family:var(--f-brand);font-weight:800;font-size:56px;line-height:1;margin:6px 0 2px}
-.phone .big small{font-size:20px}
-.phone .type{font-family:var(--f-brand);font-weight:600;font-size:18px;color:#F9E3E6}
-.phone .bar{display:flex;height:8px;margin:12px 0 4px;border-radius:4px;overflow:hidden}
-.phone .bar i:first-child{background:#E0475B} .phone .bar i:last-child{background:#7B6CF6}
-.phone .card{border:1px solid #3A3048;border-radius:12px;padding:10px;margin-top:8px;font-size:13px}
-.phone .card.lock{position:relative;color:transparent;text-shadow:0 0 7px rgba(251,249,251,.55);user-select:none}
-.phone .card.lock::after{content:"LOCKED";position:absolute;right:10px;top:9px;font-size:10px;letter-spacing:.12em;color:#B8AFC8;text-shadow:none}
-.phone .msg{border:1px dashed #E0475B;border-radius:12px;padding:10px;margin-top:8px;font-size:13px;color:#F9E3E6}
-.phone .pay{display:block;width:100%;margin-top:12px;border:0;border-radius:14px;padding:13px;background:#E0475B;color:#fff;font-weight:600;font-size:15px;font-family:var(--f-brandbody)}
-.phone .fine{font-size:11px;color:#B8AFC8;text-align:center;margin-top:6px}
-.mocknote{flex:1;min-width:240px}
+/* FLOW (privacy) */
+.flow{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+.flow .box{flex:1 1 200px;border-radius:16px;padding:14px;border:1px solid var(--line);background:var(--raise)}
+.flow .box h4{font-size:16px;margin-bottom:6px}
+.flow .box.ph{border-color:var(--you)} .flow .box.sv{border-color:var(--them)}
+.flow .pipe-l{flex:0 0 auto;align-self:center;font-family:var(--f-mono);font-size:11.5px;color:var(--muted);text-align:center;padding:4px 6px}
+.flow .pipe-l b{display:block;color:var(--them);font-size:20px}
 
-/* Day cards */
-.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:10px 0}
-.day{border:1px solid var(--rule);min-width:0;display:flex;flex-direction:column}
-.day .dh{display:flex;justify-content:space-between;gap:8px;padding:8px 12px;background:var(--shade);border-bottom:1px solid var(--rule)}
-.day .dh b{font-family:var(--f-head);text-transform:uppercase;letter-spacing:.05em}
-.day .dh span{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
-.day ul{margin:8px 0;padding:0 12px 0 30px;font-size:14px;flex:1}
-.day .done{border-top:1px solid var(--rule);padding:8px 12px;font-size:13px;background:var(--ok-bg)}
-.day .done b{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--ok)}
+/* MONEY */
+.prov{border-radius:18px;padding:16px;border:1px solid var(--line);background:var(--raise);display:flex;flex-direction:column;gap:8px}
+.prov .hd{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.prov b{font-family:var(--f-display);font-size:20px}
+.prov dl{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;margin:0;font-size:13.5px}
+.prov dt{color:var(--dim);font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding-top:2px}
+.prov dd{margin:0}
+.prov.pick{border-color:var(--ok)}
+.tagp{border-radius:16px;padding:16px;background:var(--raise);border:1px solid var(--line)}
+.tagp .pr{font-family:var(--f-display);font-weight:800;font-size:38px;letter-spacing:-.02em}
+.tagp .keep{height:10px;border-radius:5px;background:var(--raise2);overflow:hidden;margin:8px 0 4px;display:flex}
+.tagp .keep i{display:block;height:100%}
+.tagp .keep i.us{background:var(--ok)} .tagp .keep i.fee{background:var(--warn)}
+.tagp small{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);display:block}
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.calc label{display:flex;flex-direction:column;gap:5px;font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.calc input{font-family:var(--f-mono);font-size:15px;padding:8px 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);width:100%}
+.funnel{display:flex;flex-direction:column;gap:7px;margin-top:16px}
+.funnel .st{display:grid;grid-template-columns:140px 1fr 80px;gap:10px;align-items:center}
+.funnel .st span{font-size:13.5px;color:var(--muted)}
+.funnel .st .bw{height:26px;display:flex;justify-content:center}
+.funnel .st .bw i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,var(--you),var(--them));transition:width .3s}
+.funnel .st b{font-family:var(--f-mono);font-size:14px;text-align:right;font-variant-numeric:tabular-nums}
+.funnel .st.pay .bw i{background:var(--ok)}
+.bigout{display:flex;flex-wrap:wrap;gap:20px;align-items:baseline;margin-top:14px}
+.bigout .big{color:var(--ok)}
+@media (max-width:520px){.funnel .st{grid-template-columns:100px 1fr 56px}}
 
-/* Calculator */
-.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;border:1px solid var(--rule);padding:14px;background:var(--shade)}
-.calc label{display:flex;flex-direction:column;gap:4px;font-family:var(--f-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
-.calc input{font-family:var(--f-mono);font-size:15px;padding:7px 8px;border:1px solid var(--rule);background:var(--sheet);color:var(--ink);width:100%}
-.calc-out{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border:1px solid var(--rule);border-top:0}
-.calc-out div{padding:10px 14px;border-right:1px solid var(--rule)}
-.calc-out span{display:block;font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-.calc-out b{font-family:var(--f-mono);font-size:22px;font-variant-numeric:tabular-nums}
+/* DAYS */
+.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:12px}
+.day{border-radius:18px;border:1px solid var(--line);background:var(--raise);display:flex;flex-direction:column;overflow:hidden}
+.day .dh{display:flex;align-items:center;gap:12px;padding:14px 16px 6px}
+.day .dn{font-family:var(--f-display);font-weight:800;font-size:44px;line-height:1;color:transparent;-webkit-text-stroke:1.5px var(--you)}
+.day .dh b{font-family:var(--f-display);font-size:18px;display:block}
+.day .dh span{font-size:12px;color:var(--muted)}
+.day ul{margin:6px 0 12px;padding:0 16px 0 34px;font-size:14px;flex:1}
+.day .done{padding:10px 16px;font-size:13px;background:var(--ok-bg);border-top:1px solid var(--line)}
+.day .done b{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;color:var(--ok);margin-right:6px}
 
-/* Checklist */
-.check{list-style:none;padding:0;margin:8px 0;columns:2 300px;column-gap:24px}
-.check li{break-inside:avoid;padding:5px 0;border-bottom:1px dashed var(--rule)}
-.check label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
-.check input{margin-top:4px;width:16px;height:16px;accent-color:var(--code);flex:none}
-.foot{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);text-align:center;padding:14px;border-top:1px solid var(--rule)}
-ul.tight{margin:6px 0 12px;padding-left:20px} ul.tight li{margin:3px 0}
-.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
-.two>div{min-width:0}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* MARKETING */
+.vids{display:flex;gap:14px;overflow-x:auto;padding-bottom:14px}
+.vid{flex:none;width:170px}
+.vid .fr{aspect-ratio:9/16;border-radius:16px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:12px;color:#fff;font-family:var(--f-display);font-weight:800;font-size:17px;line-height:1.08;text-align:center}
+.vid .fr .pl{position:absolute;right:10px;bottom:10px;font-family:var(--f-mono);font-size:10px;font-weight:500;background:rgba(0,0,0,.5);padding:2px 6px;border-radius:5px}
+.vid .cap{margin-top:8px;font-size:13px;color:var(--muted)}
+.vid .cap b{display:block;color:var(--text);font-size:14px}
+.hooks{display:flex;flex-wrap:wrap;gap:10px}
+.hooks span{font-family:var(--f-display);font-weight:600;font-size:16px;padding:9px 14px;border-radius:14px;background:var(--raise);border:1px solid var(--line)}
+.hooks span:nth-child(odd){transform:rotate(-1deg);border-color:rgba(224,71,91,.55)}
+.hooks span:nth-child(even){transform:rotate(1deg);border-color:rgba(123,108,246,.55)}
+.svgbox{border-radius:18px;border:1px solid var(--line);background:var(--raise);padding:12px;overflow-x:auto}
+.svgbox svg{display:block;margin:0 auto;max-width:100%;height:auto}
+
+/* CHECKLIST */
+.check{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:8px}
+.check li{border:1px solid var(--line);border-radius:12px;background:var(--raise)}
+.check label{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;cursor:pointer;font-size:14.5px}
+.check input{margin-top:3px;width:17px;height:17px;accent-color:var(--you);flex:none}
+.check input:checked+span{color:var(--dim);text-decoration:line-through}
+.foot{text-align:center;padding:30px 16px;font-family:var(--f-mono);font-size:12px;color:var(--dim);border-top:1px solid var(--line)}
+.sources{font-size:13.5px;columns:2 320px;column-gap:30px}
+.sources li{break-inside:avoid;margin:4px 0}
 </style>
 
-<div class="sheet">
-  <header class="titleblock">
-    <div class="tb-top">
-      <div>
-        <div class="sub">Side Hustle Planning Manual</div>
-        <h1>Halves<br>Love Reports</h1>
+<!-- shared heart symbol -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="heart" viewBox="-8 -4 116 100">
+      <path d="M50 16 C45 8 37 2 27 2 C13 2 2 12 2 26 C2 45 20 62 50 85 Z" fill="#E0475B" transform="translate(-3 0)"/>
+      <path d="M50 16 C55 8 63 2 73 2 C87 2 98 12 98 26 C98 45 80 62 50 85 Z" fill="#7B6CF6" transform="translate(3 5)"/>
+    </symbol>
+    <symbol id="heartw" viewBox="-8 -4 116 100">
+      <path d="M50 16 C45 8 37 2 27 2 C13 2 2 12 2 26 C2 45 20 62 50 85 Z" fill="#FBF9FB" transform="translate(-3 0)"/>
+      <path d="M50 16 C55 8 63 2 73 2 C87 2 98 12 98 26 C98 45 80 62 50 85 Z" fill="#FBF9FB" fill-opacity=".55" transform="translate(3 5)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="hero">
+  <div class="hl" aria-hidden="true"></div><div class="hr" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="kicker">Side hustle plan · No. 001 · Rev B · 20 Nov 2026</div>
+    <h1>halves</h1>
+    <div class="tag">Find out what they never said.</div>
+    <p class="say">A website that sells small, emotional love reports. Built in 5 days. Runs for about $1–3 a month.</p>
+    <div class="facts">
+      <span>3 paid tests + 1 free</span><span>$3.99–$6.99, one time</span><span>$0 AI cost</span><span>5 build days</span><span>≈ $1–3 / month</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <nav class="toc" aria-label="Contents">
+    <a href="#idea"><b>01</b>The idea</a><a href="#brand"><b>02</b>Brand</a><a href="#journey"><b>03</b>Couple journey</a>
+    <a href="#engine"><b>04</b>The engine</a><a href="#solo"><b>05</b>Solo test</a><a href="#chat"><b>06</b>Chat report</a>
+    <a href="#ai"><b>07</b>AI</a><a href="#money"><b>08</b>Money</a><a href="#tech"><b>09</b>Tech</a>
+    <a href="#days"><b>10</b>5 days</a><a href="#marketing"><b>11</b>Marketing</a><a href="#legal"><b>12</b>Legal</a>
+    <a href="#other"><b>13</b>Other ways</a><a href="#launch"><b>14</b>Launch</a>
+  </nav>
+</div>
+
+<!-- 01 IDEA -->
+<section class="ch" id="idea"><div class="wrap">
+  <div class="ch-head"><div class="ch-num">01</div><div><div class="kicker">The idea in one picture</div><h2>Four doors. One brand.</h2></div></div>
+  <p class="lead">People take a test or upload a chat. They see part of the result free. They pay a small amount to see all of it.</p>
+
+  <div class="g4" style="margin-top:18px">
+    <div class="card" style="border-color:var(--you)">
+      <svg viewBox="0 0 160 90" width="100%" height="90" aria-hidden="true">
+        <rect x="18" y="8" width="40" height="74" rx="8" fill="none" stroke="#E0475B" stroke-width="3"/>
+        <rect x="102" y="8" width="40" height="74" rx="8" fill="none" stroke="#7B6CF6" stroke-width="3"/>
+        <path d="M60 45 H100" stroke="#B8AFC8" stroke-width="2" stroke-dasharray="4 4"/>
+        <use href="#heart" x="68" y="31" width="24" height="22"/>
+      </svg>
+      <div class="kicker" style="margin-top:8px">P1 · flagship</div>
+      <h4>The Unspoken Test</h4>
+      <p>You answer. You send a link. Your partner answers questions built from yours.</p>
+      <div class="row" style="gap:6px"><span class="chip y">$6.99 · both copies</span><span class="chip">5 + 6 min</span></div>
+    </div>
+    <div class="card">
+      <svg viewBox="0 0 160 90" width="100%" height="90" aria-hidden="true">
+        <path d="M80 22 C75 14 67 8 57 8 C43 8 32 18 32 32 C32 51 50 68 80 88 Z" fill="#E0475B"/>
+        <path d="M80 22 C85 14 93 8 103 8 C117 8 128 18 128 32 C128 51 110 68 80 88 Z" fill="none" stroke="#7B6CF6" stroke-width="2.5" stroke-dasharray="5 5" transform="translate(4 4)"/>
+      </svg>
+      <div class="kicker" style="margin-top:8px">P2 · solo</div>
+      <h4>The Missing Half</h4>
+      <p>"Why am I still single?" 24 questions. Your love type and your pattern.</p>
+      <div class="row" style="gap:6px"><span class="chip y">$3.99</span><span class="chip">5 min</span></div>
+    </div>
+    <div class="card">
+      <svg viewBox="0 0 160 90" width="100%" height="90" aria-hidden="true">
+        <rect x="20" y="10" width="78" height="22" rx="11" fill="#E0475B"/>
+        <rect x="62" y="38" width="78" height="22" rx="11" fill="#7B6CF6"/>
+        <rect x="20" y="66" width="52" height="18" rx="9" fill="#E0475B" opacity=".6"/>
+        <circle cx="128" cy="76" r="9" fill="none" stroke="#FBF9FB" stroke-width="2"/>
+        <rect x="122" y="73" width="12" height="10" rx="2" fill="#FBF9FB"/>
+      </svg>
+      <div class="kicker" style="margin-top:8px">P3 · chat</div>
+      <h4>Read Between</h4>
+      <p>Upload a WhatsApp chat. See who cares more, who is pulling away, and red flags.</p>
+      <div class="row" style="gap:6px"><span class="chip y">$5.99</span><span class="chip">2 min</span></div>
+    </div>
+    <div class="card" style="border-color:var(--ok)">
+      <svg viewBox="0 0 160 90" width="100%" height="90" aria-hidden="true">
+        <path d="M80 6 L120 20 V46 C120 66 102 80 80 86 C58 80 40 66 40 46 V20 Z" fill="none" stroke="#5EE0A0" stroke-width="3"/>
+        <path d="M64 46 L76 58 L98 34" fill="none" stroke="#5EE0A0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="kicker" style="margin-top:8px">P0 · free</div>
+      <h4>Is This Safe?</h4>
+      <p>A free safety check, help lines, and a link to online therapy (referral income).</p>
+      <div class="row" style="gap:6px"><span class="chip">FREE</span><span class="chip">3 min</span></div>
+    </div>
+  </div>
+
+  <div class="call note"><span class="lab">NOTE</span><div><p>Launch P1 first. It brings its own users through the partner link. Add P2 and P3 when P1 is complete.</p></div></div>
+
+  <h3 class="sub">Why it can win</h3>
+  <div class="g3">
+    <div class="card"><h4>No install</h4><p>A web link opens from a bio or a DM in 1 tap.</p></div>
+    <div class="card"><h4>Free marketing built in</h4><p>Every couple test brings a second person to the site.</p></div>
+    <div class="card"><h4>Private by design</h4><p>The chat stays on the phone. Competitors upload it.</p></div>
+    <div class="card"><h4>One small price</h4><p>No subscription trap. $3.99–$6.99 is an easy yes.</p></div>
+    <div class="card"><h4>Three tests, one brand</h4><p>Each buyer sees the other two.</p></div>
+    <div class="card"><h4>Better UX</h4><p>One question per screen. Dark, fast, one thumb.</p></div>
+  </div>
+
+  <h3 class="sub">Competitors</h3>
+  <div class="tw"><table>
+    <tr><th>Who</th><th>What they do</th><th>Weak point</th></tr>
+    <tr><td>Decoded, Chat Analyzer &amp; Toxic Test, LoveLog, WhatsAI, Relationship AI</td><td>Upload a chat, get an AI report. Decoded: $3.99 report. Others: weekly subscriptions. (check)</td><td>App install. Subscriptions. Private chats go to a server and an AI.</td></tr>
+    <tr><td>KnowUsBetter, Couple Up, Do We Match</td><td>Both people answer, then compare.</td><td>Same phone or room codes. Light fun. No deep report.</td></tr>
+    <tr><td>Empathi, Breeze</td><td>Couples quiz, report by email.</td><td>Long forms. Generic text.</td></tr>
+    <tr><td>"Ask Brandon"</td><td colspan="2">Not found. Send me the link.</td></tr>
+  </table></div>
+</div></section>
+
+<!-- 02 BRAND -->
+<section class="ch" id="brand"><div class="wrap">
+  <div class="ch-head"><div class="ch-num">02</div><div><div class="kicker">Name and identity</div><h2>Every love has two halves.</h2></div></div>
+  <p class="lead">Most people only hear one. The name explains the two-part test, the single person's missing half, and the two sides of a chat.</p>
+
+  <div class="g2" style="margin-top:18px">
+    <div class="card">
+      <div class="kicker" style="margin-bottom:8px">Names, scored</div>
+      <div class="namebar win"><b>Halves</b><div class="bar"><i style="width:90%"></i></div><span>9/10</span><small>Pick. Short, ownable, explains the product.</small></div>
+      <div class="namebar"><b>Other Half</b><div class="bar"><i style="width:60%"></i></div><span>6/10</span><small>Common phrase. Hard to own.</small></div>
+      <div class="namebar"><b>Softspot</b><div class="bar"><i style="width:60%"></i></div><span>6/10</span><small>Warm, but says nothing about the product.</small></div>
+      <div class="namebar"><b>Heartread</b><div class="bar"><i style="width:50%"></i></div><span>5/10</span><small>Hard to read and to say.</small></div>
+      <div class="namebar"><b>Unsaid</b><div class="bar"><i style="width:40%"></i></div><span>4/10</span><small>Best feeling, but 2 relationship apps use it (2026). Use the word in copy only.</small></div>
+    </div>
+    <div class="card">
+      <div class="kicker" style="margin-bottom:8px">Claim these</div>
+      <p><b>Domains, in order</b></p>
+      <div class="row" style="gap:6px;margin-bottom:12px"><span class="chip t">halves.love</span><span class="chip">gethalves.com</span><span class="chip">halves.app</span><span class="chip">tryhalves.com</span></div>
+      <p><b>Handles</b> (same on Instagram, TikTok, YouTube)</p>
+      <div class="row" style="gap:6px;margin-bottom:12px"><span class="chip y">@halves.test</span><span class="chip">@gethalves</span><span class="chip">@halveslove</span></div>
+      <div class="call caut" style="margin:6px 0 0"><span class="lab">CAUTION</span><div><p>I could not check availability from here. Check on Cloudflare Registrar. Search "Halves" on the USPTO and EUIPO sites before you buy.</p></div></div>
+    </div>
+  </div>
+
+  <h3 class="sub">Logo sheet</h3>
+  <div class="logo-sheet">
+    <div class="ls" style="background:var(--ink)"><div class="art"><svg width="58" height="54"><use href="#heart"/></svg><span class="wm" style="font-size:46px;color:var(--paper)">halves</span></div><div class="lab">Primary · on 2 AM Ink</div></div>
+    <div class="ls paper"><div class="art"><svg width="58" height="54"><use href="#heart"/></svg><span class="wm" style="font-size:46px;color:#1A1424">halves</span></div><div class="lab">Primary · on Paper</div></div>
+    <div class="ls" style="background:linear-gradient(90deg,var(--you) 50%,var(--them) 50%)"><div class="art"><svg width="58" height="54"><use href="#heartw"/></svg><span class="wm" style="font-size:46px;color:#fff">halves</span></div><div class="lab" style="color:#fff">One color · on the split</div></div>
+    <div class="ls" style="background:var(--raise)"><div class="art"><div class="appicon"><svg width="60" height="56"><use href="#heart"/></svg></div></div><div class="lab">App icon · home screen</div></div>
+    <div class="ls" style="background:var(--raise)"><div class="art fav">
+      <div style="width:48px;height:48px"><svg width="34" height="32"><use href="#heart"/></svg></div>
+      <div style="width:32px;height:32px;border-radius:5px"><svg width="22" height="20"><use href="#heart"/></svg></div>
+      <div style="width:20px;height:20px;border-radius:4px"><svg width="14" height="13"><use href="#heart"/></svg></div>
+    </div><div class="lab">Favicon · 48 / 32 / 16</div></div>
+    <div class="ls" style="background:var(--raise)"><div class="art">
+      <svg viewBox="-34 -18 176 124" width="100%" style="max-width:250px" role="img" aria-label="Logo construction: two heart halves with a gap and a drop">
+        <path d="M50 -12 V100" stroke="#8A809B" stroke-width=".7" stroke-dasharray="3 3"/>
+        <path d="M50 16 C45 8 37 2 27 2 C13 2 2 12 2 26 C2 45 20 62 50 85 Z" fill="#E0475B" transform="translate(-3 0)"/>
+        <path d="M50 16 C55 8 63 2 73 2 C87 2 98 12 98 26 C98 45 80 62 50 85 Z" fill="#7B6CF6" transform="translate(3 5)"/>
+        <path d="M47 -6 H53" stroke="#FBF9FB" stroke-width="1"/><text x="56" y="-4" fill="#FBF9FB" font-size="6.5" font-family="IBM Plex Mono, monospace">gap = what is not said</text>
+        <path d="M110 7 V12" stroke="#FBF9FB" stroke-width="1"/><path d="M106 2 H114 M106 7 H114" stroke="#8A809B" stroke-width=".6"/><text x="116" y="12" fill="#FBF9FB" font-size="6.5" font-family="IBM Plex Mono, monospace">drop 5%</text>
+        <text x="-30" y="40" fill="#E0475B" font-size="7" font-family="IBM Plex Mono, monospace">YOU</text>
+        <text x="112" y="50" fill="#7B6CF6" font-size="7" font-family="IBM Plex Mono, monospace">THEM</text>
+      </svg>
+    </div><div class="lab">Construction</div></div>
+  </div>
+  <ul class="dots" style="color:var(--muted);margin-top:12px">
+    <li>The halves do not meet exactly. The gap is what is not said.</li>
+    <li>Red = <span class="you">you</span>. Violet = <span class="them">them</span>. Use this pair in every chart, bar and report.</li>
+  </ul>
+
+  <h3 class="sub">Colors</h3>
+  <div class="g4">
+    <div class="sw"><div class="c" style="background:#E0475B"></div><div class="meta"><b>Raw Heart</b><span>#E0475B · you · buttons</span></div></div>
+    <div class="sw"><div class="c" style="background:#7B6CF6"></div><div class="meta"><b>Cold Lilac</b><span>#7B6CF6 · them</span></div></div>
+    <div class="sw"><div class="c" style="background:#1A1424"></div><div class="meta"><b>2 AM Ink</b><span>#1A1424 · background</span></div></div>
+    <div class="sw"><div class="c" style="background:#F9E3E6"></div><div class="meta"><b>Blush</b><span>#F9E3E6 · soft text</span></div></div>
+    <div class="sw"><div class="c" style="background:#FBF9FB"></div><div class="meta"><b>Paper</b><span>#FBF9FB · light mode</span></div></div>
+  </div>
+  <div class="call note"><span class="lab">NOTE</span><div><p>Use dark mode by default. People take these tests at night in bed. Dark feels like a private late-night chat.</p></div></div>
+
+  <h3 class="sub">Type</h3>
+  <div class="card" style="padding:24px">
+    <div style="font-family:var(--f-display);font-weight:800;font-size:clamp(34px,6vw,60px);line-height:1;letter-spacing:-.03em">They guessed wrong<br><span class="you">4 times.</span></div>
+    <p style="margin-top:14px;font-size:17px;max-width:46ch">Body text in Inter. Short lines. One idea per line. Both fonts are free on Google Fonts.</p>
+    <div class="row" style="gap:6px"><span class="chip">Headlines · Bricolage Grotesque 800</span><span class="chip">Body · Inter 400 / 600</span></div>
+  </div>
+
+  <h3 class="sub">Instagram profile and the share card</h3>
+  <div class="row" style="gap:28px;align-items:flex-start">
+    <div class="phone"><div class="scr" style="gap:10px">
+      <div class="ig-head"><div class="ig-av"><svg width="34" height="32"><use href="#heart"/></svg></div>
+        <div class="ig-stats"><div><b>48</b>posts</div><div><b>—</b>followers</div><div><b>3</b>following</div></div></div>
+      <div><b>halves</b> <span class="m">· @halves.test</span><div class="m" style="color:var(--text)">Find out what they never said 💔<br>Free test ↓ halves.love</div></div>
+      <div class="ig-grid">
+        <div style="background:#7B6CF6">41% in sync</div>
+        <div style="background:#E0475B">The Fortress</div>
+        <div style="background:#1A1424;border:1px solid #3A2F4C">Who loves more?</div>
+        <div style="background:#F9E3E6;color:#1A1424">Send this to them</div>
+        <div style="background:linear-gradient(90deg,#E0475B 50%,#7B6CF6 50%)">½ + ½</div>
+        <div style="background:#2A2138">They guessed wrong 4×</div>
+        <div style="background:#E0475B">Why am I still single?</div>
+        <div style="background:#1A1424;border:1px solid #3A2F4C">Your chat knows.</div>
+        <div style="background:#7B6CF6">Your half is waiting</div>
       </div>
-      <svg width="88" height="80" viewBox="-8 -4 116 100" role="img" aria-label="Halves logo: a heart in two halves that do not meet exactly">
-        <path d="M50 16 C45 8 37 2 27 2 C13 2 2 12 2 26 C2 45 20 62 50 85 Z" fill="var(--you)" transform="translate(-3 0)"/>
-        <path d="M50 16 C55 8 63 2 73 2 C87 2 98 12 98 26 C98 45 80 62 50 85 Z" fill="var(--them)" transform="translate(3 5)"/>
+    </div></div>
+    <div class="story" role="img" aria-label="Instagram Story share card mock">
+      <div class="l"></div><div class="r"></div>
+      <div class="in"><div class="kicker" style="color:#fff">Alex + Sam</div><div class="big">68%</div><div style="font-family:var(--f-display);font-weight:600;font-size:18px">in sync</div><div style="font-family:var(--f-display);font-weight:800;font-size:20px;margin-top:6px">The Slow Burn</div></div>
+      <div class="cta">Take yours → halves.love</div>
+    </div>
+    <div style="flex:1;min-width:240px">
+      <h4 style="font-size:20px;margin-bottom:8px">How the grid works</h4>
+      <ul class="dots" style="color:var(--muted)">
+        <li>Each tile is one big phrase on one brand color.</li>
+        <li>Mix result numbers, love types and questions.</li>
+        <li>The split tile marks a new series.</li>
+        <li>The share card is made in the browser. Size 1080 × 1920.</li>
+        <li>The share card is always the two halves, with the couple's own score.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="sub">Voice</h3>
+  <div class="g3">
+    <div class="poster" style="background:var(--you)">Your other half is waiting.</div>
+    <div class="poster" style="background:var(--them)">Find out what they never said.</div>
+    <div class="poster" style="background:var(--raise);border:1px solid var(--line)">Two halves.<br>One truth.</div>
+  </div>
+  <div class="g2" style="margin-top:14px">
+    <div class="card"><div class="kicker" style="margin-bottom:8px">Use</div><div class="wordcloud use"><span>unsaid</span><span>unspoken</span><span>felt</span><span>seen</span><span>chosen</span><span>safe</span><span>closer</span><span>distance</span><span>half</span><span>guess</span><span>truth</span><span>quiet</span><span>ache</span><span>pattern</span><span>red flag</span></div></div>
+    <div class="card"><div class="kicker" style="margin-bottom:8px">Do not use</div><div class="wordcloud avoid"><span>diagnose</span><span>disorder</span><span>narcissist</span><span>abuser</span><span>scientifically proven</span><span>100% accurate</span><span>therapy</span></div></div>
+  </div>
+  <ul class="dots" style="color:var(--muted);margin-top:12px">
+    <li>Talk to one person. Use "you".</li>
+    <li>Use the partner's <b style="color:var(--text)">name</b>. Never "he", "she", "boyfriend" or "girlfriend". It works for every couple.</li>
+    <li>Name a feeling. Then show a number from their own answers.</li>
+  </ul>
+
+  <h3 class="sub">UX rules</h3>
+  <div class="g4">
+    <div class="card"><h4>1 per screen</h4><p>One question. Big buttons. A tap moves on.</p></div>
+    <div class="card"><h4>Time left</h4><p>"2 min left", not "Q 7/18".</p></div>
+    <div class="card"><h4>Never lose</h4><p>Autosave. Back button on every question.</p></div>
+    <div class="card"><h4>No sign-up</h4><p>Email only to send the report.</p></div>
+    <div class="card"><h4>One thumb</h4><p>All taps in the bottom half of the screen.</p></div>
+    <div class="card"><h4>Under 2 s</h4><p>Loads fast on 4G and cheap phones.</p></div>
+    <div class="card"><h4>No noise</h4><p>No ads. No pop-ups.</p></div>
+    <div class="card"><h4>Fast pay</h4><p>Apple Pay and Google Pay first.</p></div>
+  </div>
+</div></section>
+
+<!-- 03 JOURNEY -->
+<section class="ch" id="journey"><div class="wrap">
+  <div class="ch-head"><div class="ch-num">03</div><div><div class="kicker">Couple test · P1</div><h2>The journey, screen by screen.</h2></div></div>
+  <p class="lead"><span class="you">Alex</span> starts and pays. <span class="them">Sam</span> is the partner and pays nothing. Scroll sideways.</p>
+
+  <div class="call warn"><span class="lab">WARNING</span><div>
+    <p><b>Show the price to Alex before Alex starts.</b> One small line under the start button (screen A1).</p>
+    <p>A price hidden until the end is deceptive under US FTC rules and EU consumer law. It also brings chargebacks, and chargebacks close payment accounts.</p>
+    <p>The pull still works. Sam spent 6 minutes and left a message. Alex pays to read it.</p>
+  </div></div>
+  <div class="call warn"><span class="lab">WARNING</span><div><p><b>Tell Sam where the answers go.</b> Sam sees no price, but Sam ticks: "I am 18+. My answers go into one report that Alex and I both see." (screen B1)</p></div></div>
+
+  <div class="strip" tabindex="0" aria-label="Couple test screens">
+    <div class="shot"><div class="phone"><div class="scr">
+      <svg width="40" height="37"><use href="#heart"/></svg>
+      <div class="t">The Unspoken Test</div>
+      <div class="m">18 questions about you two. Then your partner answers theirs.</div>
+      <div class="in"><small>Your first name</small>Alex</div>
+      <div class="in"><small>Their first name</small>Sam</div>
+      <div class="btn">Start my half</div>
+      <div class="fine">Free to take. Full report $6.99 when you both finish.</div>
+    </div></div><div class="cap"><span class="sid a">A1</span><b>Start.</b> The price line is visible.</div></div>
+
+    <div class="shot"><div class="phone"><div class="scr">
+      <div class="prog"><i style="width:39%"></i></div>
+      <div class="k">3 min left · guess</div>
+      <div class="t" style="font-size:20px">When you two argue, how heard does Sam feel?</div>
+      <div class="opt">Never</div><div class="opt">Rarely</div><div class="opt on">Sometimes</div><div class="opt">Often</div><div class="opt">Always</div>
+      <div class="fine" style="margin-top:auto">← Back</div>
+    </div></div><div class="cap"><span class="sid a">A2</span><b>Questions.</b> 12 about Alex, 6 guesses about Sam.</div></div>
+
+    <div class="shot"><div class="phone"><div class="scr">
+      <div class="k">Your half is done</div>
+      <div class="t">Now send Sam their half.</div>
+      <div style="border-radius:14px;height:150px;position:relative;overflow:hidden">
+        <div style="position:absolute;inset:0 50% 0 0;background:var(--you)"></div><div style="position:absolute;inset:14px 0 -14px 50%;background:var(--them)"></div>
+        <div style="position:relative;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;font-family:var(--f-display);font-weight:800;font-size:19px;line-height:1.1;padding:10px">Sam,<br>your half<br>is waiting.</div>
+      </div>
+      <div class="btn v" style="margin-top:4px">Share to Instagram</div>
+      <div class="btn ghost">Copy link</div>
+      <div class="fine">We email you when Sam finishes.</div>
+    </div></div><div class="cap"><span class="sid a">A4</span><b>Share.</b> A ready Story image and DM text.</div></div>
+
+    <div class="shot"><div class="phone"><div class="scr">
+      <div class="k" style="text-align:center">Instagram · Alex</div>
+      <div class="dm l">are you awake</div>
+      <div class="dm">took a test about us. your turn 👀</div>
+      <div class="lp"><div class="img"><svg width="40" height="37"><use href="#heartw"/></svg></div><div class="tx"><b>Alex took their half.</b>Yours takes 6 min · halves.love</div></div>
+      <div class="dm l">omg ok wait</div>
+    </div></div><div class="cap"><span class="sid a">DM</span><b>The send.</b> The link preview does the selling.</div></div>
+
+    <div class="shot"><div class="phone"><div class="scr">
+      <svg width="40" height="37"><use href="#heart"/></svg>
+      <div class="t">Alex took their half of a test about you two.</div>
+      <div class="m">Your half takes 6 minutes. Then you both get the report.</div>
+      <div class="tick"><i></i><span>I am 18 or older. My answers go into one report that Alex and I can both see.</span></div>
+      <div class="btn v">Take my half</div>
+    </div></div><div class="cap"><span class="sid b">B1</span><b>Invite.</b> Consent, no price.</div></div>
+
+    <div class="shot"><div class="phone"><div class="scr">
+      <div class="prog"><i style="width:72%"></i></div>
+      <div class="k">2 min left · about Alex</div>
+      <div class="t" style="font-size:20px">Alex says they hold things back to avoid a fight. How often do you see it?</div>
+      <div class="opt">Never</div><div class="opt">Sometimes</div><div class="opt onv">Often</div><div class="opt">Always</div>
+      <div class="fine" style="margin-top:auto">Picked for you from Alex's answers</div>
+    </div></div><div class="cap"><span class="sid b">B3</span><b>Built from part 1.</b> Mirror questions + 3 deep ones.</div></div>
+
+    <div class="shot"><div class="phone"><div class="scr">
+      <div class="k">Optional</div>
+      <div class="t" style="font-size:20px">Write one sentence Alex will read.</div>
+      <div class="in" style="min-height:80px;color:var(--blush)">I miss how we used to talk at night.</div>
+      <div class="t" style="font-size:20px;margin-top:8px">Done. Your report is ready.</div>
+      <div class="m">Alex has the key. Tell Alex to open it.</div>
+      <div class="btn ghost" style="margin-top:auto">Email me my copy</div>
+    </div></div><div class="cap"><span class="sid b">B4</span><b>Done.</b> Sam pushes Alex to open it.</div></div>
+
+    <div class="shot"><div class="phone"><div class="scr">
+      <div class="k">Alex + Sam</div>
+      <div class="big">68<small>% in sync</small></div>
+      <div style="font-family:var(--f-display);font-weight:600;color:var(--blush);font-size:16px">The Slow Burn</div>
+      <div class="split"><i style="width:55%"></i><i style="width:45%"></i></div>
+      <div class="card2"><b>Where you meet:</b> you both feel safe being honest.</div>
+      <div class="card2 lock">Sam feels unheard when you argue more than you think.</div>
+      <div class="card2 lock">You guessed wrong on 4 of 6 things Sam needs.</div>
+      <div class="msg">Sam left you a message. 🔒</div>
+      <div class="btn">Unlock for both of you · $6.99</div>
+      <div class="fine">One time · Apple Pay · Google Pay · card</div>
+    </div></div><div class="cap"><span class="sid a">A6</span><b>The money screen.</b> 1 number, 1 name, 1 open card, the locked message.</div></div>
+
+    <div class="shot"><div class="phone"><div class="scr">
+      <div style="display:flex;align-items:center;gap:12px">
+        <svg width="74" height="74" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="40" fill="none" stroke="#2A2138" stroke-width="12"/><circle cx="50" cy="50" r="40" fill="none" stroke="#E0475B" stroke-width="12" stroke-dasharray="170.9 251.3" transform="rotate(-90 50 50)" stroke-linecap="round"/><text x="50" y="57" text-anchor="middle" fill="#F4EFF6" font-size="22" font-weight="800" font-family="Bricolage Grotesque, sans-serif">68</text></svg>
+        <div><div class="k">Your report</div><div style="font-family:var(--f-display);font-weight:800;font-size:18px">The Slow Burn</div></div>
+      </div>
+      <div class="k" style="margin-top:4px">Biggest gap · feeling heard</div>
+      <div style="font-size:12px">Alex thinks Sam feels <b>4/5</b></div><div class="split" style="height:7px"><i style="width:80%"></i><i style="width:20%;background:var(--raise2)"></i></div>
+      <div style="font-size:12px">Sam says <b>2/5</b></div><div class="split" style="height:7px"><i style="width:40%;background:var(--them)"></i><i style="width:60%;background:var(--raise2)"></i></div>
+      <div class="msg" style="margin-top:4px"><span class="k">Sam wrote</span><br>"I miss how we used to talk at night."</div>
+      <div class="card2"><span class="k">Talk tonight</span><br>When did you last feel really listened to?</div>
+    </div></div><div class="cap"><span class="sid a">A7</span><b>Full report.</b> Sam gets a copy too.</div></div>
+  </div>
+
+  <div class="g2" style="margin-top:10px">
+    <div class="card"><h4>Reminder 1</h4><p>Sam did not finish in 24 h → email Alex: "Sam has not taken their half yet. Send a nudge?"</p></div>
+    <div class="card"><h4>Reminder 2</h4><p>Alex did not pay in 24 h → one email: "Your report with Sam is still waiting." Then stop. Max 2 emails.</p></div>
+  </div>
+</div></section>
+
+<!-- 04 ENGINE -->
+<section class="ch" id="engine"><div class="wrap">
+  <div class="ch-head"><div class="ch-num">04</div><div><div class="kicker">How reports are made · no AI</div><h2>The report engine.</h2></div></div>
+  <p class="lead">Rules + written text blocks + their own answers quoted back. The same answers always give the same report. Cost per report: $0.</p>
+
+  <div class="pipe" style="margin-top:18px">
+    <div class="node" style="border-color:var(--you)"><em>STEP 1</em><b>Answers</b><span>1–5 scales, guesses, choices</span></div><div class="arr">→</div>
+    <div class="node"><em>STEP 2</em><b>Scores 0–100</b><span>One per dimension per person</span></div><div class="arr">→</div>
+    <div class="node"><em>STEP 3</em><b>Gaps + guesses</b><span>Where they see things differently</span></div><div class="arr">→</div>
+    <div class="node"><em>STEP 4</em><b>Bands + patterns</b><span>Low, Mid, High · who is higher</span></div><div class="arr">→</div>
+    <div class="node"><em>STEP 5</em><b>Text bank pick</b><span>Pre-written blocks + {names}</span></div><div class="arr">→</div>
+    <div class="node" style="border-color:var(--them)"><em>STEP 6</em><b>Report</b><span>Teaser free · full after payment</span></div>
+  </div>
+
+  <h3 class="sub">Six dimensions</h3>
+  <div class="g3">
+    <div class="dim-card"><div class="top"><b>Feeling heard</b><span class="chip">D1</span></div><div class="q a"><small>ALEX</small>"When we argue, I feel heard." 1–5</div><div class="q b"><small>SAM · MIRROR</small>"How heard do you think Alex feels?"</div></div>
+    <div class="dim-card"><div class="top"><b>Feeling loved</b><span class="chip">D2</span></div><div class="q a"><small>ALEX · GUESS</small>"What does Sam need most from you now?"</div><div class="q b"><small>SAM</small>"What do you need most from Alex now?"</div></div>
+    <div class="dim-card"><div class="top"><b>Safety + trust</b><span class="chip">D3</span></div><div class="q a"><small>ALEX</small>"I feel safe telling Sam when I am hurt."</div><div class="q b"><small>SAM · MIRROR</small>"Alex feels safe telling you when they are hurt."</div></div>
+    <div class="dim-card"><div class="top"><b>Future</b><span class="chip">D4</span></div><div class="q a"><small>ALEX</small>"Where are we in 3 years?" 5 choices</div><div class="q b"><small>SAM</small>Same question.</div></div>
+    <div class="dim-card"><div class="top"><b>Effort balance</b><span class="chip">D5</span></div><div class="q a"><small>ALEX</small>"Who tries harder?" me / Sam / same</div><div class="q b"><small>SAM</small>Same, names swapped.</div></div>
+    <div class="dim-card"><div class="top"><b>Holding back</b><span class="chip">D6</span></div><div class="q a"><small>ALEX</small>"How often do you hold back to avoid a fight?"</div><div class="q b"><small>SAM · MIRROR</small>"How often do you think Alex holds back?"</div></div>
+  </div>
+  <p class="m" style="color:var(--muted);margin-top:10px">D2 choices: more time together · words said out loud · help with life · touch · space · to feel chosen.</p>
+
+  <div class="g2" style="margin-top:18px;align-items:start">
+    <div class="svgbox">
+      <svg viewBox="-24 0 348 300" width="340" role="img" aria-label="Radar chart of six dimensions, Alex vs Sam">
+        <g fill="none" stroke="#3A2F4C" stroke-width="1">
+          <polygon points="150,40 245.3,95 245.3,205 150,260 54.7,205 54.7,95"/>
+          <polygon points="150,67.5 221.4,108.75 221.4,191.25 150,232.5 78.6,191.25 78.6,108.75"/>
+          <polygon points="150,95 197.6,122.5 197.6,177.5 150,205 102.4,177.5 102.4,122.5"/>
+          <polygon points="150,122.5 173.8,136.25 173.8,163.75 150,177.5 126.2,163.75 126.2,136.25"/>
+          <path d="M150 150 L150 40 M150 150 L245.3 95 M150 150 L245.3 205 M150 150 L150 260 M150 150 L54.7 205 M150 150 L54.7 95"/>
+        </g>
+        <polygon points="150,70.8 226.2,106 231.9,197.3 150,216 107.1,174.8 116.7,130.8" fill="#E0475B" fill-opacity=".28" stroke="#E0475B" stroke-width="2.5"/>
+        <polygon points="150,106 220.5,109.3 228.1,195.1 150,218.2 75.7,192.9 94.7,118.1" fill="#7B6CF6" fill-opacity=".28" stroke="#7B6CF6" stroke-width="2.5"/>
+        <g fill="#F4EFF6" font-size="11.5" font-family="Inter, sans-serif" text-anchor="middle">
+          <text x="150" y="26">Heard</text><text x="268" y="84">Loved</text><text x="268" y="222">Safe</text>
+          <text x="150" y="282">Future</text><text x="32" y="222">Effort</text><text x="32" y="84">Holding back</text>
+        </g>
+      </svg>
+      <div class="row" style="justify-content:center;gap:8px;margin-top:6px"><span class="chip y">Alex</span><span class="chip t">Sam</span><span class="chip">example data</span></div>
+    </div>
+    <div>
+      <div class="kicker" style="margin-bottom:8px">Scoring rules</div>
+      <div class="formula">
+<span class="c"># 1. each answer to 0–100</span><br>score = (answer − 1) × 25 &nbsp;<span class="c">(flip reverse items: 100 − score)</span><br>
+<span class="c"># 2. dimension = average of its items</span><br>
+<span class="c"># 3. perception gap</span><br>gap = | Alex self − Sam's mirror of Alex |<br>
+<span class="c"># 4. how well you know them</span><br>guess % = right guesses ÷ all guesses × 100<br>
+<span class="c"># 5. sync score</span><br>sync = 0.6 × (100 − avg difference D1–D6)<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ 0.4 × guess %<br>
+<span class="c"># 6. bands</span><br>Low &lt; 40 · Mid 40–69 · High ≥ 70<br>
+<span class="c"># 7. pattern (difference ≥ 25 = "higher")</span><br>both high · both low · Alex higher · Sam higher
+      </div>
+    </div>
+  </div>
+
+  <div class="call caut"><span class="lab">CAUTION</span><div>
+    <p>Do not use the name "5 Love Languages" or copy its quiz. It is a registered trademark. The publisher forbids copies.</p>
+    <p>Do not copy research scales (for example ECR-R) word for word. Write your own questions from the public ideas.</p>
+  </div></div>
+
+  <h3 class="sub">Six couple types</h3>
+  <div class="g3">
+    <div class="type-card"><svg class="glyph" viewBox="0 0 44 44" aria-hidden="true"><path d="M6 30 Q22 14 38 30" fill="none" stroke="#5EE0A0" stroke-width="3"/><path d="M6 36 H38" stroke="#5EE0A0" stroke-width="3"/></svg><b>The Safe Harbor</b><p>You found each other's quiet place.</p><span class="rule">sync ≥ 75 · no Low dimension</span></div>
+    <div class="type-card"><svg class="glyph" viewBox="0 0 44 44" aria-hidden="true"><path d="M22 6 C30 16 32 22 28 30 C26 36 18 38 14 32 C11 27 15 22 18 20 C18 26 22 26 22 22 C22 16 20 12 22 6 Z" fill="#E0475B"/></svg><b>The Slow Burn</b><p>Strong, but some things wait too long to be said.</p><span class="rule">sync 60–74 · small gaps</span></div>
+    <div class="type-card"><svg class="glyph" viewBox="0 0 44 44" aria-hidden="true"><circle cx="12" cy="22" r="7" fill="#E0475B"/><circle cx="32" cy="22" r="7" fill="#7B6CF6"/><path d="M19 22 H25" stroke="#B8AFC8" stroke-width="2" stroke-dasharray="2 2"/><path d="M36 14 L42 22 L36 30" fill="none" stroke="#7B6CF6" stroke-width="2"/></svg><b>The Chaser and the Runner</b><p>One reaches. One steps back. Both feel alone.</p><span class="rule">effort gap ≥ 25</span></div>
+    <div class="type-card"><svg class="glyph" viewBox="0 0 44 44" aria-hidden="true"><path d="M4 16 H40" stroke="#B8AFC8" stroke-width="2"/><path d="M4 26 Q12 20 22 26 T40 26 M4 34 Q12 28 22 34 T40 34" fill="none" stroke="#7B6CF6" stroke-width="3"/></svg><b>The Quiet Storm</b><p>Calm on top. A lot underneath.</p><span class="rule">both hold back · High</span></div>
+    <div class="type-card"><svg class="glyph" viewBox="0 0 44 44" aria-hidden="true"><path d="M20 6 V38" stroke="#B8AFC8" stroke-width="1.5" stroke-dasharray="3 3"/><path d="M18 14 C10 8 4 14 6 20 C8 26 14 30 18 34 Z" fill="#E0475B"/><path d="M22 14 C30 8 36 14 34 20 C32 26 26 30 22 34 Z" fill="#7B6CF6"/></svg><b>The Mirror</b><p>You know each other by heart.</p><span class="rule">guess ≥ 80%</span></div>
+    <div class="type-card"><svg class="glyph" viewBox="0 0 44 44" aria-hidden="true"><path d="M22 12 C18 6 6 6 6 17 C6 26 16 32 22 38 C28 32 38 26 38 17 C38 6 26 6 22 12 Z" fill="none" stroke="#FFC24B" stroke-width="2.5" stroke-dasharray="4 4"/></svg><b>The Almost</b><p>Close today. Not sure about tomorrow.</p><span class="rule">sync &lt; 60 or future mismatch</span></div>
+  </div>
+
+  <div class="g2" style="margin-top:22px;align-items:start">
+    <div>
+      <h3 class="sub" style="margin-top:0">Report anatomy</h3>
+      <div class="spine">
+        <div class="free">Sync score + couple type <em>FREE</em></div>
+        <div class="free">Where you meet · 1 card <em>FREE</em></div>
+        <div class="paid">Where you miss each other · top 3 gaps <em>PAID</em></div>
+        <div class="paid">What Alex guessed wrong <em>PAID</em></div>
+        <div class="paid">6 dimension cards <em>PAID</em></div>
+        <div class="paid">Messages from each other <em>PAID</em></div>
+        <div class="paid">Talk tonight · 3 questions <em>PAID</em></div>
+        <div class="free">If this hurt to read · help links <em>ALWAYS FREE</em></div>
+      </div>
+    </div>
+    <div>
+      <h3 class="sub" style="margin-top:0">Text bank to write</h3>
+      <div class="hbar"><span style="text-align:left">P1 Couple</span><div class="b"><i style="width:42%;background:var(--you)"></i></div><span>≈ 80 blocks</span></div>
+      <div class="hbar"><span style="text-align:left">P2 Solo</span><div class="b"><i style="width:34%;background:var(--them)"></i></div><span>≈ 65</span></div>
+      <div class="hbar"><span style="text-align:left">P3 Chat</span><div class="b"><i style="width:24%;background:var(--note)"></i></div><span>≈ 45</span></div>
+      <div class="hbar"><span style="text-align:left"><b>Total</b></span><div class="b"><i style="width:100%;background:linear-gradient(90deg,var(--you),var(--them))"></i></div><span>≈ 190</span></div>
+      <p style="color:var(--muted);margin-top:10px">About 10,000 words. Claude drafts them in about 2 sessions. You fix the tone. One JSON file per product.</p>
+      <div class="formula" style="margin-top:10px">{B} gave "feeling heard" {B_val}/5.<br>{A} guessed {A_guess}.<br>This is the biggest gap in your report.</div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 05 SOLO -->
+<section class="ch" id="solo"><div class="wrap">
+  <div class="ch-head"><div class="ch-num">05</div><div><div class="kicker">Solo test · P2</div><h2>One engine. Three hooks.</h2></div></div>
+  <p class="lead">Same 24 questions. Each hook gets its own landing page and its own videos. Only the title and the report intro change.</p>
+  <div class="g3" style="margin-top:16px">
+    <div class="poster" style="background:var(--you);min-height:140px">Why am I still single?</div>
+    <div class="poster" style="background:var(--them);min-height:140px">Why can't I let anyone in?</div>
+    <div class="poster" style="background:var(--raise);border:1px solid var(--line);min-height:140px">Why do I keep choosing the wrong people?</div>
+  </div>
+
+  <h3 class="sub">Five axes</h3>
+  <div class="card">
+    <div class="axis"><b>Fear of being left</b><div class="track"><i style="left:78%"></i></div><small>"If they reply late, I think something is wrong."</small></div>
+    <div class="axis"><b>Fear of being close</b><div class="track"><i style="left:34%"></i></div><small>"When someone gets close, I want to leave."</small></div>
+    <div class="axis"><b>Standards</b><div class="track"><i style="left:55%"></i></div><small>"I lose interest when I find one flaw."</small></div>
+    <div class="axis"><b>Exposure</b><div class="track"><i style="left:22%"></i></div><small>"How many new people did you talk to this month?"</small></div>
+    <div class="axis" style="border-bottom:0"><b>Old wound</b><div class="track"><i style="left:64%"></i></div><small>"I still compare people to one person from my past."</small></div>
+  </div>
+
+  <h3 class="sub">Eight love types</h3>
+  <div class="g4">
+    <div class="type-card"><svg class="glyph" viewBox="0 0 44 44" aria-hidden="true"><path d="M6 38 V12 H12 V18 H18 V12 H26 V18 H32 V12 H38 V38 Z" fill="#7B6CF6"/><path d="M19 38 V28 Q22 24 25 28 V38" fill="#1A1424"/></svg><b>The Fortress</b><p>You keep love out to stay safe.</p><span class="rule">close-fear high</span></div>
+    <div class="type-card"><svg class="glyph" viewBox="0 0 44 44" aria-hidden="true"><path d="M4 22 H34" stroke="#E0475B" stroke-width="4"/><path d="M28 12 L40 22 L28 32" fill="none" stroke="#E0475B" stroke-width="4"/></svg><b>The Chaser</b><p>You give too much, too fast, to the wrong person.</p><span class="rule">left-fear high</span></div>
+    <div class="type-card"><svg class="glyph" viewBox="0 0 44 44" aria-hidden="true"><path d="M10 40 V18 C10 10 16 4 22 4 C28 4 34 10 34 18 V40 L29 35 L22 40 L15 35 Z" fill="#B8AFC8" fill-opacity=".35" stroke="#B8AFC8" stroke-width="2"/><circle cx="18" cy="18" r="2.5" fill="#F4EFF6"/><circle cx="26" cy="18" r="2.5" fill="#F4EFF6"/></svg><b>The Ghost</b><p>You leave before anyone can see you.</p><span class="rule">close-fear high + exposure low</span></div>
+    <div class="type-card"><svg class="glyph" viewBox="0 0 44 44" aria-hidden="true"><path d="M22 4 L38 18 L22 40 L6 18 Z" fill="none" stroke="#7FD1FF" stroke-width="2.5"/><path d="M6 18 H38 M14 18 L22 40 L30 18 M14 18 L22 4 L30 18" fill="none" stroke="#7FD1FF" stroke-width="1.2"/></svg><b>The Perfectionist</b><p>You wait for someone who does not exist.</p><span class="rule">standards high</span></div>
+    <div class="type-card"><svg class="glyph" viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="17" fill="none" stroke="#FFC24B" stroke-width="3"/><path d="M22 11 V22 L30 27" fill="none" stroke="#FFC24B" stroke-width="3" stroke-linecap="round"/></svg><b>The Busy Heart</b><p>Your life is full. No door is left open.</p><span class="rule">exposure low</span></div>
+    <div class="type-card"><svg class="glyph" viewBox="0 0 44 44" aria-hidden="true"><rect x="9" y="20" width="26" height="20" rx="4" fill="#E0475B"/><path d="M15 20 V14 C15 6 29 6 29 14 V20" fill="none" stroke="#E0475B" stroke-width="3.5"/></svg><b>The Keeper</b><p>Your heart is still with someone who left.</p><span class="rule">old wound high</span></div>
+    <div class="type-card"><svg class="glyph" viewBox="0 0 44 44" aria-hidden="true"><path d="M6 30 C12 30 16 26 22 26 C28 26 30 30 38 30 V38 H6 Z" fill="#7B6CF6"/><path d="M22 20 C20 16 14 16 14 20 C14 24 22 28 22 28 C22 28 30 24 30 20 C30 16 24 16 22 20 Z" fill="#E0475B"/></svg><b>The Giver</b><p>You love people who need saving.</p><span class="rule">left-fear high + standards low</span></div>
+    <div class="type-card"><svg class="glyph" viewBox="0 0 44 44" aria-hidden="true"><path d="M22 12 C18 6 6 6 6 17 C6 26 16 32 22 38" fill="none" stroke="#E0475B" stroke-width="3"/><path d="M22 12 C26 6 38 6 38 17 C38 26 28 32 22 38" fill="none" stroke="#7B6CF6" stroke-width="3" stroke-dasharray="3 5"/></svg><b>The Almost</b><p>You get close. Then it quietly stops.</p><span class="rule">no axis above 60</span></div>
+  </div>
+  <div class="row" style="gap:6px;margin-top:14px"><span class="chip">Your type</span><span class="chip">Your 3 patterns</span><span class="chip y">The lie you tell yourself</span><span class="chip">Who you fall for vs who is good for you</span><span class="chip">1 step this week</span><span class="chip t">Your type in a couple → P1</span></div>
+</div></section>
+
+<!-- 06 CHAT -->
+<section class="ch" id="chat"><div class="wrap">
+  <div class="ch-head"><div class="ch-num">06</div><div><div class="kicker">Chat report · P3</div><h2>Your chat never leaves your phone.</h2></div></div>
+  <div class="flow" style="margin-top:16px">
+    <div class="box ph"><h4 class="you">On the phone</h4><ul class="dots" style="color:var(--muted);font-size:14px"><li>Open WhatsApp export (.zip or .txt)</li><li>Read every message</li><li>Count, time, score</li></ul></div>
+    <div class="pipe-l"><b>→</b>only numbers</div>
+    <div class="box sv"><h4 class="them">On the server</h4><ul class="dots" style="color:var(--muted);font-size:14px"><li>Gets numbers only</li><li>Picks text blocks</li><li>Checks payment</li></ul></div>
+    <div class="pipe-l"><b>→</b>report text</div>
+    <div class="box ph"><h4 class="you">On the phone</h4><ul class="dots" style="color:var(--muted);font-size:14px"><li>Shows the report</li><li>Adds example lines from the chat</li><li>Nothing private was sent</li></ul></div>
+  </div>
+
+  <div class="g2" style="margin-top:22px;align-items:start">
+    <div class="phone" style="margin:0 auto"><div class="scr" style="gap:10px">
+      <div class="k">Read Between · Alex + Sam</div>
+      <div style="font-family:var(--f-display);font-weight:800;font-size:18px">Who cares more</div>
+      <div class="split" style="height:14px"><i style="width:39%"></i><i style="width:61%"></i></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px"><span class="you">Alex 39%</span><span class="them">Sam 61%</span></div>
+      <div style="font-family:var(--f-display);font-weight:800;font-size:16px;margin-top:4px">Reply time</div>
+      <div style="font-size:11px">Sam · 4 min</div><div class="split" style="height:7px"><i style="width:8%;background:var(--them)"></i><i style="width:92%;background:var(--raise2)"></i></div>
+      <div style="font-size:11px">Alex · 52 min</div><div class="split" style="height:7px"><i style="width:100%"></i><i style="width:0"></i></div>
+      <div class="lock card2">Is it fading? Your chat is 38% quieter than at the start.</div>
+      <div class="lock card2">Red-flag words: 14 messages.</div>
+      <div class="btn">See the full report · $5.99</div>
+    </div></div>
+    <div>
+      <h4 style="font-size:20px;margin-bottom:10px">Export a WhatsApp chat</h4>
+      <div class="g2" style="gap:10px">
+        <div class="card"><div class="kicker" style="margin-bottom:6px">iPhone</div><ol style="margin:0;padding-left:18px;font-size:14px"><li>Open the chat.</li><li>Tap the name.</li><li>Export Chat → Without Media.</li><li>Save to Files. Pick it on Halves.</li></ol></div>
+        <div class="card"><div class="kicker" style="margin-bottom:6px">Android</div><ol style="margin:0;padding-left:18px;font-size:14px"><li>Open the chat.</li><li>⋮ → More → Export chat.</li><li>Without media.</li><li>Save. Pick it on Halves.</li></ol></div>
+      </div>
+      <div class="svgbox" style="margin-top:12px">
+        <svg viewBox="0 0 320 120" width="320" role="img" aria-label="Messages per week, falling from 140 to about 85">
+          <g stroke="#3A2F4C" stroke-width="1"><path d="M30 20 H310 M30 55 H310 M30 90 H310"/></g>
+          <g fill="#8A809B" font-size="9" font-family="IBM Plex Mono, monospace" text-anchor="end"><text x="25" y="23">150</text><text x="25" y="58">100</text><text x="25" y="93">50</text></g>
+          <polyline fill="none" stroke="#7B6CF6" stroke-width="2.5" points="30,27 58,23 86,30 114,34 142,31 170,40 198,45 226,48 254,52 282,56 310,59"/>
+          <circle cx="310" cy="59" r="4" fill="#E0475B"/>
+          <text x="306" y="78" fill="#F4EFF6" font-size="9.5" font-family="Inter, sans-serif" text-anchor="end">−38% since month 1</text>
+          <text x="30" y="112" fill="#8A809B" font-size="9" font-family="IBM Plex Mono, monospace">messages per week · 11 weeks · example</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <h3 class="sub">What the phone measures</h3>
+  <div class="tw"><table>
+    <tr><th>Measure</th><th>How</th><th>Report line</th></tr>
+    <tr><td>Message share</td><td>Count per person</td><td>"Sam sends 61% of all messages."</td></tr>
+    <tr><td>Who starts</td><td>First message after 6+ h of silence</td><td>"Alex starts 3 of 4 conversations."</td></tr>
+    <tr><td>Reply time</td><td>Median minutes to reply (gaps under 12 h)</td><td>"Sam: 4 min. Alex: 52 min."</td></tr>
+    <tr><td>Effort + interest</td><td>Words per message · messages with "?"</td><td>Who writes more, who asks more</td></tr>
+    <tr><td>Double texts</td><td>2+ messages with no reply for 1 h</td><td>Who waits</td></tr>
+    <tr><td>Warmth + sorry</td><td>Word lists: "love", "miss you", ❤️ · "sorry", "my bad"</td><td>Who says it more</td></tr>
+    <tr><td>Fading</td><td>Messages per week, first 25% vs last 25%</td><td>"38% quieter than at the start."</td></tr>
+    <tr><td>Night talk</td><td>% of messages 23:00–04:00</td><td>Late-night closeness</td></tr>
+    <tr><td>Mood</td><td>VADER sentiment (free, MIT license), per month</td><td>Mood line: you vs them</td></tr>
+    <tr><td>Red-flag words</td><td>Own list: "where were you", "who is that", "you're overreacting", "calm down", "you always", "you never"</td><td>Count + example lines, shown only on the phone</td></tr>
+  </table></div>
+  <div class="call caut"><span class="lab">CAUTION</span><div><ul>
+    <li>iPhone exports a .zip. Unzip in the browser (fflate). Android exports a .txt.</li>
+    <li>Date formats change with phone language. Test 2 iPhones and 2 Androids from different regions.</li>
+    <li>v1 = WhatsApp only. v2 = Telegram + Instagram. iMessage has no export: skip it.</li>
+  </ul></div></div>
+  <div class="call warn"><span class="lab">WARNING</span><div><p>A word list gives signals, not proof. Write "We found 14 messages with controlling words." Never "Your partner is abusive." If the red-flag score is high, show the free safety page before the pay button.</p></div></div>
+</div></section>
+
+<!-- 07 AI -->
+<section class="ch" id="ai"><div class="wrap">
+  <div class="ch-head"><div class="ch-num">07</div><div><div class="kicker">AI decision</div><h2>Launch with no AI.</h2></div></div>
+  <div class="g4" style="margin-top:16px">
+    <div class="card" style="border-color:var(--ok)"><span class="stamp s-ok">Launch with this</span><h4 style="margin-top:12px">A · Rules + text bank</h4><p>Chapters 04–06. $0 per report. No risk.</p></div>
+    <div class="card" style="border-color:var(--caut)"><span class="stamp s-mid">Week 3, if sales</span><h4 style="margin-top:12px">B · AI letter after payment</h4><p>Claude Haiku 5.5 writes a personal closing letter from the scores. ≈ $0.001 per report.</p></div>
+    <div class="card"><span class="stamp s-no">No</span><h4 style="margin-top:12px">C · AI in the browser</h4><p>Free, but a 50–300 MB download on a phone. Slow.</p></div>
+    <div class="card"><span class="stamp s-no">No</span><h4 style="margin-top:12px">D · Free API tiers</h4><p>Low daily limits. Free tiers can use prompts to train. Bad for private data.</p></div>
+  </div>
+  <h3 class="sub">If you add option B</h3>
+  <div class="g4">
+    <div class="card"><div class="kicker">Cap</div><h4>$10 credit</h4><p>Auto-reload OFF. The most you can lose is $10.</p></div>
+    <div class="card"><div class="kicker">When</div><h4>After payment</h4><p>Every AI call is already paid for.</p></div>
+    <div class="card"><div class="kicker">What goes in</div><h4>Scores only</h4><p>Never chats. Never the private messages.</p></div>
+    <div class="card"><div class="kicker">Math</div><h4>≈ 12,000 letters</h4><p>3,000 in + 1,000 out tokens at $0.10 / $0.50 per million.</p></div>
+  </div>
+</div></section>
+
+<!-- 08 MONEY -->
+<section class="ch" id="money"><div class="wrap">
+  <div class="ch-head"><div class="ch-num">08</div><div><div class="kicker">Money</div><h2>Get paid in dollars. Skip the tax work.</h2></div></div>
+  <p class="lead">Use a Merchant of Record (MoR). It sells for you, pays EU VAT and US sales tax, handles refunds and chargebacks, and pays you in USD. A seller outside the EU must charge EU VAT from the first sale.</p>
+
+  <div class="g3" style="margin-top:16px">
+    <div class="prov pick"><div class="hd"><b>Polar</b><span class="stamp s-ok">Pick</span></div><dl><dt>Type</dt><dd>MoR</dd><dt>Fee</dt><dd>5% + $0.50 (check)</dd><dt>Payout</dt><dd>Saudi Arabia listed in its docs (check)</dd></dl></div>
+    <div class="prov"><div class="hd"><b>Paddle</b><span class="stamp s-ok">Backup</span></div><dl><dt>Type</dt><dd>MoR</dd><dt>Fee</dt><dd>5% + $0.50 (check)</dd><dt>Payout</dt><dd>Yes, per a third-party list. Site review first.</dd></dl></div>
+    <div class="prov"><div class="hd"><b>Gumroad</b><span class="stamp s-mid">Emergency</span></div><dl><dt>Type</dt><dd>MoR</dd><dt>Fee</dt><dd>≈ 10% + $0.50 (check)</dd><dt>Payout</dt><dd>Bank in SAR, or PayPal</dd></dl></div>
+    <div class="prov"><div class="hd"><b>Stripe direct</b><span class="stamp s-mid">Only with a company</span></div><dl><dt>Type</dt><dd>Processor</dd><dt>Fee</dt><dd>≈ 2.9% + $0.30 + intl</dd><dt>Note</dt><dd>Needs a US / UK / UAE company. You file VAT yourself.</dd></dl></div>
+    <div class="prov"><div class="hd"><b>Stripe Managed Payments</b><span class="stamp s-mid">Only with Stripe</span></div><dl><dt>Type</dt><dd>MoR on Stripe</dd><dt>Fee</dt><dd>Stripe fee + 3.5%</dd></dl></div>
+    <div class="prov" style="opacity:.75"><div class="hd"><b>Lemon Squeezy</b><span class="stamp s-no">Do not use</span></div><dl><dt>Status</dt><dd>Reported closed to new stores from 16 Nov 2026</dd></dl></div>
+  </div>
+  <div class="call caut"><span class="lab">CAUTION</span><div><ul>
+    <li>Put Terms, Privacy, Refund policy and a real product page live before you apply.</li>
+    <li>Describe it as "digital self-reflection reports". No astrology or psychic words.</li>
+    <li>Apply to Polar and Paddle on the same day. Use the first one that says yes.</li>
+  </ul></div></div>
+
+  <h3 class="sub">Prices and what you keep</h3>
+  <div class="g4">
+    <div class="tagp" style="border-color:var(--you)"><div class="kicker">P1 Couple</div><div class="pr">$6.99</div><div class="keep"><i class="us" style="width:88%"></i><i class="fee" style="width:12%"></i></div><small>keep ≈ $6.14 US · ≈ $4.98 EU</small></div>
+    <div class="tagp"><div class="kicker">P3 Chat</div><div class="pr">$5.99</div><div class="keep"><i class="us" style="width:87%"></i><i class="fee" style="width:13%"></i></div><small>keep ≈ $5.19 US · ≈ $4.19 EU</small></div>
+    <div class="tagp"><div class="kicker">P2 Solo</div><div class="pr">$3.99</div><div class="keep"><i class="us" style="width:82%"></i><i class="fee" style="width:18%"></i></div><small>keep ≈ $3.29 US · ≈ $2.63 EU</small></div>
+    <div class="tagp" style="border-color:var(--them)"><div class="kicker">Bundle · after 1st buy</div><div class="pr">$9.99</div><div class="keep"><i class="us" style="width:90%"></i><i class="fee" style="width:10%"></i></div><small>keep ≈ $8.99 US · ≈ $7.33 EU</small></div>
+  </div>
+  <p style="color:var(--muted);margin-top:8px;font-size:14px"><span style="color:var(--ok)">■</span> you keep (US) &nbsp; <span style="color:var(--warn)">■</span> fee 5% + $0.50 &nbsp;·&nbsp; EU price includes ≈ 20% VAT. Do not go below $3.99: the $0.50 fixed fee eats small prices.</p>
+
+  <h3 class="sub">Funnel calculator · couple test</h3>
+  <div class="card">
+    <form class="calc" id="calc" onsubmit="return false">
+      <label for="c-views">Video views<input id="c-views" type="number" min="0" step="1000" value="50000"></label>
+      <label for="c-click">Click link %<input id="c-click" type="number" min="0" max="100" step="0.1" value="1"></label>
+      <label for="c-start">Start test %<input id="c-start" type="number" min="0" max="100" step="1" value="50"></label>
+      <label for="c-send">Send link %<input id="c-send" type="number" min="0" max="100" step="1" value="60"></label>
+      <label for="c-partner">Partner finishes %<input id="c-partner" type="number" min="0" max="100" step="1" value="65"></label>
+      <label for="c-pay">Pays %<input id="c-pay" type="number" min="0" max="100" step="1" value="35"></label>
+      <label for="c-keep">Keep per sale $<input id="c-keep" type="number" min="0" step="0.01" value="5.6"></label>
+    </form>
+    <div class="funnel" aria-live="polite">
+      <div class="st"><span>Visitors</span><div class="bw"><i id="f1"></i></div><b id="v1">—</b></div>
+      <div class="st"><span>Started</span><div class="bw"><i id="f2"></i></div><b id="v2">—</b></div>
+      <div class="st"><span>Link sent</span><div class="bw"><i id="f3"></i></div><b id="v3">—</b></div>
+      <div class="st"><span>Partner done</span><div class="bw"><i id="f4"></i></div><b id="v4">—</b></div>
+      <div class="st pay"><span>Paid</span><div class="bw"><i id="f5"></i></div><b id="v5">—</b></div>
+    </div>
+    <div class="bigout"><div class="big" id="keep">—</div><span style="color:var(--muted)">you keep from one video like this (est.). Partners are also free new visitors.</span></div>
+  </div>
+
+  <h3 class="sub">Monthly cost</h3>
+  <div class="g4">
+    <div class="card"><div class="kicker">Domain</div><h4>$1–3</h4><p>≈ $10–35 per year</p></div>
+    <div class="card"><div class="kicker">Hosting + DB</div><h4>$0</h4><p>Cloudflare free</p></div>
+    <div class="card"><div class="kicker">Email + analytics</div><h4>$0</h4><p>Resend + PostHog free</p></div>
+    <div class="card"><div class="kicker">Payments</div><h4>per sale</h4><p>Only when you earn</p></div>
+  </div>
+</div></section>
+
+<!-- 09 TECH -->
+<section class="ch" id="tech"><div class="wrap">
+  <div class="ch-head"><div class="ch-num">09</div><div><div class="kicker">Tech build</div><h2>Small, free, fast.</h2></div></div>
+  <div class="svgbox" style="margin-top:16px">
+    <svg viewBox="0 0 760 300" width="760" role="img" aria-label="Architecture: phone talks to Cloudflare Pages and Functions; Functions use D1, Polar and Resend; phone sends events to PostHog">
+      <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#B8AFC8"/></marker></defs>
+      <rect x="20" y="95" width="150" height="110" rx="18" fill="#3A1A26" stroke="#E0475B" stroke-width="2"/>
+      <text x="95" y="130" text-anchor="middle" fill="#F4EFF6" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="17">Phone</text>
+      <text x="95" y="152" text-anchor="middle" fill="#B8AFC8" font-family="Inter, sans-serif" font-size="11.5">React app</text>
+      <text x="95" y="170" text-anchor="middle" fill="#B8AFC8" font-family="Inter, sans-serif" font-size="11.5">chat parser runs here</text>
+      <rect x="260" y="40" width="220" height="220" rx="20" fill="#241F47" stroke="#7B6CF6" stroke-width="2"/>
+      <text x="370" y="68" text-anchor="middle" fill="#B8AFC8" font-family="IBM Plex Mono, monospace" font-size="10.5">CLOUDFLARE · FREE</text>
+      <rect x="282" y="82" width="176" height="56" rx="12" fill="#1A1424" stroke="#3A2F4C"/>
+      <text x="370" y="106" text-anchor="middle" fill="#F4EFF6" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="15">Pages</text>
+      <text x="370" y="124" text-anchor="middle" fill="#B8AFC8" font-family="Inter, sans-serif" font-size="11">the website</text>
+      <rect x="282" y="150" width="176" height="56" rx="12" fill="#1A1424" stroke="#3A2F4C"/>
+      <text x="370" y="174" text-anchor="middle" fill="#F4EFF6" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="15">Functions</text>
+      <text x="370" y="192" text-anchor="middle" fill="#B8AFC8" font-family="Inter, sans-serif" font-size="11">API + report builder</text>
+      <rect x="320" y="216" width="100" height="32" rx="10" fill="#1A1424" stroke="#3A2F4C"/>
+      <text x="370" y="237" text-anchor="middle" fill="#F4EFF6" font-family="Inter, sans-serif" font-size="12">D1 database</text>
+      <path d="M370 206 V216" stroke="#B8AFC8" stroke-width="1.5"/>
+      <rect x="570" y="40" width="170" height="56" rx="14" fill="#211A2D" stroke="#5EE0A0" stroke-width="1.5"/>
+      <text x="655" y="64" text-anchor="middle" fill="#F4EFF6" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="15">Polar</text>
+      <text x="655" y="82" text-anchor="middle" fill="#B8AFC8" font-family="Inter, sans-serif" font-size="11">checkout + webhook</text>
+      <rect x="570" y="122" width="170" height="56" rx="14" fill="#211A2D" stroke="#3A2F4C" stroke-width="1.5"/>
+      <text x="655" y="146" text-anchor="middle" fill="#F4EFF6" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="15">Resend</text>
+      <text x="655" y="164" text-anchor="middle" fill="#B8AFC8" font-family="Inter, sans-serif" font-size="11">emails</text>
+      <rect x="570" y="204" width="170" height="56" rx="14" fill="#211A2D" stroke="#3A2F4C" stroke-width="1.5"/>
+      <text x="655" y="228" text-anchor="middle" fill="#F4EFF6" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="15">PostHog</text>
+      <text x="655" y="246" text-anchor="middle" fill="#B8AFC8" font-family="Inter, sans-serif" font-size="11">funnels</text>
+      <g stroke="#B8AFC8" stroke-width="1.6" fill="none" marker-end="url(#ar)">
+        <path d="M170 130 H280"/><path d="M170 170 H280"/>
+        <path d="M458 165 C510 165 520 70 568 70"/><path d="M568 84 C520 84 512 185 460 185"/>
+        <path d="M458 178 C500 178 530 150 568 150"/>
+        <path d="M95 205 C95 290 520 290 568 240"/>
+      </g>
+      <g fill="#8A809B" font-family="IBM Plex Mono, monospace" font-size="9.5">
+        <text x="225" y="122" text-anchor="middle">pages</text><text x="225" y="186" text-anchor="middle">answers · numbers</text>
+        <text x="520" y="102">pay</text><text x="500" y="132">paid ✓</text><text x="330" y="282">events</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="g2" style="margin-top:16px;align-items:start">
+    <div class="card"><h4>Stack</h4>
+      <div class="row" style="gap:6px;margin-top:8px"><span class="chip y">Vite + React + TS</span><span class="chip t">Cloudflare Pages</span><span class="chip t">Pages Functions</span><span class="chip t">D1</span><span class="chip">Polar</span><span class="chip">Resend</span><span class="chip">PostHog</span><span class="chip">fflate</span><span class="chip">vader-sentiment</span><span class="chip">Canvas → PNG</span></div>
+      <p style="margin-top:10px">You already used Vite for LUNA. Claude Code knows this stack well.</p>
+    </div>
+    <div class="card"><h4>Security rules</h4><ul class="dots" style="color:var(--muted);font-size:14.5px">
+      <li>The server builds the full report. The browser never gets paid text before payment.</li>
+      <li>Random 128-bit tokens, one for each person. No names in URLs.</li>
+      <li>Check the webhook signature every time.</li>
+      <li>Delete test data after 60 days.</li>
+      <li>Limit new tests per IP.</li></ul></div>
+  </div>
+  <div class="call caut"><span class="lab">CAUTION</span><div><p>Do not host on Vercel's free (Hobby) plan. It is for non-commercial use only. Taking payments counts as commercial.</p></div></div>
+
+  <div class="tw"><table>
+    <tr><th>Endpoint</th><th>Does</th></tr>
+    <tr><td class="n">POST /api/test</td><td>New test. Returns Alex's token.</td></tr>
+    <tr><td class="n">POST /api/answers</td><td>Saves answers by token. After Alex finishes, returns Sam's questions.</td></tr>
+    <tr><td class="n">GET /api/report?t=</td><td>Builds the report. Teaser if not paid. Full if paid.</td></tr>
+    <tr><td class="n">POST /api/checkout</td><td>Makes a Polar checkout with the test id.</td></tr>
+    <tr><td class="n">POST /api/webhook</td><td>Checks the signature. Marks paid. Emails both people.</td></tr>
+  </table></div>
+  <p style="color:var(--muted);font-size:14px">Tables: <span class="mono">tests</span> (names, 2 tokens, answers JSON, messages, emails, status, order id, dates) · <span class="mono">chat_reports</span> (token, stats JSON, email, status, order id).</p>
+</div></section>
+
+<!-- 10 DAYS -->
+<section class="ch" id="days"><div class="wrap">
+  <div class="ch-head"><div class="ch-num">10</div><div><div class="kicker">Build schedule</div><h2>Five days. One stranger pays.</h2></div></div>
+  <div class="days" style="margin-top:16px">
+    <div class="day"><div class="dh"><div class="dn">0</div><div><b>Prep</b><span>1–2 h, before you quit</span></div></div>
+      <ul><li>Check and buy the domain.</li><li>Apply to Polar and Paddle.</li><li>Open Instagram, TikTok, YouTube with one handle.</li><li>Post 1 video a day to warm the accounts.</li><li>Open Cloudflare, Resend, PostHog.</li></ul>
+      <div class="done"><b>DONE WHEN</b>Accounts exist. Payment applications sent.</div></div>
+    <div class="day"><div class="dh"><div class="dn">1</div><div><b>Base</b><span>foundation</span></div></div>
+      <ul><li>Vite project with brand colors and fonts.</li><li>Landing page with 3 product tiles.</li><li>Quiz engine: JSON questions, 1 per screen, autosave, back.</li><li>D1 tables. Deploy on the real domain.</li></ul>
+      <div class="done"><b>DONE WHEN</b>You take a sample quiz on your phone, live.</div></div>
+    <div class="day"><div class="dh"><div class="dn">2</div><div><b>Couple test</b><span>P1 flow</span></div></div>
+      <ul><li>Claude drafts 18 + 18 questions. You edit.</li><li>Part A, share screen, Story image, DM text.</li><li>Part B: mirror + deep-question logic.</li><li>Email Alex when Sam finishes. Teaser screen.</li></ul>
+      <div class="done"><b>DONE WHEN</b>You and a friend finish both halves on 2 phones.</div></div>
+    <div class="day"><div class="dh"><div class="dn">3</div><div><b>Money + report</b><span>P1 complete</span></div></div>
+      <ul><li>Polar checkout + webhook.</li><li>Scoring and P1 text bank.</li><li>Full report. Sam's copy. Share card.</li><li>2 reminder emails.</li></ul>
+      <div class="done"><b>DONE WHEN</b>A test payment unlocks both reports.</div></div>
+    <div class="day"><div class="dh"><div class="dn">4</div><div><b>Solo + chat</b><span>P2, P3, P0</span></div></div>
+      <ul><li>P2 on the same engine. 3 landing pages.</li><li>WhatsApp parser in a Web Worker.</li><li>P3 report. P2 + P3 text banks.</li><li>Free safety page.</li></ul>
+      <div class="done"><b>DONE WHEN</b>Your own WhatsApp export gives a correct report.</div></div>
+    <div class="day"><div class="dh"><div class="dn">5</div><div><b>Ship</b><span>launch</span></div></div>
+      <ul><li>Terms, Privacy, Refund, Disclaimer. 18+ gate.</li><li>PostHog funnel per product.</li><li>Test on a cheap Android and an iPhone.</li><li>Record 6 videos from the real app.</li><li>Link in all bios. Post.</li></ul>
+      <div class="done"><b>DONE WHEN</b>A stranger pays.</div></div>
+  </div>
+  <div class="call note"><span class="lab">NOTE</span><div>
+    <p>Start each Claude session with: "Read side-hustles/halves/plan.html. Today is Day N. Do the Day N card."</p>
+    <p>At the usage limit, write question text or make videos. If Day 4 runs late, ship P1 alone on Day 5.</p>
+  </div></div>
+</div></section>
+
+<!-- 11 MARKETING -->
+<section class="ch" id="marketing"><div class="wrap">
+  <div class="ch-head"><div class="ch-num">11</div><div><div class="kicker">Marketing</div><h2>One video. Three apps. Every day.</h2></div></div>
+  <p class="lead">Make one vertical video. Post it on TikTok, Instagram Reels and YouTube Shorts. Post 2 videos a day for 30 days. After 10 posts in one format, keep what works. Stop the rest.</p>
+
+  <h3 class="sub">Five video formats</h3>
+  <div class="vids" tabindex="0" aria-label="Video format examples">
+    <div class="vid"><div class="fr" style="background:linear-gradient(180deg,#2A2138,#1A1424)"><span style="font-size:13px;font-weight:600;color:#B8AFC8;margin-bottom:8px">POV:</span>you made him take the couple test and he guessed wrong 4 times<span class="pl">0:07</span></div><div class="cap"><b>Text-on-screen POV</b>Stock clip + big text + trending sound</div></div>
+    <div class="vid"><div class="fr" style="background:var(--you)"><span class="big" style="font-size:64px">41%</span>in sync.<br>Should I be worried?<span class="pl">0:12</span></div><div class="cap"><b>Result reveal</b>Screen-record the real app</div></div>
+    <div class="vid"><div class="fr" style="background:var(--them)"><span style="font-size:12px;font-weight:600;opacity:.8;margin-bottom:6px">1 / 9</span>8 reasons people stay single.<br>Which one are you?<span class="pl">post</span></div><div class="cap"><b>Type carousel</b>Canva, 1 slide per love type</div></div>
+    <div class="vid"><div class="fr" style="background:#0F2330"><span style="font-size:12px;color:#7FD1FF;margin-bottom:6px">🔊 voiceover</span>5 signs they are losing interest<span class="pl">0:24</span></div><div class="cap"><b>Voiceover list</b>CapCut free text-to-speech</div></div>
+    <div class="vid"><div class="fr" style="background:linear-gradient(90deg,var(--you) 50%,var(--them) 50%)"><span style="background:rgba(19,15,26,.8);padding:10px;border-radius:10px">In 1,000 couples, 64% guessed wrong about this one thing</span><span class="pl">0:15</span></div><div class="cap"><b>Data drop</b>Your own totals, after 500+ tests</div></div>
+  </div>
+
+  <h3 class="sub">Ten hooks</h3>
+  <div class="hooks">
+    <span>They will never tell you this. The test will.</span><span>Send this to your partner. Do not say why.</span><span>You are not single by accident.</span><span>Your chat already knows if they are losing interest.</span><span>Who loves more? Your messages have the answer.</span><span>I made my boyfriend take this. He went quiet.</span><span>The real reason you push people away.</span><span>Is it love, or is it a pattern?</span><span>She answered 18 questions about us. I was not ready.</span><span>If this test hurts, you needed it.</span>
+  </div>
+  <div class="call caut"><span class="lab">CAUTION</span><div><p>Hooks can be emotional. They cannot be false. Say "free test", not just "free", when the full report is paid.</p></div></div>
+
+  <div class="g2" style="margin-top:20px;align-items:center">
+    <div class="svgbox">
+      <svg viewBox="0 0 320 262" width="320" role="img" aria-label="Growth loop: video, Alex takes test, Sam gets link, share card, back to video">
+        <circle cx="160" cy="130" r="100" fill="none" stroke="#3A2F4C" stroke-width="2" stroke-dasharray="5 6"/>
+        <g fill="#B8AFC8"><path d="M0 -6 L10 0 L0 6 Z" transform="translate(230.7 59.3) rotate(45)"/><path d="M0 -6 L10 0 L0 6 Z" transform="translate(230.7 200.7) rotate(135)"/><path d="M0 -6 L10 0 L0 6 Z" transform="translate(89.3 200.7) rotate(225)"/><path d="M0 -6 L10 0 L0 6 Z" transform="translate(89.3 59.3) rotate(315)"/></g>
+        <g font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="14" text-anchor="middle">
+          <rect x="105" y="12" width="110" height="36" rx="12" fill="#211A2D" stroke="#B8AFC8"/><text x="160" y="35" fill="#F4EFF6">Video</text>
+          <rect x="205" y="112" width="110" height="36" rx="12" fill="#3A1A26" stroke="#E0475B"/><text x="260" y="135" fill="#F4EFF6">Alex takes test</text>
+          <rect x="105" y="212" width="110" height="36" rx="12" fill="#241F47" stroke="#7B6CF6"/><text x="160" y="235" fill="#F4EFF6">Sam gets link</text>
+          <rect x="5" y="112" width="110" height="36" rx="12" fill="#211A2D" stroke="#5EE0A0"/><text x="60" y="135" fill="#F4EFF6">Share card</text>
+        </g>
+        <text x="160" y="126" text-anchor="middle" fill="#B8AFC8" font-family="IBM Plex Mono, monospace" font-size="10">every test</text>
+        <text x="160" y="140" text-anchor="middle" fill="#B8AFC8" font-family="IBM Plex Mono, monospace" font-size="10">= 2 new people</text>
       </svg>
     </div>
-    <div class="tb-grid">
-      <div><span>Doc No.</span><b>SH-001</b></div>
-      <div><span>Revision</span><b>REV A</b></div>
-      <div><span>Date</span><b>20 NOV 2026</b></div>
-      <div><span>Build time</span><b>5 DAYS</b></div>
-      <div><span>Fixed cost</span><b>≈ $1–3 / MO</b></div>
-      <div><span>Status</span><b>PLAN ONLY</b></div>
+    <div>
+      <h4 style="font-size:22px;margin-bottom:10px">Three loops are built in</h4>
+      <div class="spine">
+        <div><span><b class="them">Partner link.</b> Every couple test sends a second person to the site.</span></div>
+        <div><span><b style="color:var(--ok)">Share card.</b> "We are 68% in sync" Story with the link.</span></div>
+        <div><span><b class="you">Cross-sell.</b> Sam's last screen: "Take your own test."</span></div>
+      </div>
     </div>
-  </header>
-
-  <div class="inner">
-    <nav class="toc" aria-label="Contents">
-      <a href="#ch00"><span class="c">CH 00</span>How to use this manual</a>
-      <a href="#ch01"><span class="c">CH 01</span>Product summary</a>
-      <a href="#ch02"><span class="c">CH 02</span>Name and identity</a>
-      <a href="#ch03"><span class="c">CH 03</span>Couple test flow</a>
-      <a href="#ch04"><span class="c">CH 04</span>How reports are made</a>
-      <a href="#ch05"><span class="c">CH 05</span>Solo tests</a>
-      <a href="#ch06"><span class="c">CH 06</span>Chat report</a>
-      <a href="#ch07"><span class="c">CH 07</span>AI: yes or no</a>
-      <a href="#ch08"><span class="c">CH 08</span>Money</a>
-      <a href="#ch09"><span class="c">CH 09</span>Tech build</a>
-      <a href="#ch10"><span class="c">CH 10</span>5-day build schedule</a>
-      <a href="#ch11"><span class="c">CH 11</span>Marketing</a>
-      <a href="#ch12"><span class="c">CH 12</span>Legal and safety</a>
-      <a href="#ch13"><span class="c">CH 13</span>Other ways to run it</a>
-      <a href="#ch14"><span class="c">CH 14</span>Launch checklist</a>
-      <a href="#ch15"><span class="c">CH 15</span>Open items and sources</a>
-    </nav>
-
-    <!-- CH 00 -->
-    <section class="ch" id="ch00">
-      <div class="ch-head"><div class="ch-code">CH 00</div><h2>How to use this manual</h2></div>
-      <ol class="steps">
-        <li><div>Read all chapters one time, in order.</div></li>
-        <li><div>Use CH 10 as your daily work list during the build.</div></li>
-        <li><div>Give this manual to Claude Code at the start of each build session. It is the spec.</div></li>
-        <li><div>Do the WARNING items. They are not optional.</div></li>
-      </ol>
-      <div class="tw"><table>
-        <tr><th>Mark</th><th>Meaning</th></tr>
-        <tr><td><span class="pill p-no">WARNING</span></td><td>Risk of harm to people, or risk of legal action.</td></tr>
-        <tr><td><span class="pill p-mid">CAUTION</span></td><td>Risk to money, accounts, data, or the brand.</td></tr>
-        <tr><td><span class="pill" style="color:var(--note);background:var(--note-bg)">NOTE</span></td><td>Useful data.</td></tr>
-        <tr><td class="mono">(est.)</td><td>A guess. Test it with real users.</td></tr>
-        <tr><td class="mono">(check)</td><td>From a third-party website. Confirm it before you use it.</td></tr>
-      </table></div>
-    </section>
-
-    <!-- CH 01 -->
-    <section class="ch" id="ch01">
-      <div class="ch-head"><div class="ch-code">CH 01</div><h2>Product summary</h2></div>
-      <p class="lead">A website that sells short, emotional reports about love. People take a test or upload a chat. They see part of the result free. They pay a small amount to see all of it.</p>
-      <div class="spec">
-        <div>Market</div><div>USA, UK, EU. English only at start.</div>
-        <div>Buyer</div><div>Age 18–34. Uses Instagram and TikTok. In a relationship, or single and asking why.</div>
-        <div>Price</div><div>$3.99 – $6.99. One time. No subscription.</div>
-        <div>Build time</div><div>5 work days with Claude Code.</div>
-        <div>Fixed cost</div><div>About $1–3 per month (domain only). Everything else is free tier or per sale.</div>
-        <div>AI cost</div><div>$0 at launch. Reports come from rules and written text blocks.</div>
-        <div>Main edge</div><div>The two-part couple test. The partner gets questions made from the first person's answers.</div>
-      </div>
-
-      <h3>1.1 Products</h3>
-      <div class="tw"><table>
-        <tr><th>Code</th><th>Name</th><th>User does</th><th>User gets</th><th class="num">Price</th><th class="num">Time</th></tr>
-        <tr><td class="mono">P1</td><td><b>The Unspoken Test</b><br><span class="tag">couples · flagship</span></td><td>Person A answers 18 questions and sends a link. Person B answers 18 questions.</td><td>Couple report: sync score, gaps, wrong guesses, a message from each other, couple type.</td><td class="num">$6.99<br><span class="tag">unlocks both copies</span></td><td class="num">5 + 6 min</td></tr>
-        <tr><td class="mono">P2</td><td><b>The Missing Half</b><br><span class="tag">solo · "why am I single"</span></td><td>Answers 24 questions.</td><td>Love-type report: patterns, the lie you tell yourself, one step for this week.</td><td class="num">$3.99</td><td class="num">5 min</td></tr>
-        <tr><td class="mono">P3</td><td><b>Read Between</b><br><span class="tag">chat report</span></td><td>Uploads a WhatsApp chat export.</td><td>Who cares more, reply speed, "is it fading", red-flag words.</td><td class="num">$5.99</td><td class="num">2 min</td></tr>
-        <tr><td class="mono">P0</td><td><b>Is This Safe?</b><br><span class="tag">free · trust + referral</span></td><td>Answers 12 questions.</td><td>Free safety check, help lines, link to online therapy.</td><td class="num">FREE</td><td class="num">3 min</td></tr>
-      </table></div>
-      <div class="call note"><div class="lab">NOTE</div><div class="body"><p>Launch P1 first. Add P2 and P3 on Day 4 only if P1 is complete. P1 brings its own users through the partner link.</p></div></div>
-
-      <h3>1.2 Competitors</h3>
-      <div class="tw"><table>
-        <tr><th>Who</th><th>What they do</th><th>What they do badly</th></tr>
-        <tr><td>Chat analyzer apps: Decoded, Chat Analyzer &amp; Toxic Test, LoveLog, WhatsAI, Relationship AI</td><td>Upload a chat, get an AI report. Decoded sells a $3.99 report. Others use weekly subscriptions. (check)</td><td>App install. Subscriptions. Many send private chats to a server and an AI.</td></tr>
-        <tr><td>Couple quiz apps: KnowUsBetter, Couple Up, Do We Match, Couples Quiz Game</td><td>Both people answer, then compare.</td><td>Same phone or room codes. Light fun, no deep report. No partner questions made from the first answers.</td></tr>
-        <tr><td>Empathi, Breeze couples quiz</td><td>Couples quiz, report by email.</td><td>Long forms, weak design, generic text.</td></tr>
-        <tr><td>Free form quizzes (Tally, ProProfs, "Am I the problem?")</td><td>Free quizzes.</td><td>Poor UX, no real result.</td></tr>
-        <tr><td>"Ask Brandon"</td><td colspan="2">Not found in search. Send the link. See CH 15.</td></tr>
-      </table></div>
-
-      <h3>1.3 Why this can win</h3>
-      <ul class="tight">
-        <li><b>No install.</b> A web link opens from an Instagram bio or DM in 1 tap.</li>
-        <li><b>The partner link is free marketing.</b> Each couple test brings a second person to the site.</li>
-        <li><b>Private chat analysis.</b> The chat stays on the phone. Competitors cannot say this.</li>
-        <li><b>One small price.</b> No subscription trap. Easy yes at $3.99–$6.99.</li>
-        <li><b>Three products, one brand.</b> One person who buys one report sees the other two.</li>
-      </ul>
-    </section>
-
-    <!-- CH 02 -->
-    <section class="ch" id="ch02">
-      <div class="ch-head"><div class="ch-code">CH 02</div><h2>Name and identity</h2></div>
-
-      <h3>2.1 Name</h3>
-      <p><b>Pick: Halves.</b> Every love has two halves. Most people only hear one. The name explains the two-part test, the single person's "missing half", and the two sides of a chat.</p>
-      <div class="tw"><table>
-        <tr><th>Name</th><th>Feeling</th><th>Problem</th><th class="num">Score</th></tr>
-        <tr><td><b>Halves</b></td><td>Two sides, missing piece, closeness</td><td>Less emotional alone. Fix with taglines.</td><td class="num">9/10</td></tr>
-        <tr><td>Unsaid</td><td>Very strong. Secrets, the words you hold back.</td><td>Two relationship apps named "Unsaid" launched in 2026. One decodes texts. Do not use as brand. Use the word in copy.</td><td class="num">4/10</td></tr>
-        <tr><td>Other Half</td><td>Warm, romantic</td><td>Very common phrase. Hard to own the name and domain.</td><td class="num">6/10</td></tr>
-        <tr><td>Softspot</td><td>Tender, safe</td><td>Does not explain the product.</td><td class="num">6/10</td></tr>
-        <tr><td>Heartread</td><td>Clear meaning</td><td>Hard to read ("heart-tread"). Hard to say out loud.</td><td class="num">5/10</td></tr>
-      </table></div>
-      <p><b>Domains to check, in order:</b> <code>halves.love</code> · <code>gethalves.com</code> · <code>halves.app</code> · <code>tryhalves.com</code> · <code>halvestest.com</code></p>
-      <p><b>Handles:</b> <code>@halves.test</code> · <code>@gethalves</code> · <code>@halveslove</code> (same name on Instagram, TikTok, YouTube).</p>
-      <div class="call caut"><div class="lab">CAUTION</div><div class="body"><p>I could not check domain availability from here. Check on Cloudflare Registrar or Namecheap. Also search "Halves" on the USPTO and EUIPO trademark search before you buy.</p></div></div>
-
-      <h3>2.2 Logo</h3>
-      <div class="brandrow">
-        <div class="logo-box">
-          <svg width="52" height="48" viewBox="-8 -4 116 100" aria-hidden="true"><path d="M50 16 C45 8 37 2 27 2 C13 2 2 12 2 26 C2 45 20 62 50 85 Z" fill="#E0475B" transform="translate(-3 0)"/><path d="M50 16 C55 8 63 2 73 2 C87 2 98 12 98 26 C98 45 80 62 50 85 Z" fill="#7B6CF6" transform="translate(3 5)"/></svg>
-          <span class="wordmark">halves</span>
-        </div>
-        <div class="logo-box dark">
-          <svg width="52" height="48" viewBox="-8 -4 116 100" aria-hidden="true"><path d="M50 16 C45 8 37 2 27 2 C13 2 2 12 2 26 C2 45 20 62 50 85 Z" fill="#E0475B" transform="translate(-3 0)"/><path d="M50 16 C55 8 63 2 73 2 C87 2 98 12 98 26 C98 45 80 62 50 85 Z" fill="#7B6CF6" transform="translate(3 5)"/></svg>
-          <span class="wordmark">halves</span>
-        </div>
-      </div>
-      <ul class="tight">
-        <li>A heart in two halves. The halves do not meet exactly. The gap is what is not said.</li>
-        <li>Red half = <b>you</b>. Violet half = <b>them</b>. Use this pair in every chart and report.</li>
-        <li>App icon and favicon: heart only, no word. Minimum size 24 px.</li>
-        <li>Wordmark: lowercase, Bricolage Grotesque 800.</li>
-      </ul>
-
-      <h3>2.3 Colors</h3>
-      <div class="swatches">
-        <div class="sw"><div class="chip" style="background:#E0475B"></div><div class="meta"><b>Raw Heart</b><span>#E0475B · you, buttons</span></div></div>
-        <div class="sw"><div class="chip" style="background:#7B6CF6"></div><div class="meta"><b>Cold Lilac</b><span>#7B6CF6 · them</span></div></div>
-        <div class="sw"><div class="chip" style="background:#1A1424"></div><div class="meta"><b>2 AM Ink</b><span>#1A1424 · main background</span></div></div>
-        <div class="sw"><div class="chip" style="background:#F9E3E6"></div><div class="meta"><b>Blush</b><span>#F9E3E6 · soft text, cards</span></div></div>
-        <div class="sw"><div class="chip" style="background:#FBF9FB"></div><div class="meta"><b>Paper</b><span>#FBF9FB · light mode</span></div></div>
-      </div>
-      <div class="call note"><div class="lab">NOTE</div><div class="body"><p>Use the dark theme by default. People take these tests at night in bed. Dark looks like a private late-night chat.</p></div></div>
-
-      <h3>2.4 Type</h3>
-      <div class="typespec">
-        <div class="h">They guessed wrong 4 times.</div>
-        <div class="b">Body text in Inter. Short lines. One idea per line. Both fonts are free on Google Fonts.</div>
-        <div class="tag" style="margin-top:8px">HEADLINES: Bricolage Grotesque 800 · BODY: Inter 400/600</div>
-      </div>
-
-      <h3>2.5 Voice</h3>
-      <ul class="tight">
-        <li>Talk to one person. Use "you".</li>
-        <li>Use the partner's <b>name</b>, never "he/she/boyfriend/girlfriend". It works for every couple and feels more personal.</li>
-        <li>Short lines. Soft words, sharp truth.</li>
-        <li>Name a feeling, then show a number from their own answers.</li>
-      </ul>
-      <div class="tw"><table>
-        <tr><th>Use these words</th><th>Do not use</th></tr>
-        <tr><td>unsaid, unspoken, felt, seen, chosen, safe, closer, distance, half, guess, truth, quiet, held, ache, real, pattern, red flag</td><td>diagnose, disorder, narcissist (about a real person), abuser (as a label), "scientifically proven", "100% accurate", therapy (as what we sell)</td></tr>
-      </table></div>
-      <blockquote>Your other half is waiting.</blockquote>
-      <blockquote>Find out what they never said.</blockquote>
-      <blockquote>Two halves. One truth.</blockquote>
-
-      <h3>2.6 UX rules</h3>
-      <div class="two">
-        <ul class="tight">
-          <li>One question per screen. Big answer buttons. Tap moves to the next question.</li>
-          <li>Progress bar with time left: "2 min left".</li>
-          <li>Back button on every question.</li>
-          <li>Answers save automatically. A closed tab loses nothing.</li>
-        </ul>
-        <ul class="tight">
-          <li>No sign-up. Email only to send the report.</li>
-          <li>Works with one thumb. Loads in under 2 s on 4G.</li>
-          <li>No ads. No pop-ups. No cookie wall unless you add ad pixels.</li>
-          <li>Apple Pay and Google Pay on the pay screen.</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- CH 03 -->
-    <section class="ch" id="ch03">
-      <div class="ch-head"><div class="ch-code">CH 03</div><h2>Couple test flow (P1)</h2></div>
-      <p class="lead">In the examples, Alex starts the test and Sam is the partner.</p>
-
-      <div class="call warn"><div class="lab">WARNING</div><div class="body">
-        <p><b>Show the price to Alex before Alex starts.</b> Put one small line under the start button: "Free to take. Full report $6.99 when you both finish."</p>
-        <p>A price hidden until the end is a deceptive practice under US FTC rules ("drip pricing") and EU consumer law. It also brings chargebacks. Chargebacks close payment accounts.</p>
-        <p>The pressure still works. Sam spent 6 minutes. Sam left a message. Alex wants to read it. Alex pays for that, not because of a trick.</p>
-      </div></div>
-      <div class="call warn"><div class="lab">WARNING</div><div class="body">
-        <p><b>Tell Sam where Sam's answers go.</b> Sam does not need to see a price. Sam must tick: "I am 18 or older. My answers go into one report that Alex and I can both see."</p>
-      </div></div>
-
-      <div class="lanes" role="table" aria-label="Couple test flow">
-        <div class="lane-h a">Alex (pays)</div><div class="lane-h b">Sam (partner, free)</div>
-        <div class="cell a"><span class="id">A1</span>Opens link from Instagram. Types own first name and Sam's first name. Sees the price line.</div><div class="cell b empty"></div>
-        <div class="cell a"><span class="id">A2</span>Answers 18 questions (5 min): 12 about self, 6 guesses about Sam.</div><div class="cell b empty"></div>
-        <div class="cell a"><span class="id">A3</span>Writes 1 sentence for Sam (optional). Gives email for the report.</div><div class="cell b empty"></div>
-        <div class="cell a"><span class="id">A4</span>Gets the link, a ready Story image and DM text. Sends it.</div><div class="cell b"><span class="id">B1</span>Opens link: "Alex took their half of a test about you two. Your half takes 6 minutes."</div>
-        <div class="cell a empty"></div><div class="cell b"><span class="id">B2</span>Ticks 18+ and consent box.</div>
-        <div class="cell a empty"></div><div class="cell b"><span class="id">B3</span>Answers 18 questions: 15 mirror questions + 3 deep questions picked from Alex's weakest area.</div>
-        <div class="cell a empty"></div><div class="cell b"><span class="id">B4</span>Writes 1 sentence for Alex (optional). Sees: "Done. Your report is ready. Alex has the key." Can add email for own copy.</div>
-        <div class="cell a"><span class="id">A5</span>Gets email: "Sam finished. Your report is ready."</div><div class="cell b empty"></div>
-        <div class="cell a"><span class="id">A6</span>Sees teaser (mock below). Pays $6.99.</div><div class="cell b empty"></div>
-        <div class="cell a"><span class="id">A7</span>Full report opens.</div><div class="cell b"><span class="id">B5</span>Gets email: "Your report is open." Reads own copy.</div>
-        <div class="cell both"><b>BOTH:</b> Share card "We are 68% in sync" → new visitors. Sam sees "Take your own test" → new buyer.</div>
-      </div>
-
-      <h3>3.1 The money screen (A6)</h3>
-      <div class="mockrow">
-        <div class="phone" aria-label="Mock of teaser screen">
-          <div class="scr">
-            <div class="k">Alex + Sam</div>
-            <div class="big">68<small>% in sync</small></div>
-            <div class="type">The Slow Burn</div>
-            <div class="bar" aria-hidden="true"><i style="width:55%"></i><i style="width:45%"></i></div>
-            <div class="card"><b>Where you meet:</b> You both feel safe being honest. 86/100.</div>
-            <div class="card lock">Sam feels unheard when you argue more than you think.</div>
-            <div class="card lock">You guessed wrong on 4 of 6 things Sam needs.</div>
-            <div class="msg">Sam left you a message. 🔒</div>
-            <button class="pay" type="button" tabindex="-1">Unlock for both of you · $6.99</button>
-            <div class="fine">One time. Apple Pay · Google Pay · card</div>
-          </div>
-        </div>
-        <div class="mocknote">
-          <ol class="steps">
-            <li><div>Show 1 number big: the sync score.</div></li>
-            <li><div>Show 1 name: the couple type.</div></li>
-            <li><div>Open 1 good card. It proves the report is real.</div></li>
-            <li><div>Blur 2+ cards. Write the first words so the topic is clear.</div></li>
-            <li><div>Show "Sam left you a message" if Sam wrote one. This is the strongest pull.</div></li>
-            <li><div>One button. Say "for both of you". Paying feels like a gift, not a fee.</div></li>
-          </ol>
-        </div>
-      </div>
-
-      <h3>3.2 Reminders</h3>
-      <div class="tw"><table>
-        <tr><th>When</th><th>Send to</th><th>Text</th></tr>
-        <tr><td>Sam did not finish in 24 h</td><td>Alex</td><td>"Sam has not taken their half yet. Send a nudge?" + one-tap copy of the link.</td></tr>
-        <tr><td>Alex did not pay in 24 h</td><td>Alex</td><td>"Your report with Sam is still waiting." One time only.</td></tr>
-        <tr><td colspan="3"><b>Maximum 2 emails per test.</b> No more. Spam complaints hurt email delivery.</td></tr>
-      </table></div>
-    </section>
-
-    <!-- CH 04 -->
-    <section class="ch" id="ch04">
-      <div class="ch-head"><div class="ch-code">CH 04</div><h2>How reports are made (no AI)</h2></div>
-      <p class="lead">Rules + a bank of written text blocks + the person's own answers quoted back. Same answers give the same report. Cost per report: $0.</p>
-
-      <h3>4.1 Six dimensions</h3>
-      <div class="tw"><table>
-        <tr><th>Code</th><th>Dimension</th><th>Alex question (example)</th><th>Sam mirror question</th></tr>
-        <tr><td class="mono">D1</td><td>Feeling heard</td><td>"When we argue, I feel heard." (1–5)</td><td>"When you argue, how heard do you think Alex feels?" (1–5)</td></tr>
-        <tr><td class="mono">D2</td><td>Feeling loved</td><td>"What does Sam need most from you now?" (pick 1 of 6)</td><td>"What do you need most from Alex now?" (same 6)</td></tr>
-        <tr><td class="mono">D3</td><td>Safety and trust</td><td>"I feel safe telling Sam when I am hurt." (1–5)</td><td>"Alex feels safe telling you when they are hurt." (1–5)</td></tr>
-        <tr><td class="mono">D4</td><td>Future</td><td>"Where are we in 3 years?" (pick 1 of 5)</td><td>Same question.</td></tr>
-        <tr><td class="mono">D5</td><td>Effort balance</td><td>"Who tries harder?" (me / Sam / same)</td><td>Same question, names swapped.</td></tr>
-        <tr><td class="mono">D6</td><td>Holding back</td><td>"How often do you hold something back to avoid a fight?"</td><td>"How often do you think Alex holds back?" + Sam's own answer.</td></tr>
-      </table></div>
-      <p>The 6 "need" choices for D2: <i>more time together · words said out loud · help with life · touch · space · to feel chosen</i>.</p>
-      <div class="call caut"><div class="lab">CAUTION</div><div class="body">
-        <p>Do not use the name "5 Love Languages" or copy its quiz. It is a registered trademark and the publisher forbids copies.</p>
-        <p>Do not copy research scales (for example ECR-R) word for word. Commercial use is not confirmed. Use the public ideas (attachment, conflict, effort) and write your own questions.</p>
-      </div></div>
-
-      <h3>4.2 Question types</h3>
-      <div class="tw"><table>
-        <tr><th>Type</th><th>Who</th><th>Used for</th></tr>
-        <tr><td>Self scale (1–5)</td><td>Both</td><td>Dimension scores</td></tr>
-        <tr><td>Guess</td><td>Alex guesses Sam's answer</td><td>"How well Alex knows Sam" %</td></tr>
-        <tr><td>Mirror</td><td>Sam rates Alex's side</td><td>Perception gaps</td></tr>
-        <tr><td>Choice (1 of 5–6)</td><td>Both</td><td>Match / no match</td></tr>
-        <tr><td>Deep (3 questions)</td><td>Sam only</td><td>Picked from Alex's lowest dimension. This makes part 2 "built from" part 1.</td></tr>
-        <tr><td>Message (1 sentence)</td><td>Both, optional</td><td>Shown as written. No analysis.</td></tr>
-      </table></div>
-
-      <h3>4.3 Scoring procedure</h3>
-      <ol class="steps">
-        <li><div>Convert each 1–5 answer to 0–100: <code>(answer − 1) × 25</code>. Flip reverse questions: <code>100 − score</code>.</div></li>
-        <li><div>Dimension score per person = average of its questions.</div></li>
-        <li><div>Gap per dimension = <code>|Alex self − Sam's mirror of Alex|</code>. Do the same the other way.</div></li>
-        <li><div>Guess accuracy = <code>correct guesses ÷ all guesses × 100</code>.</div></li>
-        <li><div>Sync score = <code>0.6 × (100 − average difference between Alex and Sam on D1–D6) + 0.4 × guess accuracy</code>. Round to a whole number.</div></li>
-        <li><div>Band each dimension: Low &lt; 40 · Mid 40–69 · High ≥ 70.</div></li>
-        <li><div>Pattern per dimension: <b>both high</b> · <b>both low</b> · <b>Alex higher</b> · <b>Sam higher</b> (difference ≥ 25 counts as "higher").</div></li>
-        <li><div>Pick the couple type from 4.5.</div></li>
-      </ol>
-
-      <h3>4.4 Report sections</h3>
-      <div class="tw"><table>
-        <tr><th class="num">#</th><th>Section</th><th>Made from</th><th>Free / paid</th></tr>
-        <tr><td class="num">1</td><td>Sync score + couple type</td><td>Formula + type table</td><td><span class="pill p-ok">FREE</span></td></tr>
-        <tr><td class="num">2</td><td>Where you meet (2 best dimensions)</td><td>Text bank</td><td><span class="pill p-ok">1 CARD FREE</span></td></tr>
-        <tr><td class="num">3</td><td>Where you miss each other (3 biggest gaps)</td><td>Templates + their own answers</td><td><span class="pill p-mid">PAID</span></td></tr>
-        <tr><td class="num">4</td><td>What Alex guessed wrong</td><td>Guess answers side by side</td><td><span class="pill p-mid">PAID</span></td></tr>
-        <tr><td class="num">5</td><td>6 dimension cards</td><td>Text bank: 6 dims × 4 patterns × 2 versions</td><td><span class="pill p-mid">PAID</span></td></tr>
-        <tr><td class="num">6</td><td>Messages from each other</td><td>Raw text</td><td><span class="pill p-mid">PAID</span></td></tr>
-        <tr><td class="num">7</td><td>Talk tonight: 3 questions to ask</td><td>Prompt bank, picked from weakest dimensions</td><td><span class="pill p-mid">PAID</span></td></tr>
-        <tr><td class="num">8</td><td>If this hurt to read: help links</td><td>Fixed text</td><td><span class="pill p-ok">ALWAYS FREE ON SITE</span></td></tr>
-      </table></div>
-      <p><b>Template example (section 3):</b></p>
-      <blockquote style="font-family:var(--f-mono);font-weight:400;font-size:14px">{B} gave "feeling heard when you argue" {B_val} out of 5. {A} guessed {A_guess}. This is the biggest gap in your report.</blockquote>
-      <p>Quoting their own answers makes the report feel personal. It is also honest: every line comes from what they said.</p>
-
-      <h3>4.5 Couple types</h3>
-      <div class="tw"><table>
-        <tr><th>Type</th><th>Rule</th><th>One line</th></tr>
-        <tr><td><b>The Safe Harbor</b></td><td>Sync ≥ 75, no dimension Low</td><td>You found each other's quiet place.</td></tr>
-        <tr><td><b>The Slow Burn</b></td><td>Sync 60–74, gaps small</td><td>Strong, but some things wait too long to be said.</td></tr>
-        <tr><td><b>The Chaser and the Runner</b></td><td>D5 effort gap ≥ 25</td><td>One reaches. One steps back. Both feel alone.</td></tr>
-        <tr><td><b>The Quiet Storm</b></td><td>D6 holding back High for both</td><td>Calm on top. A lot underneath.</td></tr>
-        <tr><td><b>The Mirror</b></td><td>Guess accuracy ≥ 80</td><td>You know each other by heart.</td></tr>
-        <tr><td><b>The Almost</b></td><td>Sync &lt; 60, or D4 future mismatch</td><td>Close today. Not sure about tomorrow.</td></tr>
-      </table></div>
-
-      <h3>4.6 Text bank size</h3>
-      <div class="tw"><table>
-        <tr><th>Product</th><th class="num">Blocks</th><th class="num">≈ Words</th></tr>
-        <tr><td>P1 Couple</td><td class="num">≈ 80</td><td class="num">4,500</td></tr>
-        <tr><td>P2 Solo</td><td class="num">≈ 65</td><td class="num">3,500</td></tr>
-        <tr><td>P3 Chat</td><td class="num">≈ 45</td><td class="num">2,200</td></tr>
-        <tr><td><b>Total</b></td><td class="num"><b>≈ 190</b></td><td class="num"><b>≈ 10,200</b></td></tr>
-      </table></div>
-      <p>Claude drafts all blocks in about 2 sessions. You read each one and fix the tone. Store them in one JSON file per product.</p>
-    </section>
-
-    <!-- CH 05 -->
-    <section class="ch" id="ch05">
-      <div class="ch-head"><div class="ch-code">CH 05</div><h2>Solo tests (P2)</h2></div>
-      <p class="lead">One engine, three hooks. Each hook gets its own landing page and video. The questions are the same. Only the title and the report intro change.</p>
-      <div class="tw"><table>
-        <tr><th>Hook (landing page title)</th><th>For</th></tr>
-        <tr><td>Why am I still single?</td><td>Single, dating, frustrated</td></tr>
-        <tr><td>Why can't I let anyone in?</td><td>Single or in a relationship, feels distance</td></tr>
-        <tr><td>Why do I keep choosing the wrong people?</td><td>Repeat heartbreak</td></tr>
-      </table></div>
-
-      <h3>5.1 Five axes (24 questions, about 5 each)</h3>
-      <div class="tw"><table>
-        <tr><th>Axis</th><th>Measures</th><th>Example question</th></tr>
-        <tr><td>Fear of being left</td><td>Worry, need for reassurance</td><td>"If they reply late, I think something is wrong."</td></tr>
-        <tr><td>Fear of being close</td><td>Pulling away, need for space</td><td>"When someone gets close, I want to leave."</td></tr>
-        <tr><td>Standards</td><td>How hard it is to say yes</td><td>"I lose interest when I find one flaw."</td></tr>
-        <tr><td>Exposure</td><td>How often you meet new people</td><td>"In the last month, how many new people did you talk to?"</td></tr>
-        <tr><td>Old wound</td><td>Past hurt still active</td><td>"I still compare people to one person from my past."</td></tr>
-      </table></div>
-
-      <h3>5.2 Eight love types</h3>
-      <div class="tw"><table>
-        <tr><th>Type</th><th>Rule (top axes)</th><th>The truth line</th></tr>
-        <tr><td><b>The Fortress</b></td><td>Close-fear high</td><td>You keep love out to stay safe.</td></tr>
-        <tr><td><b>The Chaser</b></td><td>Left-fear high</td><td>You give too much, too fast, to the wrong person.</td></tr>
-        <tr><td><b>The Ghost</b></td><td>Close-fear high + Exposure low</td><td>You leave before anyone can see you.</td></tr>
-        <tr><td><b>The Perfectionist</b></td><td>Standards high</td><td>You wait for someone who does not exist.</td></tr>
-        <tr><td><b>The Busy Heart</b></td><td>Exposure low, others mid</td><td>Your life is full. There is no door left open.</td></tr>
-        <tr><td><b>The Keeper</b></td><td>Old wound high</td><td>Your heart is still with someone who left.</td></tr>
-        <tr><td><b>The Giver</b></td><td>Left-fear high + Standards low</td><td>You love people who need saving.</td></tr>
-        <tr><td><b>The Almost</b></td><td>No axis above 60</td><td>You get close. Then it quietly stops.</td></tr>
-      </table></div>
-      <p><b>Report sections:</b> your type · your 3 patterns · the lie you tell yourself · who you fall for vs who is good for you · 1 step for this week · your type in a couple (link to P1).</p>
-    </section>
-
-    <!-- CH 06 -->
-    <section class="ch" id="ch06">
-      <div class="ch-head"><div class="ch-code">CH 06</div><h2>Chat report (P3)</h2></div>
-      <p class="lead">The phone reads the chat. Only numbers go to the server. The server sends back the report text. The page adds example lines from the chat on the phone.</p>
-      <blockquote>Your chat never leaves your phone.</blockquote>
-
-      <h3>6.1 User steps: export a WhatsApp chat</h3>
-      <div class="two">
-        <div><b>iPhone</b><ol class="steps"><li><div>Open the chat.</div></li><li><div>Tap the contact name.</div></li><li><div>Tap <b>Export Chat</b> → <b>Without Media</b>.</div></li><li><div>Save to Files. Pick the file on Halves.</div></li></ol></div>
-        <div><b>Android</b><ol class="steps"><li><div>Open the chat.</div></li><li><div>Tap ⋮ → <b>More</b> → <b>Export chat</b>.</div></li><li><div>Tap <b>Without media</b>.</div></li><li><div>Save the file. Pick it on Halves.</div></li></ol></div>
-      </div>
-      <div class="call caut"><div class="lab">CAUTION</div><div class="body"><ul>
-        <li>iPhone exports a <code>.zip</code>. Unzip it in the browser (fflate library). Android exports a <code>.txt</code>.</li>
-        <li>The date format changes with phone language and region. Test with exports from 2 iPhones and 2 Androids in different regions.</li>
-        <li>v1 = WhatsApp only. v2 = Telegram and Instagram (JSON). iMessage has no export. Do not support it.</li>
-        <li>Group chat: ask the user to pick 2 names.</li>
-      </ul></div></div>
-
-      <h3>6.2 Measurements</h3>
-      <div class="tw"><table>
-        <tr><th>Measure</th><th>How</th><th>Report says</th></tr>
-        <tr><td>Message share</td><td>Count per person</td><td>"Sam sends 61% of all messages."</td></tr>
-        <tr><td>Who starts</td><td>First message after 6+ h of silence</td><td>"Alex starts 3 of 4 conversations."</td></tr>
-        <tr><td>Reply speed</td><td>Median minutes to reply (gaps under 12 h)</td><td>"Sam replies in 4 min. Alex in 52 min."</td></tr>
-        <tr><td>Effort</td><td>Average words per message</td><td>Long vs short messages</td></tr>
-        <tr><td>Interest</td><td>Messages with a question mark</td><td>Who asks about the other</td></tr>
-        <tr><td>Double texts</td><td>2+ messages with no reply for 1 h</td><td>Who waits</td></tr>
-        <tr><td>Warmth</td><td>Word list: love, miss you, ❤️, babe …</td><td>Who says it more</td></tr>
-        <tr><td>Sorry</td><td>"sorry", "my bad", "I apologize"</td><td>Who says sorry more</td></tr>
-        <tr><td>Fading</td><td>Messages per week, first 25% vs last 25% of time</td><td>"Your chat is 38% quieter than at the start."</td></tr>
-        <tr><td>Night talk</td><td>% of messages 23:00–04:00</td><td>Late-night closeness</td></tr>
-        <tr><td>Mood</td><td>VADER sentiment (free JS, MIT license) per month</td><td>Mood line chart, you vs them</td></tr>
-        <tr><td>Red-flag words</td><td>Your own word list: "where were you", "who is that", "you're overreacting", "calm down", "you always", "you never"</td><td>Count + example lines (shown only on the phone)</td></tr>
-      </table></div>
-
-      <h3>6.3 Scores</h3>
-      <ul class="tight">
-        <li><b>Interest balance</b> 0–100. 50 = equal. Shown free as a red/violet bar.</li>
-        <li><b>Fading meter</b>, <b>Warmth</b>, <b>Red-flag meter</b>: paid.</li>
-      </ul>
-      <div class="call warn"><div class="lab">WARNING</div><div class="body">
-        <p>A word list gives signals, not proof. Write "We found 14 messages with controlling words." Do not write "Your partner is abusive."</p>
-        <p>If the red-flag meter is high, show the free safety page link before the pay button.</p>
-      </div></div>
-    </section>
-
-    <!-- CH 07 -->
-    <section class="ch" id="ch07">
-      <div class="ch-head"><div class="ch-code">CH 07</div><h2>AI: yes or no</h2></div>
-      <div class="tw"><table>
-        <tr><th>Option</th><th>Cost</th><th>Risk</th><th>Verdict</th></tr>
-        <tr><td><b>A. No AI.</b> Rules + text bank (CH 04–06)</td><td class="num">$0</td><td>None</td><td><span class="pill p-ok">LAUNCH WITH THIS</span></td></tr>
-        <tr><td><b>B. Short AI letter after payment.</b> Claude Haiku 5.5 writes a personal closing letter from the scores.</td><td class="num">≈ $0.001 / report</td><td>Max loss = prepaid credit</td><td><span class="pill p-mid">ADD IN WEEK 3 IF SALES</span></td></tr>
-        <tr><td><b>C. AI in the browser</b> (transformers.js)</td><td class="num">$0</td><td>50–300 MB download on the phone. Slow.</td><td><span class="pill p-no">NO</span></td></tr>
-        <tr><td><b>D. Free API tiers</b> (for example Gemini free)</td><td class="num">$0</td><td>Low daily limits. Free tiers can use prompts to improve models. Bad for private data.</td><td><span class="pill p-no">NO</span></td></tr>
-      </table></div>
-      <h3>Option B procedure (later)</h3>
-      <ol class="steps">
-        <li><div>Buy $10 of API credit. Turn auto-reload OFF. Now the most you can lose is $10.</div></li>
-        <li><div>Call the AI only after the payment webhook says "paid". Every AI call is already paid for.</div></li>
-        <li><div>Send scores and multiple-choice answers only. Never send chats or the free-text messages.</div></li>
-        <li><div>Math: 3,000 input + 1,000 output tokens at $0.10 / $0.50 per million ≈ $0.0008. $10 ≈ 12,000 letters.</div></li>
-      </ol>
-    </section>
-
-    <!-- CH 08 -->
-    <section class="ch" id="ch08">
-      <div class="ch-head"><div class="ch-code">CH 08</div><h2>Money</h2></div>
-
-      <h3>8.1 Payment provider</h3>
-      <p>Use a <b>Merchant of Record (MoR)</b>. The MoR sells to the customer for you. It collects and pays EU VAT and US sales tax, handles refunds and chargebacks, and pays you in USD. A seller outside the EU must charge EU VAT from the first sale. An MoR removes this work.</p>
-      <div class="tw"><table>
-        <tr><th>Provider</th><th>Type</th><th>Fee (check)</th><th>Pays out to Saudi Arabia (check)</th><th>Verdict</th></tr>
-        <tr><td><b>Polar</b></td><td>MoR</td><td>5% + $0.50 (Starter)</td><td>Listed in Polar docs</td><td><span class="pill p-ok">PICK</span></td></tr>
-        <tr><td><b>Paddle</b></td><td>MoR</td><td>5% + $0.50</td><td>Yes, per a third-party list</td><td><span class="pill p-ok">BACKUP · apply Day 0</span></td></tr>
-        <tr><td><b>Gumroad</b></td><td>MoR</td><td>≈ 10% + $0.50</td><td>Yes (bank in SAR, or PayPal)</td><td><span class="pill p-mid">EMERGENCY ONLY</span></td></tr>
-        <tr><td>Stripe direct</td><td>Processor</td><td>≈ 2.9% + $0.30 + intl fees</td><td>Most sources say no for Saudi-registered businesses</td><td><span class="pill p-mid">ONLY WITH A US/UK/UAE COMPANY</span><br><span class="tag">you file VAT yourself</span></td></tr>
-        <tr><td>Stripe Managed Payments</td><td>MoR on Stripe</td><td>Stripe fee + 3.5%</td><td>Needs a Stripe account</td><td><span class="pill p-mid">ONLY IF YOU HAVE STRIPE</span></td></tr>
-        <tr><td>Lemon Squeezy</td><td>MoR</td><td>—</td><td>—</td><td><span class="pill p-no">DO NOT USE</span><br><span class="tag">reported closed to new stores 16 Nov 2026</span></td></tr>
-      </table></div>
-      <div class="call caut"><div class="lab">CAUTION</div><div class="body"><ul>
-        <li>An MoR reviews your site before approval. Put Terms, Privacy, Refund policy and a real product page live first.</li>
-        <li>Describe the product as "digital self-reflection reports". Do not use astrology, psychic or "fortune" words. Some MoRs reject those.</li>
-        <li>Apply to Polar and Paddle on the same day. Use the first one that approves.</li>
-      </ul></div></div>
-
-      <h3>8.2 Prices and what you keep (est.)</h3>
-      <div class="tw"><table>
-        <tr><th>Product</th><th class="num">Price</th><th class="num">MoR fee (5% + $0.50)</th><th class="num">Keep, US buyer</th><th class="num">Keep, EU buyer (≈20% VAT inside price)</th></tr>
-        <tr><td>P1 Couple</td><td class="num">$6.99</td><td class="num">$0.85</td><td class="num">≈ $6.14</td><td class="num">≈ $4.98</td></tr>
-        <tr><td>P3 Chat</td><td class="num">$5.99</td><td class="num">$0.80</td><td class="num">≈ $5.19</td><td class="num">≈ $4.19</td></tr>
-        <tr><td>P2 Solo</td><td class="num">$3.99</td><td class="num">$0.70</td><td class="num">≈ $3.29</td><td class="num">≈ $2.63</td></tr>
-        <tr><td>Bundle (after first buy)</td><td class="num">$9.99</td><td class="num">$1.00</td><td class="num">≈ $8.99</td><td class="num">≈ $7.33</td></tr>
-      </table></div>
-      <div class="call note"><div class="lab">NOTE</div><div class="body"><p>The $0.50 fixed fee hurts small prices most. Do not go below $3.99.</p></div></div>
-
-      <h3>8.3 Funnel calculator (P1)</h3>
-      <p>All numbers are guesses (est.). Change them after the first 100 tests.</p>
-      <form class="calc" id="calc" onsubmit="return false">
-        <label for="c-views">Video views<input id="c-views" type="number" min="0" step="1000" value="50000"></label>
-        <label for="c-click">Click link %<input id="c-click" type="number" min="0" max="100" step="0.1" value="1"></label>
-        <label for="c-start">Start test %<input id="c-start" type="number" min="0" max="100" step="1" value="50"></label>
-        <label for="c-send">Send link %<input id="c-send" type="number" min="0" max="100" step="1" value="60"></label>
-        <label for="c-partner">Partner finishes %<input id="c-partner" type="number" min="0" max="100" step="1" value="65"></label>
-        <label for="c-pay">Pays %<input id="c-pay" type="number" min="0" max="100" step="1" value="35"></label>
-        <label for="c-keep">Keep per sale $<input id="c-keep" type="number" min="0" step="0.01" value="5.6"></label>
-      </form>
-      <div class="calc-out" aria-live="polite">
-        <div><span>Tests started</span><b id="o-start">—</b></div>
-        <div><span>Partners reached</span><b id="o-partner">—</b></div>
-        <div><span>Sales</span><b id="o-sales">—</b></div>
-        <div><span>You keep</span><b id="o-keep">—</b></div>
-      </div>
-      <p class="tag" style="margin-top:6px">Partners reached are also new visitors. They are not in the sales number. They are free marketing.</p>
-
-      <h3>8.4 Monthly cost</h3>
-      <div class="tw"><table>
-        <tr><th>Item</th><th class="num">Cost</th></tr>
-        <tr><td>Domain (≈ $10–35 per year)</td><td class="num">$1–3</td></tr>
-        <tr><td>Hosting, server, database (Cloudflare free)</td><td class="num">$0</td></tr>
-        <tr><td>Email (Resend free: 3,000 per month)</td><td class="num">$0</td></tr>
-        <tr><td>Analytics (PostHog free)</td><td class="num">$0</td></tr>
-        <tr><td>Payments</td><td class="num">per sale only</td></tr>
-        <tr><td><b>Total</b></td><td class="num"><b>≈ $1–3</b></td></tr>
-      </table></div>
-    </section>
-
-    <!-- CH 09 -->
-    <section class="ch" id="ch09">
-      <div class="ch-head"><div class="ch-code">CH 09</div><h2>Tech build</h2></div>
-      <h3>9.1 Stack</h3>
-      <div class="tw"><table>
-        <tr><th>Part</th><th>Pick</th><th>Why</th></tr>
-        <tr><td>Front end</td><td>Vite + React + TypeScript</td><td>You already used Vite for LUNA. Claude Code knows it well.</td></tr>
-        <tr><td>Hosting</td><td>Cloudflare Pages</td><td>Free plan allows commercial use. Fast everywhere.</td></tr>
-        <tr><td>Server code</td><td>Cloudflare Pages Functions</td><td>Same project. Free daily quota.</td></tr>
-        <tr><td>Database</td><td>Cloudflare D1 (SQLite)</td><td>Same project. Free tier.</td></tr>
-        <tr><td>Email</td><td>Resend</td><td>Free 3,000 per month.</td></tr>
-        <tr><td>Payments</td><td>Polar checkout + webhook</td><td>See CH 08.</td></tr>
-        <tr><td>Analytics</td><td>PostHog (funnels) + Cloudflare Web Analytics</td><td>See where people stop.</td></tr>
-        <tr><td>Share images</td><td>Canvas in browser → PNG 1080×1920</td><td>Instagram Story size. $0.</td></tr>
-        <tr><td>Chat parsing</td><td>Web Worker + fflate (unzip) + vader-sentiment</td><td>Runs on the phone. Free libraries.</td></tr>
-      </table></div>
-      <div class="call caut"><div class="lab">CAUTION</div><div class="body"><p>Do not host on Vercel's free (Hobby) plan. It is for non-commercial use only. Taking payments counts as commercial.</p></div></div>
-
-      <h3>9.2 Data</h3>
-      <div class="tw"><table>
-        <tr><th>Table</th><th>Fields</th></tr>
-        <tr><td class="mono">tests</td><td>id, product, a_name, b_name, a_token, b_token, a_answers (JSON), b_answers (JSON), a_message, b_message, a_email, b_email, status (a_done / b_done / paid), order_id, created_at, paid_at</td></tr>
-        <tr><td class="mono">chat_reports</td><td>id, token, stats (JSON, numbers only), email, status, order_id, created_at</td></tr>
-        <tr><td class="mono">events</td><td>Use PostHog. Do not build your own.</td></tr>
-      </table></div>
-
-      <h3>9.3 Endpoints</h3>
-      <div class="tw"><table>
-        <tr><th>Call</th><th>Does</th></tr>
-        <tr><td class="mono">POST /api/test</td><td>Make a new test. Return A token.</td></tr>
-        <tr><td class="mono">POST /api/answers</td><td>Save answers for A or B (by token). Return B questions after A finishes.</td></tr>
-        <tr><td class="mono">GET /api/report?t=</td><td>Build report on the server. Return teaser if not paid. Return full if paid.</td></tr>
-        <tr><td class="mono">POST /api/checkout</td><td>Make a Polar checkout. Put test id in metadata.</td></tr>
-        <tr><td class="mono">POST /api/webhook</td><td>Check signature. Mark paid. Email both people.</td></tr>
-      </table></div>
-
-      <h3>9.4 Security rules</h3>
-      <ul class="tight">
-        <li>Build the full report text on the server only. The browser never gets paid text before payment.</li>
-        <li>Tokens: 128-bit random. One for A, one for B. Never put names in URLs.</li>
-        <li>Check the webhook signature on every call.</li>
-        <li>Delete test data 60 days after creation. Say so in the privacy page.</li>
-        <li>Rate-limit test creation per IP.</li>
-      </ul>
-    </section>
-
-    <!-- CH 10 -->
-    <section class="ch" id="ch10">
-      <div class="ch-head"><div class="ch-code">CH 10</div><h2>5-day build schedule</h2></div>
-      <div class="days">
-        <div class="day"><div class="dh"><b>Day 0 · prep</b><span>1–2 h, before you quit</span></div>
-          <ul><li>Check and buy the domain.</li><li>Apply to Polar and Paddle.</li><li>Open Instagram, TikTok, YouTube with the same handle.</li><li>Post 1 short video per day to warm the accounts.</li><li>Open Cloudflare, Resend, PostHog accounts.</li></ul>
-          <div class="done"><b>DONE WHEN</b> · All accounts exist. Payment applications are sent.</div></div>
-        <div class="day"><div class="dh"><b>Day 1 · base</b><span>foundation</span></div>
-          <ul><li>Make the Vite project with brand tokens (CH 02).</li><li>Landing page with 3 product tiles.</li><li>Quiz engine: questions from JSON, one per screen, autosave, back button, progress.</li><li>D1 tables. Deploy to Cloudflare on the real domain.</li></ul>
-          <div class="done"><b>DONE WHEN</b> · You take a sample quiz on your phone on the live domain.</div></div>
-        <div class="day"><div class="dh"><b>Day 2 · couple test</b><span>P1 flow</span></div>
-          <ul><li>Claude drafts 18 + 18 questions. You edit.</li><li>Part A, share screen, Story image, DM text.</li><li>Part B with mirror and deep-question logic.</li><li>Email to A when B finishes. Teaser screen.</li></ul>
-          <div class="done"><b>DONE WHEN</b> · You and a friend finish both halves on 2 phones.</div></div>
-        <div class="day"><div class="dh"><b>Day 3 · money + report</b><span>P1 complete</span></div>
-          <ul><li>Polar checkout + webhook.</li><li>Scoring (CH 04.3). Text bank for P1.</li><li>Full report page. B copy unlock. Share card.</li><li>Reminder emails.</li></ul>
-          <div class="done"><b>DONE WHEN</b> · A test payment unlocks both reports.</div></div>
-        <div class="day"><div class="dh"><b>Day 4 · solo + chat</b><span>P2, P3</span></div>
-          <ul><li>P2 on the same quiz engine. 3 landing pages.</li><li>P3 WhatsApp parser in a Web Worker.</li><li>P3 report. Text banks for P2 and P3.</li><li>Free safety page (P0).</li></ul>
-          <div class="done"><b>DONE WHEN</b> · Your own WhatsApp export gives a correct report.</div></div>
-        <div class="day"><div class="dh"><b>Day 5 · ship</b><span>launch</span></div>
-          <ul><li>Terms, Privacy, Refund, Disclaimer pages. 18+ gate.</li><li>PostHog funnel for each product.</li><li>Test on a cheap Android phone and an iPhone.</li><li>Record 6 videos from the real app (CH 11).</li><li>Put the link in all bios. Post.</li></ul>
-          <div class="done"><b>DONE WHEN</b> · A stranger pays.</div></div>
-      </div>
-      <h3>10.1 Work with your Claude plan</h3>
-      <ul class="tight">
-        <li>Start each session with: "Read side-hustles/halves/plan.html. Today is Day N. Do the Day N card."</li>
-        <li>Ask for one finished piece at a time. Test it. Then ask for the next.</li>
-        <li>If you reach the usage limit, write question text, edit the text bank, or make videos. Do not wait.</li>
-        <li>If Day 4 runs late, ship P1 alone on Day 5. Add P2 and P3 in week 2.</li>
-      </ul>
-    </section>
-
-    <!-- CH 11 -->
-    <section class="ch" id="ch11">
-      <div class="ch-head"><div class="ch-code">CH 11</div><h2>Marketing</h2></div>
-      <h3>11.1 Channels</h3>
-      <p>Make one vertical video. Post it on TikTok, Instagram Reels and YouTube Shorts. TikTok usually gives new accounts more free reach.</p>
-      <div class="spec">
-        <div>Bio</div><div>"Find out what they never said 💔 Free test ↓"</div>
-        <div>Link</div><div>Straight to the test. No link-in-bio page in between.</div>
-        <div>Tools</div><div>CapCut (free templates, free text-to-speech), Canva free, phone screen recorder.</div>
-        <div>Schedule</div><div>2 videos per day for 30 days. After 10 posts of one format, keep winners, stop losers.</div>
-      </div>
-
-      <h3>11.2 Five video formats</h3>
-      <div class="tw"><table>
-        <tr><th>Format</th><th>How to make it</th><th>Example</th></tr>
-        <tr><td>Text-on-screen POV</td><td>Stock or CapCut clip + big text + trending sound</td><td>"POV: you made him take the couple test and he guessed wrong 4 times"</td></tr>
-        <tr><td>Result reveal</td><td>Screen-record the real app. Zoom on the score.</td><td>"We got 41% in sync. Should I be worried?"</td></tr>
-        <tr><td>Type carousel</td><td>Canva, 1 slide per love type</td><td>"8 reasons people stay single. Which one are you?"</td></tr>
-        <tr><td>Voiceover list</td><td>CapCut TTS over simple motion text</td><td>"5 signs they are losing interest, from real chats"</td></tr>
-        <tr><td>Data drop</td><td>Anonymous totals from your own data, after 500+ tests</td><td>"In 1,000 couples, 64% guessed wrong about this one thing"</td></tr>
-      </table></div>
-
-      <h3>11.3 Ten hooks</h3>
-      <div class="two">
-        <ol class="tight">
-          <li>They will never tell you this. The test will.</li>
-          <li>Send this to your partner. Do not tell them why.</li>
-          <li>You are not single by accident.</li>
-          <li>Your chat already knows if they are losing interest.</li>
-          <li>Who loves more? Your messages have the answer.</li>
-        </ol>
-        <ol class="tight" start="6">
-          <li>I made my boyfriend take this. He went quiet.</li>
-          <li>The real reason you push people away.</li>
-          <li>Is it love, or is it a pattern?</li>
-          <li>She answered 18 questions about us. I was not ready.</li>
-          <li>If this test hurts, you needed it.</li>
-        </ol>
-      </div>
-      <div class="call caut"><div class="lab">CAUTION</div><div class="body"><p>Hooks can be emotional. They cannot be false. Do not say "free" alone if the full report is paid. Say "free test".</p></div></div>
-
-      <h3>11.4 Built-in growth loops</h3>
-      <ol class="steps">
-        <li><div><b>Partner link.</b> Every P1 test sends a second person to the site.</div></li>
-        <li><div><b>Share card.</b> After the report: "We are 68% in sync" Story image with the link.</div></li>
-        <li><div><b>Cross-sell.</b> Sam's last screen: "Take your own test". The solo report links to the couple test.</div></li>
-      </ol>
-
-      <h3>11.5 Therapy route (referral income)</h3>
-      <p>Make content and a free page: "Do you need a therapist? Take this 2-minute check." Link to online therapy at the end of P0 and in section 8 of each report.</p>
-      <div class="tw"><table>
-        <tr><th>Program</th><th>Pays (check)</th><th>Network (check)</th></tr>
-        <tr><td>BetterHelp affiliate</td><td>Third-party sites say $10 to $150+ per paid signup. Sources disagree.</td><td>Impact or CJ</td></tr>
-        <tr><td>Online-Therapy.com affiliate</td><td>Read their terms</td><td>Own program</td></tr>
-      </table></div>
-      <div class="call caut"><div class="lab">CAUTION</div><div class="body"><p>Say "affiliate link" near every therapy link (FTC rule). Read each program's terms. Some do not allow their brand name in ads.</p></div></div>
-
-      <h3>11.6 Paid ads</h3>
-      <p>Do not pay for ads in month 1. Start a $5 per day Instagram test only when organic traffic converts at 2% or more from visit to sale.</p>
-    </section>
-
-    <!-- CH 12 -->
-    <section class="ch" id="ch12">
-      <div class="ch-head"><div class="ch-code">CH 12</div><h2>Legal and safety</h2></div>
-      <div class="call warn"><div class="lab">WARNING</div><div class="body"><ul>
-        <li>Show the price to the payer before part 1 (CH 03).</li>
-        <li>Tell the partner that the other person sees their answers. Use a tick box (CH 03).</li>
-        <li>Never put safety help behind the pay button. The safety page is free. Add a "Leave this page fast" button on it.</li>
-        <li>18+ only. Use a tick box on every product.</li>
-        <li>Show help lines on the safety page and at the end of every report. US: National Domestic Violence Hotline, 1-800-799-7233. UK: Refuge, 0808 2000 247. EU: link to a list of national help lines.</li>
-      </ul></div></div>
-      <div class="call caut"><div class="lab">CAUTION</div><div class="body"><ul>
-        <li>Put "For self-reflection. Not therapy. Not a diagnosis." on every report.</li>
-        <li>Do not ask about sex, health or religion. In the EU these are special-category data with strict rules.</li>
-        <li>Do not use "5 Love Languages". Do not copy published psychology scales.</li>
-        <li>Allow refunds when a report is broken. A refund costs less than a chargeback.</li>
-        <li>If you add an Instagram or TikTok ad pixel, add a cookie banner for EU visitors.</li>
-      </ul></div></div>
-      <h3>12.1 Required pages</h3>
-      <div class="tw"><table>
-        <tr><th>Page</th><th>Must say</th></tr>
-        <tr><td>Terms</td><td>Digital product, 18+, no medical advice, refund rule</td></tr>
-        <tr><td>Privacy</td><td>What you store, 60-day delete, chats never uploaded, processors (Cloudflare, Polar, Resend, PostHog)</td></tr>
-        <tr><td>Refund policy</td><td>Refund if broken or not delivered, within 14 days</td></tr>
-        <tr><td>Disclaimer</td><td>Self-reflection, not therapy, not diagnosis</td></tr>
-        <tr><td>Safety (P0)</td><td>Free check, help lines, quick-exit button</td></tr>
-      </table></div>
-    </section>
-
-    <!-- CH 13 -->
-    <section class="ch" id="ch13">
-      <div class="ch-head"><div class="ch-code">CH 13</div><h2>Other ways to run it</h2></div>
-      <div class="tw"><table>
-        <tr><th>Option</th><th>Speed</th><th>Cost</th><th>Platform cut</th><th>Verdict</th></tr>
-        <tr><td><b>Web app on own domain</b> (this plan)</td><td>5 days</td><td>≈ $1–3 / mo</td><td>≈ 10–15% (MoR)</td><td><span class="pill p-ok">DO THIS</span></td></tr>
-        <tr><td>No-code test: Tally form + Gumroad PDF</td><td>1–2 days</td><td>$0</td><td>≈ 10%</td><td><span class="pill p-mid">ONLY TO TEST HOOKS</span><br><span class="tag">no two-part test, manual reports</span></td></tr>
-        <tr><td>Mobile app (App Store, Google Play)</td><td>3–6 weeks + review</td><td>$99/yr Apple + $25 Google</td><td>15–30%</td><td><span class="pill p-no">NOT NOW</span></td></tr>
-        <tr><td>Instagram DM bot</td><td>—</td><td>—</td><td>—</td><td><span class="pill p-no">NO</span><br><span class="tag">platform rules, weak UX</span></td></tr>
-        <tr><td>Printable couple workbooks on Etsy</td><td>1 day</td><td>$0.20 per listing</td><td>≈ 6.5% + fees</td><td><span class="pill p-mid">LATER, SIDE PRODUCT</span></td></tr>
-        <tr><td>Sell the engine to coaches and therapists</td><td>After 1,000 users</td><td>—</td><td>—</td><td><span class="pill p-mid">PHASE 3</span></td></tr>
-      </table></div>
-    </section>
-
-    <!-- CH 14 -->
-    <section class="ch" id="ch14">
-      <div class="ch-head"><div class="ch-code">CH 14</div><h2>Launch checklist</h2></div>
-      <p class="tag">Ticks save in this browser only.</p>
-      <ul class="check" id="checklist">
-        <li><label><input type="checkbox" id="k1"> Domain bought and on Cloudflare</label></li>
-        <li><label><input type="checkbox" id="k2"> Polar or Paddle approved</label></li>
-        <li><label><input type="checkbox" id="k3"> Apple Pay and Google Pay on</label></li>
-        <li><label><input type="checkbox" id="k4"> Price line under the start button</label></li>
-        <li><label><input type="checkbox" id="k5"> Partner consent + 18+ tick box</label></li>
-        <li><label><input type="checkbox" id="k6"> Webhook signature checked</label></li>
-        <li><label><input type="checkbox" id="k7"> Full report text only from server after payment</label></li>
-        <li><label><input type="checkbox" id="k8"> Test payment unlocks both copies</label></li>
-        <li><label><input type="checkbox" id="k9"> Reminder emails (max 2)</label></li>
-        <li><label><input type="checkbox" id="k10"> Share card works on Instagram Story</label></li>
-        <li><label><input type="checkbox" id="k11"> WhatsApp export tested on iPhone and Android</label></li>
-        <li><label><input type="checkbox" id="k12"> Safety page with help lines and quick exit</label></li>
-        <li><label><input type="checkbox" id="k13"> Terms, Privacy, Refund, Disclaimer pages</label></li>
-        <li><label><input type="checkbox" id="k14"> "Not therapy" line on every report</label></li>
-        <li><label><input type="checkbox" id="k15"> PostHog funnel for each product</label></li>
-        <li><label><input type="checkbox" id="k16"> Loads under 2 s on a cheap Android</label></li>
-        <li><label><input type="checkbox" id="k17"> 6 videos recorded</label></li>
-        <li><label><input type="checkbox" id="k18"> Link in all 3 bios</label></li>
-      </ul>
-    </section>
-
-    <!-- CH 15 -->
-    <section class="ch" id="ch15">
-      <div class="ch-head"><div class="ch-code">CH 15</div><h2>Open items and sources</h2></div>
-      <h3>15.1 Questions for you</h3>
-      <div class="tw"><table>
-        <tr><th>#</th><th>Question</th><th>Why it matters</th></tr>
-        <tr><td class="mono">Q1</td><td>Send the "Ask Brandon" link.</td><td>I could not find it. I will add it to the competitor table.</td></tr>
-        <tr><td class="mono">Q2</td><td>Which country will you receive payouts in?</td><td>Picks the payment provider. CH 08 assumes a non-Stripe country.</td></tr>
-        <tr><td class="mono">Q3</td><td>Do you accept "Halves"?</td><td>Domain and handles must be bought on Day 0.</td></tr>
-      </table></div>
-
-      <h3>15.2 Sources</h3>
-      <ul class="tight" style="font-size:13.5px">
-        <li><a href="https://polar.sh/docs/merchant-of-record/supported-countries">Polar supported countries</a> · <a href="https://getpaidatlas.com/provider/paddle">Paddle countries (GetPaidAtlas)</a> · <a href="https://gumroad.com/help/article/13-getting-paid">Gumroad getting paid</a></li>
-        <li><a href="https://techstartups.com/?p=140481">Lemon Squeezy shutdown report</a> · <a href="https://www.lemonsqueezy.com/blog/2026-update">Lemon Squeezy 2026 update</a> · <a href="https://stripe.com/managed-payments">Stripe Managed Payments</a></li>
-        <li><a href="https://dev.to/devtoolpicks/polar-vs-lemon-squeezy-vs-creem-in-2026-which-mor-is-right-for-indie-hackers-506m">Polar vs Lemon Squeezy fees</a> · <a href="https://resources.rework.com/tools/billing-revenue/paddle-vs-lemon-squeezy">Paddle vs Lemon Squeezy</a></li>
-        <li><a href="https://incorpuk.com/blog/open-stripe-account-in-saudi-arabia/">Stripe in Saudi Arabia</a> · <a href="https://community.shopify.com/t/payment-gateway/399632">Shopify community on Stripe in Saudi Arabia</a></li>
-        <li><a href="https://vercel.com/docs/platform/fair-use-policy">Vercel fair use policy</a> · <a href="https://dev.to/libme/vercel-vs-netlify-vs-cloudflare-pages-where-your-side-project-should-actually-live-1j30">Cloudflare Pages vs Vercel</a></li>
-        <li><a href="https://apps.apple.com/us/app/decoded-chat-text-analyzer/id6759509185">Decoded</a> · <a href="https://apps.apple.com/us/app/id6747853549">Chat Analyzer &amp; Toxic Test</a> · <a href="https://apps.apple.com/us/app/id6743008000">LoveLog</a> · <a href="https://apps.apple.com/us/app/-/id6757682149">Relationship AI</a> · <a href="https://apps.apple.com/us/app/knowusbetter/id6754946265">KnowUsBetter</a> · <a href="https://www.producthunt.com/p/do-we-match/do-we-match">Do We Match</a> · <a href="https://empathi.com/blog/relationship-quiz/">Empathi</a></li>
-        <li><a href="https://apps.apple.com/us/app/id6764570503">Unsaid: Message Decoder</a> · <a href="https://apps.apple.com/app/id6761311939">Unsaid (second app)</a></li>
-        <li><a href="https://www.moodypublishers.com/About/permissions-form">5 Love Languages permissions</a> · <a href="https://trademarks.justia.com/862/36/the-5-love-86236645.html">5 Love Languages trademark</a> · <a href="https://labs.psychology.illinois.edu/~rcfraley/measures/ecrr.htm">ECR-R (Fraley)</a></li>
-        <li><a href="https://www.ftc.gov/system/files/ftc_gov/pdf/P214800%20Dark%20Patterns%20Report%209.14.2022%20-%20FINAL.pdf">FTC Dark Patterns report</a> · <a href="https://www.dglaw.com/ftc-continues-crackdown-on-subscription-businesses/">FTC funnel disclosures</a></li>
-        <li><a href="https://reacheffect.com/blog/betterhelp-affiliate-program-complete-2025-guide-to-high-paying-mental-health-commissions/">BetterHelp affiliate guide</a> · <a href="https://strackr.com/blog/mental-health-affiliate-programs">Mental health affiliate programs</a> · <a href="https://online-therapy.com/affiliate.php">Online-Therapy.com affiliate</a></li>
-        <li><a href="https://ai.google.dev/gemini-api/docs/rate-limits">Gemini API rate limits</a> · <a href="https://neuraplus-ai.github.io/blog/gemini-api-free-tier.html">Gemini free tier notes</a></li>
-      </ul>
-
-      <h3>15.3 Change log</h3>
-      <div class="tw"><table>
-        <tr><th>Rev</th><th>Date</th><th>Change</th></tr>
-        <tr><td class="mono">A</td><td class="mono">20 NOV 2026</td><td>First issue.</td></tr>
-      </table></div>
-    </section>
   </div>
-  <div class="foot">SH-001 · HALVES · REV A · PLAN ONLY · END OF DOCUMENT</div>
-</div>
+
+  <h3 class="sub">Therapy route · referral income</h3>
+  <div class="g2">
+    <div class="card"><h4>"Do you need a therapist? Take this 2-minute check."</h4><p>Free page + videos. Link to online therapy at the end of P0 and in each report's help section.</p></div>
+    <div class="card"><h4>Programs (check)</h4><p><b style="color:var(--text)">BetterHelp</b>: third-party sites say $10 to $150+ per paid signup. Sources disagree. Through Impact or CJ.<br><b style="color:var(--text)">Online-Therapy.com</b>: own affiliate program.</p></div>
+  </div>
+  <div class="call caut"><span class="lab">CAUTION</span><div><p>Write "affiliate link" next to every therapy link (FTC rule). Read each program's terms. Some forbid their brand name in ads.</p></div></div>
+  <div class="call note"><span class="lab">NOTE</span><div><p>No paid ads in month 1. Start a $5 per day test only when visits convert to sales at 2% or more.</p></div></div>
+</div></section>
+
+<!-- 12 LEGAL -->
+<section class="ch" id="legal"><div class="wrap">
+  <div class="ch-head"><div class="ch-num">12</div><div><div class="kicker">Legal and safety</div><h2>Strong feelings. True claims.</h2></div></div>
+  <div class="call warn"><span class="lab">WARNING</span><div><ul>
+    <li>Show the price to the payer before part 1.</li>
+    <li>Tell the partner the other person sees their answers. Tick box.</li>
+    <li>18+ only. Tick box on every product.</li>
+    <li>Never put safety help behind the pay button. Safety page is free, with a "Leave this page fast" button.</li>
+    <li>Help lines on the safety page and at the end of every report. US: National Domestic Violence Hotline 1-800-799-7233. UK: Refuge 0808 2000 247. EU: link to national lists.</li>
+  </ul></div></div>
+  <div class="call caut"><span class="lab">CAUTION</span><div><ul>
+    <li>"For self-reflection. Not therapy. Not a diagnosis." on every report.</li>
+    <li>Do not ask about sex, health or religion. In the EU this is special-category data.</li>
+    <li>Refund broken reports. A refund costs less than a chargeback.</li>
+    <li>Add a cookie banner for EU visitors only if you add ad pixels.</li>
+  </ul></div></div>
+  <div class="g4" style="margin-top:14px">
+    <div class="card"><div class="kicker">Page</div><h4>Terms</h4><p>Digital product, 18+, no medical advice, refunds.</p></div>
+    <div class="card"><div class="kicker">Page</div><h4>Privacy</h4><p>What you store, 60-day delete, chats never uploaded, processors.</p></div>
+    <div class="card"><div class="kicker">Page</div><h4>Refunds</h4><p>Broken or not delivered: refund within 14 days.</p></div>
+    <div class="card"><div class="kicker">Page</div><h4>Safety (P0)</h4><p>Free check, help lines, quick exit.</p></div>
+  </div>
+</div></section>
+
+<!-- 13 OTHER -->
+<section class="ch" id="other"><div class="wrap">
+  <div class="ch-head"><div class="ch-num">13</div><div><div class="kicker">Other ways to run it</div><h2>Why a website wins.</h2></div></div>
+  <div class="g3" style="margin-top:16px">
+    <div class="prov pick"><div class="hd"><b>Own website</b><span class="stamp s-ok">Do this</span></div><dl><dt>Speed</dt><dd>5 days</dd><dt>Cost</dt><dd>≈ $1–3 / mo</dd><dt>Cut</dt><dd>≈ 10–15% (MoR)</dd></dl></div>
+    <div class="prov"><div class="hd"><b>Tally + Gumroad PDF</b><span class="stamp s-mid">Hook test only</span></div><dl><dt>Speed</dt><dd>1–2 days</dd><dt>Note</dt><dd>No two-part test. Manual reports.</dd></dl></div>
+    <div class="prov"><div class="hd"><b>Mobile app</b><span class="stamp s-no">Not now</span></div><dl><dt>Speed</dt><dd>3–6 weeks + review</dd><dt>Cost</dt><dd>$99/yr Apple + $25 Google</dd><dt>Cut</dt><dd>15–30%</dd></dl></div>
+    <div class="prov"><div class="hd"><b>Instagram DM bot</b><span class="stamp s-no">No</span></div><dl><dt>Note</dt><dd>Platform rules. Weak UX.</dd></dl></div>
+    <div class="prov"><div class="hd"><b>Etsy workbooks</b><span class="stamp s-mid">Later</span></div><dl><dt>Speed</dt><dd>1 day</dd><dt>Note</dt><dd>Printable couple workbooks. Side product.</dd></dl></div>
+    <div class="prov"><div class="hd"><b>Sell to coaches</b><span class="stamp s-mid">Phase 3</span></div><dl><dt>When</dt><dd>After 1,000 users</dd><dt>Note</dt><dd>White-label the engine.</dd></dl></div>
+  </div>
+</div></section>
+
+<!-- 14 LAUNCH -->
+<section class="ch" id="launch"><div class="wrap">
+  <div class="ch-head"><div class="ch-num">14</div><div><div class="kicker">Launch checklist · ticks save in this browser</div><h2>Ready to post.</h2></div></div>
+  <ul class="check" id="checklist" style="margin-top:16px">
+    <li><label><input type="checkbox" id="k1"><span>Domain bought, on Cloudflare</span></label></li>
+    <li><label><input type="checkbox" id="k2"><span>Polar or Paddle approved</span></label></li>
+    <li><label><input type="checkbox" id="k3"><span>Apple Pay and Google Pay on</span></label></li>
+    <li><label><input type="checkbox" id="k4"><span>Price line under the start button</span></label></li>
+    <li><label><input type="checkbox" id="k5"><span>Partner consent + 18+ tick box</span></label></li>
+    <li><label><input type="checkbox" id="k6"><span>Webhook signature checked</span></label></li>
+    <li><label><input type="checkbox" id="k7"><span>Full text only from server after payment</span></label></li>
+    <li><label><input type="checkbox" id="k8"><span>Test payment unlocks both copies</span></label></li>
+    <li><label><input type="checkbox" id="k9"><span>Reminder emails (max 2)</span></label></li>
+    <li><label><input type="checkbox" id="k10"><span>Share card works on Instagram Story</span></label></li>
+    <li><label><input type="checkbox" id="k11"><span>WhatsApp export tested on iPhone and Android</span></label></li>
+    <li><label><input type="checkbox" id="k12"><span>Safety page with help lines and quick exit</span></label></li>
+    <li><label><input type="checkbox" id="k13"><span>Terms, Privacy, Refund, Disclaimer live</span></label></li>
+    <li><label><input type="checkbox" id="k14"><span>"Not therapy" line on every report</span></label></li>
+    <li><label><input type="checkbox" id="k15"><span>PostHog funnel per product</span></label></li>
+    <li><label><input type="checkbox" id="k16"><span>Loads under 2 s on a cheap Android</span></label></li>
+    <li><label><input type="checkbox" id="k17"><span>6 videos recorded</span></label></li>
+    <li><label><input type="checkbox" id="k18"><span>Link in all 3 bios</span></label></li>
+  </ul>
+
+  <h3 class="sub">Questions for you</h3>
+  <div class="g3">
+    <div class="card"><div class="kicker">Q1</div><h4>"Ask Brandon" link?</h4><p>I could not find it. I will add it to the competitors.</p></div>
+    <div class="card"><div class="kicker">Q2</div><h4>Payout country?</h4><p>It decides the payment provider. Chapter 08 assumes a country Stripe does not serve.</p></div>
+    <div class="card"><div class="kicker">Q3</div><h4>Keep "Halves"?</h4><p>Buy the domain and handles on Day 0.</p></div>
+  </div>
+
+  <h3 class="sub">Sources</h3>
+  <ul class="sources">
+    <li><a href="https://polar.sh/docs/merchant-of-record/supported-countries">Polar supported countries</a></li>
+    <li><a href="https://getpaidatlas.com/provider/paddle">Paddle seller countries (GetPaidAtlas)</a></li>
+    <li><a href="https://gumroad.com/help/article/13-getting-paid">Gumroad: getting paid</a></li>
+    <li><a href="https://techstartups.com/?p=140481">Lemon Squeezy shutdown report</a></li>
+    <li><a href="https://stripe.com/managed-payments">Stripe Managed Payments</a></li>
+    <li><a href="https://dev.to/devtoolpicks/polar-vs-lemon-squeezy-vs-creem-in-2026-which-mor-is-right-for-indie-hackers-506m">Polar vs Lemon Squeezy fees</a></li>
+    <li><a href="https://incorpuk.com/blog/open-stripe-account-in-saudi-arabia/">Stripe and Saudi Arabia</a></li>
+    <li><a href="https://vercel.com/docs/platform/fair-use-policy">Vercel fair use policy</a></li>
+    <li><a href="https://dev.to/libme/vercel-vs-netlify-vs-cloudflare-pages-where-your-side-project-should-actually-live-1j30">Cloudflare Pages vs Vercel</a></li>
+    <li><a href="https://apps.apple.com/us/app/decoded-chat-text-analyzer/id6759509185">Decoded</a> · <a href="https://apps.apple.com/us/app/id6747853549">Chat Analyzer &amp; Toxic Test</a> · <a href="https://apps.apple.com/us/app/id6743008000">LoveLog</a></li>
+    <li><a href="https://apps.apple.com/us/app/knowusbetter/id6754946265">KnowUsBetter</a> · <a href="https://www.producthunt.com/p/do-we-match/do-we-match">Do We Match</a> · <a href="https://empathi.com/blog/relationship-quiz/">Empathi</a></li>
+    <li><a href="https://apps.apple.com/us/app/id6764570503">Unsaid: Message Decoder</a> · <a href="https://apps.apple.com/app/id6761311939">Unsaid (2nd app)</a></li>
+    <li><a href="https://www.moodypublishers.com/About/permissions-form">5 Love Languages permissions</a> · <a href="https://trademarks.justia.com/862/36/the-5-love-86236645.html">trademark</a></li>
+    <li><a href="https://labs.psychology.illinois.edu/~rcfraley/measures/ecrr.htm">ECR-R (Fraley)</a></li>
+    <li><a href="https://www.ftc.gov/system/files/ftc_gov/pdf/P214800%20Dark%20Patterns%20Report%209.14.2022%20-%20FINAL.pdf">FTC Dark Patterns report</a> · <a href="https://www.dglaw.com/ftc-continues-crackdown-on-subscription-businesses/">FTC funnel disclosures</a></li>
+    <li><a href="https://reacheffect.com/blog/betterhelp-affiliate-program-complete-2025-guide-to-high-paying-mental-health-commissions/">BetterHelp affiliate guide</a> · <a href="https://online-therapy.com/affiliate.php">Online-Therapy.com affiliate</a></li>
+    <li><a href="https://ai.google.dev/gemini-api/docs/rate-limits">Gemini API rate limits</a></li>
+  </ul>
+
+  <h3 class="sub">Change log</h3>
+  <div class="row" style="gap:8px"><span class="chip">REV A · first issue</span><span class="chip y">REV B · visual redesign</span></div>
+</div></section>
+
+<div class="foot">HALVES · SIDE HUSTLE PLAN NO. 001 · REV B · PLAN ONLY</div>
 
 <script>
 (function(){
-  var ids=["views","click","start","send","partner","pay","keep"];
   function v(id){var n=parseFloat(document.getElementById("c-"+id).value);return isNaN(n)?0:n;}
   function fmt(n){return Math.round(n).toLocaleString("en-US");}
   function run(){
-    var started=v("views")*v("click")/100*v("start")/100;
-    var partners=started*v("send")/100*v("partner")/100;
-    var sales=partners*v("pay")/100;
-    document.getElementById("o-start").textContent=fmt(started);
-    document.getElementById("o-partner").textContent=fmt(partners);
-    document.getElementById("o-sales").textContent=fmt(sales);
-    document.getElementById("o-keep").textContent="$"+fmt(sales*v("keep"));
-  }
-  ids.forEach(function(id){document.getElementById("c-"+id).addEventListener("input",run);});
-  run();
-
-  var KEY="halves-checklist";
-  var saved={};
-  try{saved=JSON.parse(localStorage.getItem(KEY)||"{}")||{};}catch(e){saved={};}
-  var boxes=document.querySelectorAll("#checklist input");
-  boxes.forEach(function(b){
-    if(saved[b.id])b.checked=true;
-    b.addEventListener("change",function(){
-      saved[b.id]=b.checked;
-      try{localStorage.setItem(KEY,JSON.stringify(saved));}catch(e){}
+    var visitors=v("views")*v("click")/100;
+    var started=visitors*v("start")/100;
+    var sent=started*v("send")/100;
+    var partner=sent*v("partner")/100;
+    var paid=partner*v("pay")/100;
+    var vals=[visitors,started,sent,partner,paid];
+    vals.forEach(function(x,i){
+      var pct=visitors>0?Math.max(2,x/visitors*100):0;
+      document.getElementById("f"+(i+1)).style.width=pct+"%";
+      document.getElementById("v"+(i+1)).textContent=fmt(x);
     });
+    document.getElementById("keep").textContent="$"+fmt(paid*v("keep"));
+  }
+  ["views","click","start","send","partner","pay","keep"].forEach(function(id){document.getElementById("c-"+id).addEventListener("input",run);});
+  run();
+  var KEY="halves-checklist",saved={};
+  try{saved=JSON.parse(localStorage.getItem(KEY)||"{}")||{};}catch(e){saved={};}
+  document.querySelectorAll("#checklist input").forEach(function(b){
+    if(saved[b.id])b.checked=true;
+    b.addEventListener("change",function(){saved[b.id]=b.checked;try{localStorage.setItem(KEY,JSON.stringify(saved));}catch(e){}});
   });
 })();
 </script>

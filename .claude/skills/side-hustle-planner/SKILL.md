@@ -38,7 +38,7 @@ These are fixed constraints. Do not ask about them again.
    Mark figures from third-party sites as "(check)". Mark your own guesses as "(est.)".
 4. **Design the product**: name + identity, user flow screen by screen, how the result/report is generated (scoring rules, text bank, templates), pricing, tech stack, data model, marketing, legal and safety.
 5. **Fix ethical or legal problems in the idea** instead of only warning. Keep the mechanic the owner wants, change the part that breaks the law or hurts people, and say why in a WARNING. Example: a paywall that pressures the payer is fine; hiding the price from the payer is not, so show the price in one small line before the start.
-6. **Write the manual** (section 3 + 4) as HTML. Reuse the look and structure of `side-hustles/halves/plan.html` (copy its `<style>` block and callout/table/task-card patterns).
+6. **Write the manual** (section 3 + 4) as HTML. Use `side-hustles/halves/plan.html` as the reference for component patterns (phone mockups, logo sheet, swatches, posters, framework diagrams, funnel calculator, day cards, callouts), but give each idea **its own visual world** from its own brand (section 4b).
 7. **Save** to `side-hustles/<slug>/plan.html` in the repo, **publish** it with the Artifact tool, commit and push on the current branch.
 8. **Reply in chat** with: the link, the top 5 decisions, the top 3 warnings, open questions. Keep chat short; the content goes in the manual.
 
@@ -65,9 +65,11 @@ Use these chapter codes so every manual reads the same.
 | -- | Launch checklist | Checkboxes |
 | -- | Open items, sources, change log | Questions for the owner, source links |
 
-## 4. Writing style: Simplified Technical English
+## 4. Writing style: Simplified Technical English (TEXT ONLY)
 
-Write like an aircraft maintenance manual for non-native English readers.
+The manual style applies to the **words only**. The page must NOT look like a
+black-and-white repair manual (see 4b). Write the text like an aircraft
+maintenance manual for non-native English readers.
 
 - One instruction or one fact per sentence. Max 20 words per instruction, 25 per description.
 - Imperative for steps: "Open the chat. Tap Export." Not "You might want to open...".
@@ -81,6 +83,23 @@ Write like an aircraft maintenance manual for non-native English readers.
   - **NOTE** - useful information.
 - No marketing fluff inside the manual itself. Marketing copy examples go in quote boxes.
 - Not text-heavy: if a section is longer than one phone screen of prose, convert it to a table, steps or a diagram.
+
+## 4b. Visual style: rich, branded, visionary
+
+The owner wants to *see* the business, not read about it.
+
+- Design the page **in the idea's own brand**: its colors, fonts, logo and mood. The hero shows the brand, not a document header.
+- Show, do not describe. Every chapter needs at least one visual. Use as many as fit:
+  - **Logo sheet**: primary lockup on dark and light, one-color version, app icon, favicon sizes, construction drawing (inline SVG).
+  - **Color swatches** as big blocks, **type specimen** with a real headline.
+  - **Phone mockups** of the key screens, in a sideways-scrolling strip, captioned with step ids.
+  - **Social mockups**: Instagram profile grid, Story share card, DM with link preview, video thumbnails (9:16) for each content format.
+  - **Framework diagrams**: pipeline of how the product works, scoring/radar charts, type or archetype cards with small SVG glyphs, architecture diagram, growth-loop diagram.
+  - **Money visuals**: provider cards with verdict stamps, price tags with "you keep" bars, an interactive funnel calculator.
+  - **Timeline cards** for the build days, poster cards for taglines, word chips for voice.
+- Use cards, chips and stamps in place of most tables. Keep a table only for data that is truly row-and-column (for example measurements or endpoints).
+- No long paragraphs anywhere. Max 3 short sentences in a block.
+- Mockups use invented example people (for example "Alex" and "Sam") and say "example" where numbers could look real.
 
 ## 5. Do not
 
