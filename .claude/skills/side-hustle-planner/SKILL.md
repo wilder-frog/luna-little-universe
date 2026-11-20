@@ -1,6 +1,6 @@
 ---
 name: side-hustle-planner
-description: Turn a small side-hustle idea from the owner into a complete, researched launch plan written like an aircraft maintenance manual (Simplified Technical English). Use whenever the owner describes a side hustle, a small online business idea, a "website where people pay for X", or asks to "plan", "work out", "build on" or "revisit" one of their side-hustle ideas, or adds changes to a plan made before. Planning only - this skill never builds, deploys, buys or signs up for anything.
+description: Turn a small side-hustle idea from the owner into a complete, researched launch plan: a rich, branded visual page (logo sheet, phone mockups, social mockups, diagrams) whose text is written like an aircraft maintenance manual (Simplified Technical English, no long paragraphs). Use whenever the owner describes a side hustle, a small online business idea, a "website where people pay for X", or asks to "plan", "work out", "build on" or "revisit" one of their side-hustle ideas, or adds changes to a plan made before. Planning only - this skill never builds, deploys, buys or signs up for anything.
 ---
 
 # Side Hustle Planner
