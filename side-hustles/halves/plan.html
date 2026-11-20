@@ -1,0 +1,951 @@
+<title>Halves Planning Manual</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Condensed:wght@500;700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=Bricolage+Grotesque:wght@600;800&family=Inter:wght@400;600&display=swap">
+<style>
+/* Layout: one technical-manual "sheet" column, chapter blocks with code tabs, callouts before steps, wide tables scroll in place */
+:root{
+  --paper:#EEF1F4; --sheet:#FFFFFF; --ink:#14202B; --muted:#55636F; --rule:#CBD3DB; --strong:#14202B;
+  --code:#1F5FA8; --shade:#F5F7F9;
+  --warn:#B3261E; --warn-bg:#FCEBEA; --caut:#8A5300; --caut-bg:#FFF3DC; --note:#1F5FA8; --note-bg:#E7EFF9;
+  --ok:#1E7A46; --ok-bg:#E5F4EA;
+  --you:#D93A50; --them:#6A5AE0;
+  --f-head:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --f-brand:"Bricolage Grotesque",system-ui,sans-serif;
+  --f-brandbody:"Inter",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#0B1116; --sheet:#121A21; --ink:#E4EAF0; --muted:#98A6B3; --rule:#2B3742; --strong:#C9D3DC;
+  --code:#7FB0F0; --shade:#18222B;
+  --warn:#FF8A80; --warn-bg:#2B1615; --caut:#F2B45A; --caut-bg:#2A2010; --note:#8AB8F5; --note-bg:#13233A;
+  --ok:#6FD39A; --ok-bg:#12271B; --you:#F0607A; --them:#9A8CFF; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --paper:#0B1116; --sheet:#121A21; --ink:#E4EAF0; --muted:#98A6B3; --rule:#2B3742; --strong:#C9D3DC;
+  --code:#7FB0F0; --shade:#18222B;
+  --warn:#FF8A80; --warn-bg:#2B1615; --caut:#F2B45A; --caut-bg:#2A2010; --note:#8AB8F5; --note-bg:#13233A;
+  --ok:#6FD39A; --ok-bg:#12271B; --you:#F0607A; --them:#9A8CFF; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 64px}
+.sheet{max-width:980px;margin:0 auto;background:var(--sheet);border:1px solid var(--rule);}
+.inner{padding:28px clamp(16px,4vw,44px)}
+h1,h2,h3{font-family:var(--f-head);text-wrap:balance;margin:0}
+h2{font-size:24px;letter-spacing:.02em;text-transform:uppercase}
+h3{font-size:17px;letter-spacing:.02em;text-transform:uppercase;margin-top:26px;margin-bottom:8px}
+p{margin:0 0 10px;max-width:68ch}
+a{color:var(--code)}
+code,.mono{font-family:var(--f-mono);font-size:.9em}
+:focus-visible{outline:2px solid var(--code);outline-offset:2px}
+
+/* Title block */
+.titleblock{border-bottom:2px solid var(--strong)}
+.tb-top{display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;padding:28px clamp(16px,4vw,44px) 20px}
+.tb-top h1{font-size:clamp(28px,5vw,42px);line-height:1.05;text-transform:uppercase;letter-spacing:.01em}
+.tb-top .sub{font-family:var(--f-mono);font-size:12px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.tb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));border-top:1px solid var(--rule)}
+.tb-grid div{padding:10px 16px;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);min-width:0}
+.tb-grid span{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.tb-grid b{font-family:var(--f-mono);font-weight:600;font-size:13px}
+
+/* TOC */
+.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0;border:1px solid var(--rule);margin-top:6px}
+.toc a{display:flex;gap:10px;padding:9px 12px;border-bottom:1px solid var(--rule);border-right:1px solid var(--rule);text-decoration:none;color:var(--ink)}
+.toc a:hover{background:var(--shade)}
+.toc .c{font-family:var(--f-mono);color:var(--code);font-size:13px;min-width:44px}
+
+/* Chapters */
+.ch{border-top:2px solid var(--strong);padding-top:0;margin-top:34px}
+.ch-head{display:flex;align-items:stretch;gap:0;margin-bottom:16px;flex-wrap:wrap}
+.ch-code{font-family:var(--f-mono);font-weight:600;background:var(--strong);color:var(--sheet);padding:6px 12px;font-size:13px;letter-spacing:.06em;display:flex;align-items:center}
+.ch-head h2{padding:8px 14px 0;font-size:22px}
+.lead{font-size:16px;color:var(--muted);max-width:68ch}
+
+/* Callouts */
+.call{border:2px solid;margin:14px 0;max-width:100%}
+.call .lab{font-family:var(--f-head);font-weight:700;letter-spacing:.14em;font-size:13px;padding:4px 12px;text-align:center}
+.call .body{padding:10px 14px}
+.call .body p:last-child,.call .body ul:last-child{margin-bottom:0}
+.call ul{margin:4px 0 0;padding-left:20px}
+.warn{border-color:var(--warn);background:var(--warn-bg)} .warn .lab{background:var(--warn);color:var(--sheet)}
+.caut{border-color:var(--caut);background:var(--caut-bg)} .caut .lab{background:var(--caut);color:var(--sheet)}
+.note{border-color:var(--note);background:var(--note-bg)} .note .lab{background:var(--note);color:var(--sheet)}
+
+/* Tables */
+.tw{overflow-x:auto;margin:10px 0 14px;border:1px solid var(--rule)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{font-family:var(--f-head);text-transform:uppercase;letter-spacing:.05em;font-size:12.5px;background:var(--shade)}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--f-mono);font-size:13px}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:11px;padding:1px 7px;border:1px solid;white-space:nowrap}
+.p-ok{color:var(--ok);background:var(--ok-bg)} .p-no{color:var(--warn);background:var(--warn-bg)} .p-mid{color:var(--caut);background:var(--caut-bg)}
+.tag{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+
+/* Steps */
+ol.steps{list-style:none;padding:0;margin:8px 0 14px;counter-reset:s}
+ol.steps>li{counter-increment:s;display:grid;grid-template-columns:42px 1fr;gap:10px;padding:7px 0;border-bottom:1px dashed var(--rule)}
+ol.steps>li::before{content:counter(s);font-family:var(--f-mono);font-weight:600;border:1px solid var(--strong);text-align:center;height:26px;line-height:24px;font-size:13px}
+ol.steps>li>div{min-width:0}
+
+/* Spec list */
+.spec{display:grid;grid-template-columns:minmax(120px,190px) 1fr;border:1px solid var(--rule);margin:10px 0}
+.spec>div{padding:7px 12px;border-bottom:1px solid var(--rule);min-width:0}
+.spec>div:nth-child(odd){font-family:var(--f-mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--shade)}
+.spec>div:nth-last-child(-n+2){border-bottom:0}
+
+/* Flow lanes */
+.lanes{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule);margin:12px 0}
+.lane-h{font-family:var(--f-head);text-transform:uppercase;letter-spacing:.06em;padding:8px 12px;border-bottom:1px solid var(--rule);font-weight:700}
+.lane-h.a{color:var(--you)} .lane-h.b{color:var(--them);border-left:1px solid var(--rule)}
+.cell{padding:8px 12px;border-bottom:1px solid var(--rule);min-width:0;font-size:14px}
+.cell.b{border-left:1px solid var(--rule)}
+.cell .id{font-family:var(--f-mono);font-weight:600;font-size:12px;margin-right:6px}
+.cell.a .id{color:var(--you)} .cell.b .id{color:var(--them)}
+.cell.empty{background:repeating-linear-gradient(45deg,transparent 0 6px,var(--shade) 6px 12px)}
+.cell.both{grid-column:1/-1;text-align:center;background:var(--shade);border-left:0}
+@media (max-width:620px){.lanes{grid-template-columns:1fr}.lane-h.b,.cell.b{border-left:0}.cell.empty{display:none}.lane-h.b{display:none}.cell.b{border-left:4px solid var(--them)}.cell.a{border-left:4px solid var(--you)}}
+
+/* Brand */
+.brandrow{display:flex;flex-wrap:wrap;gap:22px;align-items:center;margin:12px 0}
+.logo-box{border:1px solid var(--rule);padding:18px 22px;display:flex;gap:14px;align-items:center;min-width:0}
+.logo-box.dark{background:#1A1424;border-color:#1A1424}
+.wordmark{font-family:var(--f-brand);font-weight:800;font-size:40px;letter-spacing:-.02em;line-height:1}
+.logo-box .wordmark{color:#1A1424} .logo-box.dark .wordmark{color:#FBF9FB}
+.swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:10px 0}
+.sw{border:1px solid var(--rule);min-width:0}
+.sw .chip{height:64px}
+.sw .meta{padding:7px 10px;font-size:13px}
+.sw .meta b{display:block;font-family:var(--f-head);text-transform:uppercase;letter-spacing:.04em}
+.sw .meta span{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.typespec{border:1px solid var(--rule);padding:14px;margin:8px 0}
+.typespec .h{font-family:var(--f-brand);font-weight:800;font-size:30px;line-height:1.1;letter-spacing:-.01em}
+.typespec .b{font-family:var(--f-brandbody);font-size:16px;margin-top:6px}
+blockquote{margin:10px 0;padding:10px 14px;border-left:4px solid var(--you);background:var(--shade);font-family:var(--f-brand);font-weight:600;font-size:17px;max-width:68ch}
+
+/* Phone mock (fixed brand look, single theme by design) */
+.mockrow{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start}
+.phone{width:280px;max-width:100%;border-radius:34px;background:#1A1424;padding:14px;border:6px solid #2A2236;color:#FBF9FB;font-family:var(--f-brandbody)}
+.phone .scr{border-radius:22px;background:#1A1424;padding:16px 14px 18px}
+.phone .k{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#B8AFC8}
+.phone .big{font-family:var(--f-brand);font-weight:800;font-size:56px;line-height:1;margin:6px 0 2px}
+.phone .big small{font-size:20px}
+.phone .type{font-family:var(--f-brand);font-weight:600;font-size:18px;color:#F9E3E6}
+.phone .bar{display:flex;height:8px;margin:12px 0 4px;border-radius:4px;overflow:hidden}
+.phone .bar i:first-child{background:#E0475B} .phone .bar i:last-child{background:#7B6CF6}
+.phone .card{border:1px solid #3A3048;border-radius:12px;padding:10px;margin-top:8px;font-size:13px}
+.phone .card.lock{position:relative;color:transparent;text-shadow:0 0 7px rgba(251,249,251,.55);user-select:none}
+.phone .card.lock::after{content:"LOCKED";position:absolute;right:10px;top:9px;font-size:10px;letter-spacing:.12em;color:#B8AFC8;text-shadow:none}
+.phone .msg{border:1px dashed #E0475B;border-radius:12px;padding:10px;margin-top:8px;font-size:13px;color:#F9E3E6}
+.phone .pay{display:block;width:100%;margin-top:12px;border:0;border-radius:14px;padding:13px;background:#E0475B;color:#fff;font-weight:600;font-size:15px;font-family:var(--f-brandbody)}
+.phone .fine{font-size:11px;color:#B8AFC8;text-align:center;margin-top:6px}
+.mocknote{flex:1;min-width:240px}
+
+/* Day cards */
+.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:10px 0}
+.day{border:1px solid var(--rule);min-width:0;display:flex;flex-direction:column}
+.day .dh{display:flex;justify-content:space-between;gap:8px;padding:8px 12px;background:var(--shade);border-bottom:1px solid var(--rule)}
+.day .dh b{font-family:var(--f-head);text-transform:uppercase;letter-spacing:.05em}
+.day .dh span{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.day ul{margin:8px 0;padding:0 12px 0 30px;font-size:14px;flex:1}
+.day .done{border-top:1px solid var(--rule);padding:8px 12px;font-size:13px;background:var(--ok-bg)}
+.day .done b{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--ok)}
+
+/* Calculator */
+.calc{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;border:1px solid var(--rule);padding:14px;background:var(--shade)}
+.calc label{display:flex;flex-direction:column;gap:4px;font-family:var(--f-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.calc input{font-family:var(--f-mono);font-size:15px;padding:7px 8px;border:1px solid var(--rule);background:var(--sheet);color:var(--ink);width:100%}
+.calc-out{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));border:1px solid var(--rule);border-top:0}
+.calc-out div{padding:10px 14px;border-right:1px solid var(--rule)}
+.calc-out span{display:block;font-family:var(--f-mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.calc-out b{font-family:var(--f-mono);font-size:22px;font-variant-numeric:tabular-nums}
+
+/* Checklist */
+.check{list-style:none;padding:0;margin:8px 0;columns:2 300px;column-gap:24px}
+.check li{break-inside:avoid;padding:5px 0;border-bottom:1px dashed var(--rule)}
+.check label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.check input{margin-top:4px;width:16px;height:16px;accent-color:var(--code);flex:none}
+.foot{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);text-align:center;padding:14px;border-top:1px solid var(--rule)}
+ul.tight{margin:6px 0 12px;padding-left:20px} ul.tight li{margin:3px 0}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.two>div{min-width:0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="sheet">
+  <header class="titleblock">
+    <div class="tb-top">
+      <div>
+        <div class="sub">Side Hustle Planning Manual</div>
+        <h1>Halves<br>Love Reports</h1>
+      </div>
+      <svg width="88" height="80" viewBox="-8 -4 116 100" role="img" aria-label="Halves logo: a heart in two halves that do not meet exactly">
+        <path d="M50 16 C45 8 37 2 27 2 C13 2 2 12 2 26 C2 45 20 62 50 85 Z" fill="var(--you)" transform="translate(-3 0)"/>
+        <path d="M50 16 C55 8 63 2 73 2 C87 2 98 12 98 26 C98 45 80 62 50 85 Z" fill="var(--them)" transform="translate(3 5)"/>
+      </svg>
+    </div>
+    <div class="tb-grid">
+      <div><span>Doc No.</span><b>SH-001</b></div>
+      <div><span>Revision</span><b>REV A</b></div>
+      <div><span>Date</span><b>20 NOV 2026</b></div>
+      <div><span>Build time</span><b>5 DAYS</b></div>
+      <div><span>Fixed cost</span><b>≈ $1–3 / MO</b></div>
+      <div><span>Status</span><b>PLAN ONLY</b></div>
+    </div>
+  </header>
+
+  <div class="inner">
+    <nav class="toc" aria-label="Contents">
+      <a href="#ch00"><span class="c">CH 00</span>How to use this manual</a>
+      <a href="#ch01"><span class="c">CH 01</span>Product summary</a>
+      <a href="#ch02"><span class="c">CH 02</span>Name and identity</a>
+      <a href="#ch03"><span class="c">CH 03</span>Couple test flow</a>
+      <a href="#ch04"><span class="c">CH 04</span>How reports are made</a>
+      <a href="#ch05"><span class="c">CH 05</span>Solo tests</a>
+      <a href="#ch06"><span class="c">CH 06</span>Chat report</a>
+      <a href="#ch07"><span class="c">CH 07</span>AI: yes or no</a>
+      <a href="#ch08"><span class="c">CH 08</span>Money</a>
+      <a href="#ch09"><span class="c">CH 09</span>Tech build</a>
+      <a href="#ch10"><span class="c">CH 10</span>5-day build schedule</a>
+      <a href="#ch11"><span class="c">CH 11</span>Marketing</a>
+      <a href="#ch12"><span class="c">CH 12</span>Legal and safety</a>
+      <a href="#ch13"><span class="c">CH 13</span>Other ways to run it</a>
+      <a href="#ch14"><span class="c">CH 14</span>Launch checklist</a>
+      <a href="#ch15"><span class="c">CH 15</span>Open items and sources</a>
+    </nav>
+
+    <!-- CH 00 -->
+    <section class="ch" id="ch00">
+      <div class="ch-head"><div class="ch-code">CH 00</div><h2>How to use this manual</h2></div>
+      <ol class="steps">
+        <li><div>Read all chapters one time, in order.</div></li>
+        <li><div>Use CH 10 as your daily work list during the build.</div></li>
+        <li><div>Give this manual to Claude Code at the start of each build session. It is the spec.</div></li>
+        <li><div>Do the WARNING items. They are not optional.</div></li>
+      </ol>
+      <div class="tw"><table>
+        <tr><th>Mark</th><th>Meaning</th></tr>
+        <tr><td><span class="pill p-no">WARNING</span></td><td>Risk of harm to people, or risk of legal action.</td></tr>
+        <tr><td><span class="pill p-mid">CAUTION</span></td><td>Risk to money, accounts, data, or the brand.</td></tr>
+        <tr><td><span class="pill" style="color:var(--note);background:var(--note-bg)">NOTE</span></td><td>Useful data.</td></tr>
+        <tr><td class="mono">(est.)</td><td>A guess. Test it with real users.</td></tr>
+        <tr><td class="mono">(check)</td><td>From a third-party website. Confirm it before you use it.</td></tr>
+      </table></div>
+    </section>
+
+    <!-- CH 01 -->
+    <section class="ch" id="ch01">
+      <div class="ch-head"><div class="ch-code">CH 01</div><h2>Product summary</h2></div>
+      <p class="lead">A website that sells short, emotional reports about love. People take a test or upload a chat. They see part of the result free. They pay a small amount to see all of it.</p>
+      <div class="spec">
+        <div>Market</div><div>USA, UK, EU. English only at start.</div>
+        <div>Buyer</div><div>Age 18–34. Uses Instagram and TikTok. In a relationship, or single and asking why.</div>
+        <div>Price</div><div>$3.99 – $6.99. One time. No subscription.</div>
+        <div>Build time</div><div>5 work days with Claude Code.</div>
+        <div>Fixed cost</div><div>About $1–3 per month (domain only). Everything else is free tier or per sale.</div>
+        <div>AI cost</div><div>$0 at launch. Reports come from rules and written text blocks.</div>
+        <div>Main edge</div><div>The two-part couple test. The partner gets questions made from the first person's answers.</div>
+      </div>
+
+      <h3>1.1 Products</h3>
+      <div class="tw"><table>
+        <tr><th>Code</th><th>Name</th><th>User does</th><th>User gets</th><th class="num">Price</th><th class="num">Time</th></tr>
+        <tr><td class="mono">P1</td><td><b>The Unspoken Test</b><br><span class="tag">couples · flagship</span></td><td>Person A answers 18 questions and sends a link. Person B answers 18 questions.</td><td>Couple report: sync score, gaps, wrong guesses, a message from each other, couple type.</td><td class="num">$6.99<br><span class="tag">unlocks both copies</span></td><td class="num">5 + 6 min</td></tr>
+        <tr><td class="mono">P2</td><td><b>The Missing Half</b><br><span class="tag">solo · "why am I single"</span></td><td>Answers 24 questions.</td><td>Love-type report: patterns, the lie you tell yourself, one step for this week.</td><td class="num">$3.99</td><td class="num">5 min</td></tr>
+        <tr><td class="mono">P3</td><td><b>Read Between</b><br><span class="tag">chat report</span></td><td>Uploads a WhatsApp chat export.</td><td>Who cares more, reply speed, "is it fading", red-flag words.</td><td class="num">$5.99</td><td class="num">2 min</td></tr>
+        <tr><td class="mono">P0</td><td><b>Is This Safe?</b><br><span class="tag">free · trust + referral</span></td><td>Answers 12 questions.</td><td>Free safety check, help lines, link to online therapy.</td><td class="num">FREE</td><td class="num">3 min</td></tr>
+      </table></div>
+      <div class="call note"><div class="lab">NOTE</div><div class="body"><p>Launch P1 first. Add P2 and P3 on Day 4 only if P1 is complete. P1 brings its own users through the partner link.</p></div></div>
+
+      <h3>1.2 Competitors</h3>
+      <div class="tw"><table>
+        <tr><th>Who</th><th>What they do</th><th>What they do badly</th></tr>
+        <tr><td>Chat analyzer apps: Decoded, Chat Analyzer &amp; Toxic Test, LoveLog, WhatsAI, Relationship AI</td><td>Upload a chat, get an AI report. Decoded sells a $3.99 report. Others use weekly subscriptions. (check)</td><td>App install. Subscriptions. Many send private chats to a server and an AI.</td></tr>
+        <tr><td>Couple quiz apps: KnowUsBetter, Couple Up, Do We Match, Couples Quiz Game</td><td>Both people answer, then compare.</td><td>Same phone or room codes. Light fun, no deep report. No partner questions made from the first answers.</td></tr>
+        <tr><td>Empathi, Breeze couples quiz</td><td>Couples quiz, report by email.</td><td>Long forms, weak design, generic text.</td></tr>
+        <tr><td>Free form quizzes (Tally, ProProfs, "Am I the problem?")</td><td>Free quizzes.</td><td>Poor UX, no real result.</td></tr>
+        <tr><td>"Ask Brandon"</td><td colspan="2">Not found in search. Send the link. See CH 15.</td></tr>
+      </table></div>
+
+      <h3>1.3 Why this can win</h3>
+      <ul class="tight">
+        <li><b>No install.</b> A web link opens from an Instagram bio or DM in 1 tap.</li>
+        <li><b>The partner link is free marketing.</b> Each couple test brings a second person to the site.</li>
+        <li><b>Private chat analysis.</b> The chat stays on the phone. Competitors cannot say this.</li>
+        <li><b>One small price.</b> No subscription trap. Easy yes at $3.99–$6.99.</li>
+        <li><b>Three products, one brand.</b> One person who buys one report sees the other two.</li>
+      </ul>
+    </section>
+
+    <!-- CH 02 -->
+    <section class="ch" id="ch02">
+      <div class="ch-head"><div class="ch-code">CH 02</div><h2>Name and identity</h2></div>
+
+      <h3>2.1 Name</h3>
+      <p><b>Pick: Halves.</b> Every love has two halves. Most people only hear one. The name explains the two-part test, the single person's "missing half", and the two sides of a chat.</p>
+      <div class="tw"><table>
+        <tr><th>Name</th><th>Feeling</th><th>Problem</th><th class="num">Score</th></tr>
+        <tr><td><b>Halves</b></td><td>Two sides, missing piece, closeness</td><td>Less emotional alone. Fix with taglines.</td><td class="num">9/10</td></tr>
+        <tr><td>Unsaid</td><td>Very strong. Secrets, the words you hold back.</td><td>Two relationship apps named "Unsaid" launched in 2026. One decodes texts. Do not use as brand. Use the word in copy.</td><td class="num">4/10</td></tr>
+        <tr><td>Other Half</td><td>Warm, romantic</td><td>Very common phrase. Hard to own the name and domain.</td><td class="num">6/10</td></tr>
+        <tr><td>Softspot</td><td>Tender, safe</td><td>Does not explain the product.</td><td class="num">6/10</td></tr>
+        <tr><td>Heartread</td><td>Clear meaning</td><td>Hard to read ("heart-tread"). Hard to say out loud.</td><td class="num">5/10</td></tr>
+      </table></div>
+      <p><b>Domains to check, in order:</b> <code>halves.love</code> · <code>gethalves.com</code> · <code>halves.app</code> · <code>tryhalves.com</code> · <code>halvestest.com</code></p>
+      <p><b>Handles:</b> <code>@halves.test</code> · <code>@gethalves</code> · <code>@halveslove</code> (same name on Instagram, TikTok, YouTube).</p>
+      <div class="call caut"><div class="lab">CAUTION</div><div class="body"><p>I could not check domain availability from here. Check on Cloudflare Registrar or Namecheap. Also search "Halves" on the USPTO and EUIPO trademark search before you buy.</p></div></div>
+
+      <h3>2.2 Logo</h3>
+      <div class="brandrow">
+        <div class="logo-box">
+          <svg width="52" height="48" viewBox="-8 -4 116 100" aria-hidden="true"><path d="M50 16 C45 8 37 2 27 2 C13 2 2 12 2 26 C2 45 20 62 50 85 Z" fill="#E0475B" transform="translate(-3 0)"/><path d="M50 16 C55 8 63 2 73 2 C87 2 98 12 98 26 C98 45 80 62 50 85 Z" fill="#7B6CF6" transform="translate(3 5)"/></svg>
+          <span class="wordmark">halves</span>
+        </div>
+        <div class="logo-box dark">
+          <svg width="52" height="48" viewBox="-8 -4 116 100" aria-hidden="true"><path d="M50 16 C45 8 37 2 27 2 C13 2 2 12 2 26 C2 45 20 62 50 85 Z" fill="#E0475B" transform="translate(-3 0)"/><path d="M50 16 C55 8 63 2 73 2 C87 2 98 12 98 26 C98 45 80 62 50 85 Z" fill="#7B6CF6" transform="translate(3 5)"/></svg>
+          <span class="wordmark">halves</span>
+        </div>
+      </div>
+      <ul class="tight">
+        <li>A heart in two halves. The halves do not meet exactly. The gap is what is not said.</li>
+        <li>Red half = <b>you</b>. Violet half = <b>them</b>. Use this pair in every chart and report.</li>
+        <li>App icon and favicon: heart only, no word. Minimum size 24 px.</li>
+        <li>Wordmark: lowercase, Bricolage Grotesque 800.</li>
+      </ul>
+
+      <h3>2.3 Colors</h3>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:#E0475B"></div><div class="meta"><b>Raw Heart</b><span>#E0475B · you, buttons</span></div></div>
+        <div class="sw"><div class="chip" style="background:#7B6CF6"></div><div class="meta"><b>Cold Lilac</b><span>#7B6CF6 · them</span></div></div>
+        <div class="sw"><div class="chip" style="background:#1A1424"></div><div class="meta"><b>2 AM Ink</b><span>#1A1424 · main background</span></div></div>
+        <div class="sw"><div class="chip" style="background:#F9E3E6"></div><div class="meta"><b>Blush</b><span>#F9E3E6 · soft text, cards</span></div></div>
+        <div class="sw"><div class="chip" style="background:#FBF9FB"></div><div class="meta"><b>Paper</b><span>#FBF9FB · light mode</span></div></div>
+      </div>
+      <div class="call note"><div class="lab">NOTE</div><div class="body"><p>Use the dark theme by default. People take these tests at night in bed. Dark looks like a private late-night chat.</p></div></div>
+
+      <h3>2.4 Type</h3>
+      <div class="typespec">
+        <div class="h">They guessed wrong 4 times.</div>
+        <div class="b">Body text in Inter. Short lines. One idea per line. Both fonts are free on Google Fonts.</div>
+        <div class="tag" style="margin-top:8px">HEADLINES: Bricolage Grotesque 800 · BODY: Inter 400/600</div>
+      </div>
+
+      <h3>2.5 Voice</h3>
+      <ul class="tight">
+        <li>Talk to one person. Use "you".</li>
+        <li>Use the partner's <b>name</b>, never "he/she/boyfriend/girlfriend". It works for every couple and feels more personal.</li>
+        <li>Short lines. Soft words, sharp truth.</li>
+        <li>Name a feeling, then show a number from their own answers.</li>
+      </ul>
+      <div class="tw"><table>
+        <tr><th>Use these words</th><th>Do not use</th></tr>
+        <tr><td>unsaid, unspoken, felt, seen, chosen, safe, closer, distance, half, guess, truth, quiet, held, ache, real, pattern, red flag</td><td>diagnose, disorder, narcissist (about a real person), abuser (as a label), "scientifically proven", "100% accurate", therapy (as what we sell)</td></tr>
+      </table></div>
+      <blockquote>Your other half is waiting.</blockquote>
+      <blockquote>Find out what they never said.</blockquote>
+      <blockquote>Two halves. One truth.</blockquote>
+
+      <h3>2.6 UX rules</h3>
+      <div class="two">
+        <ul class="tight">
+          <li>One question per screen. Big answer buttons. Tap moves to the next question.</li>
+          <li>Progress bar with time left: "2 min left".</li>
+          <li>Back button on every question.</li>
+          <li>Answers save automatically. A closed tab loses nothing.</li>
+        </ul>
+        <ul class="tight">
+          <li>No sign-up. Email only to send the report.</li>
+          <li>Works with one thumb. Loads in under 2 s on 4G.</li>
+          <li>No ads. No pop-ups. No cookie wall unless you add ad pixels.</li>
+          <li>Apple Pay and Google Pay on the pay screen.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CH 03 -->
+    <section class="ch" id="ch03">
+      <div class="ch-head"><div class="ch-code">CH 03</div><h2>Couple test flow (P1)</h2></div>
+      <p class="lead">In the examples, Alex starts the test and Sam is the partner.</p>
+
+      <div class="call warn"><div class="lab">WARNING</div><div class="body">
+        <p><b>Show the price to Alex before Alex starts.</b> Put one small line under the start button: "Free to take. Full report $6.99 when you both finish."</p>
+        <p>A price hidden until the end is a deceptive practice under US FTC rules ("drip pricing") and EU consumer law. It also brings chargebacks. Chargebacks close payment accounts.</p>
+        <p>The pressure still works. Sam spent 6 minutes. Sam left a message. Alex wants to read it. Alex pays for that, not because of a trick.</p>
+      </div></div>
+      <div class="call warn"><div class="lab">WARNING</div><div class="body">
+        <p><b>Tell Sam where Sam's answers go.</b> Sam does not need to see a price. Sam must tick: "I am 18 or older. My answers go into one report that Alex and I can both see."</p>
+      </div></div>
+
+      <div class="lanes" role="table" aria-label="Couple test flow">
+        <div class="lane-h a">Alex (pays)</div><div class="lane-h b">Sam (partner, free)</div>
+        <div class="cell a"><span class="id">A1</span>Opens link from Instagram. Types own first name and Sam's first name. Sees the price line.</div><div class="cell b empty"></div>
+        <div class="cell a"><span class="id">A2</span>Answers 18 questions (5 min): 12 about self, 6 guesses about Sam.</div><div class="cell b empty"></div>
+        <div class="cell a"><span class="id">A3</span>Writes 1 sentence for Sam (optional). Gives email for the report.</div><div class="cell b empty"></div>
+        <div class="cell a"><span class="id">A4</span>Gets the link, a ready Story image and DM text. Sends it.</div><div class="cell b"><span class="id">B1</span>Opens link: "Alex took their half of a test about you two. Your half takes 6 minutes."</div>
+        <div class="cell a empty"></div><div class="cell b"><span class="id">B2</span>Ticks 18+ and consent box.</div>
+        <div class="cell a empty"></div><div class="cell b"><span class="id">B3</span>Answers 18 questions: 15 mirror questions + 3 deep questions picked from Alex's weakest area.</div>
+        <div class="cell a empty"></div><div class="cell b"><span class="id">B4</span>Writes 1 sentence for Alex (optional). Sees: "Done. Your report is ready. Alex has the key." Can add email for own copy.</div>
+        <div class="cell a"><span class="id">A5</span>Gets email: "Sam finished. Your report is ready."</div><div class="cell b empty"></div>
+        <div class="cell a"><span class="id">A6</span>Sees teaser (mock below). Pays $6.99.</div><div class="cell b empty"></div>
+        <div class="cell a"><span class="id">A7</span>Full report opens.</div><div class="cell b"><span class="id">B5</span>Gets email: "Your report is open." Reads own copy.</div>
+        <div class="cell both"><b>BOTH:</b> Share card "We are 68% in sync" → new visitors. Sam sees "Take your own test" → new buyer.</div>
+      </div>
+
+      <h3>3.1 The money screen (A6)</h3>
+      <div class="mockrow">
+        <div class="phone" aria-label="Mock of teaser screen">
+          <div class="scr">
+            <div class="k">Alex + Sam</div>
+            <div class="big">68<small>% in sync</small></div>
+            <div class="type">The Slow Burn</div>
+            <div class="bar" aria-hidden="true"><i style="width:55%"></i><i style="width:45%"></i></div>
+            <div class="card"><b>Where you meet:</b> You both feel safe being honest. 86/100.</div>
+            <div class="card lock">Sam feels unheard when you argue more than you think.</div>
+            <div class="card lock">You guessed wrong on 4 of 6 things Sam needs.</div>
+            <div class="msg">Sam left you a message. 🔒</div>
+            <button class="pay" type="button" tabindex="-1">Unlock for both of you · $6.99</button>
+            <div class="fine">One time. Apple Pay · Google Pay · card</div>
+          </div>
+        </div>
+        <div class="mocknote">
+          <ol class="steps">
+            <li><div>Show 1 number big: the sync score.</div></li>
+            <li><div>Show 1 name: the couple type.</div></li>
+            <li><div>Open 1 good card. It proves the report is real.</div></li>
+            <li><div>Blur 2+ cards. Write the first words so the topic is clear.</div></li>
+            <li><div>Show "Sam left you a message" if Sam wrote one. This is the strongest pull.</div></li>
+            <li><div>One button. Say "for both of you". Paying feels like a gift, not a fee.</div></li>
+          </ol>
+        </div>
+      </div>
+
+      <h3>3.2 Reminders</h3>
+      <div class="tw"><table>
+        <tr><th>When</th><th>Send to</th><th>Text</th></tr>
+        <tr><td>Sam did not finish in 24 h</td><td>Alex</td><td>"Sam has not taken their half yet. Send a nudge?" + one-tap copy of the link.</td></tr>
+        <tr><td>Alex did not pay in 24 h</td><td>Alex</td><td>"Your report with Sam is still waiting." One time only.</td></tr>
+        <tr><td colspan="3"><b>Maximum 2 emails per test.</b> No more. Spam complaints hurt email delivery.</td></tr>
+      </table></div>
+    </section>
+
+    <!-- CH 04 -->
+    <section class="ch" id="ch04">
+      <div class="ch-head"><div class="ch-code">CH 04</div><h2>How reports are made (no AI)</h2></div>
+      <p class="lead">Rules + a bank of written text blocks + the person's own answers quoted back. Same answers give the same report. Cost per report: $0.</p>
+
+      <h3>4.1 Six dimensions</h3>
+      <div class="tw"><table>
+        <tr><th>Code</th><th>Dimension</th><th>Alex question (example)</th><th>Sam mirror question</th></tr>
+        <tr><td class="mono">D1</td><td>Feeling heard</td><td>"When we argue, I feel heard." (1–5)</td><td>"When you argue, how heard do you think Alex feels?" (1–5)</td></tr>
+        <tr><td class="mono">D2</td><td>Feeling loved</td><td>"What does Sam need most from you now?" (pick 1 of 6)</td><td>"What do you need most from Alex now?" (same 6)</td></tr>
+        <tr><td class="mono">D3</td><td>Safety and trust</td><td>"I feel safe telling Sam when I am hurt." (1–5)</td><td>"Alex feels safe telling you when they are hurt." (1–5)</td></tr>
+        <tr><td class="mono">D4</td><td>Future</td><td>"Where are we in 3 years?" (pick 1 of 5)</td><td>Same question.</td></tr>
+        <tr><td class="mono">D5</td><td>Effort balance</td><td>"Who tries harder?" (me / Sam / same)</td><td>Same question, names swapped.</td></tr>
+        <tr><td class="mono">D6</td><td>Holding back</td><td>"How often do you hold something back to avoid a fight?"</td><td>"How often do you think Alex holds back?" + Sam's own answer.</td></tr>
+      </table></div>
+      <p>The 6 "need" choices for D2: <i>more time together · words said out loud · help with life · touch · space · to feel chosen</i>.</p>
+      <div class="call caut"><div class="lab">CAUTION</div><div class="body">
+        <p>Do not use the name "5 Love Languages" or copy its quiz. It is a registered trademark and the publisher forbids copies.</p>
+        <p>Do not copy research scales (for example ECR-R) word for word. Commercial use is not confirmed. Use the public ideas (attachment, conflict, effort) and write your own questions.</p>
+      </div></div>
+
+      <h3>4.2 Question types</h3>
+      <div class="tw"><table>
+        <tr><th>Type</th><th>Who</th><th>Used for</th></tr>
+        <tr><td>Self scale (1–5)</td><td>Both</td><td>Dimension scores</td></tr>
+        <tr><td>Guess</td><td>Alex guesses Sam's answer</td><td>"How well Alex knows Sam" %</td></tr>
+        <tr><td>Mirror</td><td>Sam rates Alex's side</td><td>Perception gaps</td></tr>
+        <tr><td>Choice (1 of 5–6)</td><td>Both</td><td>Match / no match</td></tr>
+        <tr><td>Deep (3 questions)</td><td>Sam only</td><td>Picked from Alex's lowest dimension. This makes part 2 "built from" part 1.</td></tr>
+        <tr><td>Message (1 sentence)</td><td>Both, optional</td><td>Shown as written. No analysis.</td></tr>
+      </table></div>
+
+      <h3>4.3 Scoring procedure</h3>
+      <ol class="steps">
+        <li><div>Convert each 1–5 answer to 0–100: <code>(answer − 1) × 25</code>. Flip reverse questions: <code>100 − score</code>.</div></li>
+        <li><div>Dimension score per person = average of its questions.</div></li>
+        <li><div>Gap per dimension = <code>|Alex self − Sam's mirror of Alex|</code>. Do the same the other way.</div></li>
+        <li><div>Guess accuracy = <code>correct guesses ÷ all guesses × 100</code>.</div></li>
+        <li><div>Sync score = <code>0.6 × (100 − average difference between Alex and Sam on D1–D6) + 0.4 × guess accuracy</code>. Round to a whole number.</div></li>
+        <li><div>Band each dimension: Low &lt; 40 · Mid 40–69 · High ≥ 70.</div></li>
+        <li><div>Pattern per dimension: <b>both high</b> · <b>both low</b> · <b>Alex higher</b> · <b>Sam higher</b> (difference ≥ 25 counts as "higher").</div></li>
+        <li><div>Pick the couple type from 4.5.</div></li>
+      </ol>
+
+      <h3>4.4 Report sections</h3>
+      <div class="tw"><table>
+        <tr><th class="num">#</th><th>Section</th><th>Made from</th><th>Free / paid</th></tr>
+        <tr><td class="num">1</td><td>Sync score + couple type</td><td>Formula + type table</td><td><span class="pill p-ok">FREE</span></td></tr>
+        <tr><td class="num">2</td><td>Where you meet (2 best dimensions)</td><td>Text bank</td><td><span class="pill p-ok">1 CARD FREE</span></td></tr>
+        <tr><td class="num">3</td><td>Where you miss each other (3 biggest gaps)</td><td>Templates + their own answers</td><td><span class="pill p-mid">PAID</span></td></tr>
+        <tr><td class="num">4</td><td>What Alex guessed wrong</td><td>Guess answers side by side</td><td><span class="pill p-mid">PAID</span></td></tr>
+        <tr><td class="num">5</td><td>6 dimension cards</td><td>Text bank: 6 dims × 4 patterns × 2 versions</td><td><span class="pill p-mid">PAID</span></td></tr>
+        <tr><td class="num">6</td><td>Messages from each other</td><td>Raw text</td><td><span class="pill p-mid">PAID</span></td></tr>
+        <tr><td class="num">7</td><td>Talk tonight: 3 questions to ask</td><td>Prompt bank, picked from weakest dimensions</td><td><span class="pill p-mid">PAID</span></td></tr>
+        <tr><td class="num">8</td><td>If this hurt to read: help links</td><td>Fixed text</td><td><span class="pill p-ok">ALWAYS FREE ON SITE</span></td></tr>
+      </table></div>
+      <p><b>Template example (section 3):</b></p>
+      <blockquote style="font-family:var(--f-mono);font-weight:400;font-size:14px">{B} gave "feeling heard when you argue" {B_val} out of 5. {A} guessed {A_guess}. This is the biggest gap in your report.</blockquote>
+      <p>Quoting their own answers makes the report feel personal. It is also honest: every line comes from what they said.</p>
+
+      <h3>4.5 Couple types</h3>
+      <div class="tw"><table>
+        <tr><th>Type</th><th>Rule</th><th>One line</th></tr>
+        <tr><td><b>The Safe Harbor</b></td><td>Sync ≥ 75, no dimension Low</td><td>You found each other's quiet place.</td></tr>
+        <tr><td><b>The Slow Burn</b></td><td>Sync 60–74, gaps small</td><td>Strong, but some things wait too long to be said.</td></tr>
+        <tr><td><b>The Chaser and the Runner</b></td><td>D5 effort gap ≥ 25</td><td>One reaches. One steps back. Both feel alone.</td></tr>
+        <tr><td><b>The Quiet Storm</b></td><td>D6 holding back High for both</td><td>Calm on top. A lot underneath.</td></tr>
+        <tr><td><b>The Mirror</b></td><td>Guess accuracy ≥ 80</td><td>You know each other by heart.</td></tr>
+        <tr><td><b>The Almost</b></td><td>Sync &lt; 60, or D4 future mismatch</td><td>Close today. Not sure about tomorrow.</td></tr>
+      </table></div>
+
+      <h3>4.6 Text bank size</h3>
+      <div class="tw"><table>
+        <tr><th>Product</th><th class="num">Blocks</th><th class="num">≈ Words</th></tr>
+        <tr><td>P1 Couple</td><td class="num">≈ 80</td><td class="num">4,500</td></tr>
+        <tr><td>P2 Solo</td><td class="num">≈ 65</td><td class="num">3,500</td></tr>
+        <tr><td>P3 Chat</td><td class="num">≈ 45</td><td class="num">2,200</td></tr>
+        <tr><td><b>Total</b></td><td class="num"><b>≈ 190</b></td><td class="num"><b>≈ 10,200</b></td></tr>
+      </table></div>
+      <p>Claude drafts all blocks in about 2 sessions. You read each one and fix the tone. Store them in one JSON file per product.</p>
+    </section>
+
+    <!-- CH 05 -->
+    <section class="ch" id="ch05">
+      <div class="ch-head"><div class="ch-code">CH 05</div><h2>Solo tests (P2)</h2></div>
+      <p class="lead">One engine, three hooks. Each hook gets its own landing page and video. The questions are the same. Only the title and the report intro change.</p>
+      <div class="tw"><table>
+        <tr><th>Hook (landing page title)</th><th>For</th></tr>
+        <tr><td>Why am I still single?</td><td>Single, dating, frustrated</td></tr>
+        <tr><td>Why can't I let anyone in?</td><td>Single or in a relationship, feels distance</td></tr>
+        <tr><td>Why do I keep choosing the wrong people?</td><td>Repeat heartbreak</td></tr>
+      </table></div>
+
+      <h3>5.1 Five axes (24 questions, about 5 each)</h3>
+      <div class="tw"><table>
+        <tr><th>Axis</th><th>Measures</th><th>Example question</th></tr>
+        <tr><td>Fear of being left</td><td>Worry, need for reassurance</td><td>"If they reply late, I think something is wrong."</td></tr>
+        <tr><td>Fear of being close</td><td>Pulling away, need for space</td><td>"When someone gets close, I want to leave."</td></tr>
+        <tr><td>Standards</td><td>How hard it is to say yes</td><td>"I lose interest when I find one flaw."</td></tr>
+        <tr><td>Exposure</td><td>How often you meet new people</td><td>"In the last month, how many new people did you talk to?"</td></tr>
+        <tr><td>Old wound</td><td>Past hurt still active</td><td>"I still compare people to one person from my past."</td></tr>
+      </table></div>
+
+      <h3>5.2 Eight love types</h3>
+      <div class="tw"><table>
+        <tr><th>Type</th><th>Rule (top axes)</th><th>The truth line</th></tr>
+        <tr><td><b>The Fortress</b></td><td>Close-fear high</td><td>You keep love out to stay safe.</td></tr>
+        <tr><td><b>The Chaser</b></td><td>Left-fear high</td><td>You give too much, too fast, to the wrong person.</td></tr>
+        <tr><td><b>The Ghost</b></td><td>Close-fear high + Exposure low</td><td>You leave before anyone can see you.</td></tr>
+        <tr><td><b>The Perfectionist</b></td><td>Standards high</td><td>You wait for someone who does not exist.</td></tr>
+        <tr><td><b>The Busy Heart</b></td><td>Exposure low, others mid</td><td>Your life is full. There is no door left open.</td></tr>
+        <tr><td><b>The Keeper</b></td><td>Old wound high</td><td>Your heart is still with someone who left.</td></tr>
+        <tr><td><b>The Giver</b></td><td>Left-fear high + Standards low</td><td>You love people who need saving.</td></tr>
+        <tr><td><b>The Almost</b></td><td>No axis above 60</td><td>You get close. Then it quietly stops.</td></tr>
+      </table></div>
+      <p><b>Report sections:</b> your type · your 3 patterns · the lie you tell yourself · who you fall for vs who is good for you · 1 step for this week · your type in a couple (link to P1).</p>
+    </section>
+
+    <!-- CH 06 -->
+    <section class="ch" id="ch06">
+      <div class="ch-head"><div class="ch-code">CH 06</div><h2>Chat report (P3)</h2></div>
+      <p class="lead">The phone reads the chat. Only numbers go to the server. The server sends back the report text. The page adds example lines from the chat on the phone.</p>
+      <blockquote>Your chat never leaves your phone.</blockquote>
+
+      <h3>6.1 User steps: export a WhatsApp chat</h3>
+      <div class="two">
+        <div><b>iPhone</b><ol class="steps"><li><div>Open the chat.</div></li><li><div>Tap the contact name.</div></li><li><div>Tap <b>Export Chat</b> → <b>Without Media</b>.</div></li><li><div>Save to Files. Pick the file on Halves.</div></li></ol></div>
+        <div><b>Android</b><ol class="steps"><li><div>Open the chat.</div></li><li><div>Tap ⋮ → <b>More</b> → <b>Export chat</b>.</div></li><li><div>Tap <b>Without media</b>.</div></li><li><div>Save the file. Pick it on Halves.</div></li></ol></div>
+      </div>
+      <div class="call caut"><div class="lab">CAUTION</div><div class="body"><ul>
+        <li>iPhone exports a <code>.zip</code>. Unzip it in the browser (fflate library). Android exports a <code>.txt</code>.</li>
+        <li>The date format changes with phone language and region. Test with exports from 2 iPhones and 2 Androids in different regions.</li>
+        <li>v1 = WhatsApp only. v2 = Telegram and Instagram (JSON). iMessage has no export. Do not support it.</li>
+        <li>Group chat: ask the user to pick 2 names.</li>
+      </ul></div></div>
+
+      <h3>6.2 Measurements</h3>
+      <div class="tw"><table>
+        <tr><th>Measure</th><th>How</th><th>Report says</th></tr>
+        <tr><td>Message share</td><td>Count per person</td><td>"Sam sends 61% of all messages."</td></tr>
+        <tr><td>Who starts</td><td>First message after 6+ h of silence</td><td>"Alex starts 3 of 4 conversations."</td></tr>
+        <tr><td>Reply speed</td><td>Median minutes to reply (gaps under 12 h)</td><td>"Sam replies in 4 min. Alex in 52 min."</td></tr>
+        <tr><td>Effort</td><td>Average words per message</td><td>Long vs short messages</td></tr>
+        <tr><td>Interest</td><td>Messages with a question mark</td><td>Who asks about the other</td></tr>
+        <tr><td>Double texts</td><td>2+ messages with no reply for 1 h</td><td>Who waits</td></tr>
+        <tr><td>Warmth</td><td>Word list: love, miss you, ❤️, babe …</td><td>Who says it more</td></tr>
+        <tr><td>Sorry</td><td>"sorry", "my bad", "I apologize"</td><td>Who says sorry more</td></tr>
+        <tr><td>Fading</td><td>Messages per week, first 25% vs last 25% of time</td><td>"Your chat is 38% quieter than at the start."</td></tr>
+        <tr><td>Night talk</td><td>% of messages 23:00–04:00</td><td>Late-night closeness</td></tr>
+        <tr><td>Mood</td><td>VADER sentiment (free JS, MIT license) per month</td><td>Mood line chart, you vs them</td></tr>
+        <tr><td>Red-flag words</td><td>Your own word list: "where were you", "who is that", "you're overreacting", "calm down", "you always", "you never"</td><td>Count + example lines (shown only on the phone)</td></tr>
+      </table></div>
+
+      <h3>6.3 Scores</h3>
+      <ul class="tight">
+        <li><b>Interest balance</b> 0–100. 50 = equal. Shown free as a red/violet bar.</li>
+        <li><b>Fading meter</b>, <b>Warmth</b>, <b>Red-flag meter</b>: paid.</li>
+      </ul>
+      <div class="call warn"><div class="lab">WARNING</div><div class="body">
+        <p>A word list gives signals, not proof. Write "We found 14 messages with controlling words." Do not write "Your partner is abusive."</p>
+        <p>If the red-flag meter is high, show the free safety page link before the pay button.</p>
+      </div></div>
+    </section>
+
+    <!-- CH 07 -->
+    <section class="ch" id="ch07">
+      <div class="ch-head"><div class="ch-code">CH 07</div><h2>AI: yes or no</h2></div>
+      <div class="tw"><table>
+        <tr><th>Option</th><th>Cost</th><th>Risk</th><th>Verdict</th></tr>
+        <tr><td><b>A. No AI.</b> Rules + text bank (CH 04–06)</td><td class="num">$0</td><td>None</td><td><span class="pill p-ok">LAUNCH WITH THIS</span></td></tr>
+        <tr><td><b>B. Short AI letter after payment.</b> Claude Haiku 5.5 writes a personal closing letter from the scores.</td><td class="num">≈ $0.001 / report</td><td>Max loss = prepaid credit</td><td><span class="pill p-mid">ADD IN WEEK 3 IF SALES</span></td></tr>
+        <tr><td><b>C. AI in the browser</b> (transformers.js)</td><td class="num">$0</td><td>50–300 MB download on the phone. Slow.</td><td><span class="pill p-no">NO</span></td></tr>
+        <tr><td><b>D. Free API tiers</b> (for example Gemini free)</td><td class="num">$0</td><td>Low daily limits. Free tiers can use prompts to improve models. Bad for private data.</td><td><span class="pill p-no">NO</span></td></tr>
+      </table></div>
+      <h3>Option B procedure (later)</h3>
+      <ol class="steps">
+        <li><div>Buy $10 of API credit. Turn auto-reload OFF. Now the most you can lose is $10.</div></li>
+        <li><div>Call the AI only after the payment webhook says "paid". Every AI call is already paid for.</div></li>
+        <li><div>Send scores and multiple-choice answers only. Never send chats or the free-text messages.</div></li>
+        <li><div>Math: 3,000 input + 1,000 output tokens at $0.10 / $0.50 per million ≈ $0.0008. $10 ≈ 12,000 letters.</div></li>
+      </ol>
+    </section>
+
+    <!-- CH 08 -->
+    <section class="ch" id="ch08">
+      <div class="ch-head"><div class="ch-code">CH 08</div><h2>Money</h2></div>
+
+      <h3>8.1 Payment provider</h3>
+      <p>Use a <b>Merchant of Record (MoR)</b>. The MoR sells to the customer for you. It collects and pays EU VAT and US sales tax, handles refunds and chargebacks, and pays you in USD. A seller outside the EU must charge EU VAT from the first sale. An MoR removes this work.</p>
+      <div class="tw"><table>
+        <tr><th>Provider</th><th>Type</th><th>Fee (check)</th><th>Pays out to Saudi Arabia (check)</th><th>Verdict</th></tr>
+        <tr><td><b>Polar</b></td><td>MoR</td><td>5% + $0.50 (Starter)</td><td>Listed in Polar docs</td><td><span class="pill p-ok">PICK</span></td></tr>
+        <tr><td><b>Paddle</b></td><td>MoR</td><td>5% + $0.50</td><td>Yes, per a third-party list</td><td><span class="pill p-ok">BACKUP · apply Day 0</span></td></tr>
+        <tr><td><b>Gumroad</b></td><td>MoR</td><td>≈ 10% + $0.50</td><td>Yes (bank in SAR, or PayPal)</td><td><span class="pill p-mid">EMERGENCY ONLY</span></td></tr>
+        <tr><td>Stripe direct</td><td>Processor</td><td>≈ 2.9% + $0.30 + intl fees</td><td>Most sources say no for Saudi-registered businesses</td><td><span class="pill p-mid">ONLY WITH A US/UK/UAE COMPANY</span><br><span class="tag">you file VAT yourself</span></td></tr>
+        <tr><td>Stripe Managed Payments</td><td>MoR on Stripe</td><td>Stripe fee + 3.5%</td><td>Needs a Stripe account</td><td><span class="pill p-mid">ONLY IF YOU HAVE STRIPE</span></td></tr>
+        <tr><td>Lemon Squeezy</td><td>MoR</td><td>—</td><td>—</td><td><span class="pill p-no">DO NOT USE</span><br><span class="tag">reported closed to new stores 16 Nov 2026</span></td></tr>
+      </table></div>
+      <div class="call caut"><div class="lab">CAUTION</div><div class="body"><ul>
+        <li>An MoR reviews your site before approval. Put Terms, Privacy, Refund policy and a real product page live first.</li>
+        <li>Describe the product as "digital self-reflection reports". Do not use astrology, psychic or "fortune" words. Some MoRs reject those.</li>
+        <li>Apply to Polar and Paddle on the same day. Use the first one that approves.</li>
+      </ul></div></div>
+
+      <h3>8.2 Prices and what you keep (est.)</h3>
+      <div class="tw"><table>
+        <tr><th>Product</th><th class="num">Price</th><th class="num">MoR fee (5% + $0.50)</th><th class="num">Keep, US buyer</th><th class="num">Keep, EU buyer (≈20% VAT inside price)</th></tr>
+        <tr><td>P1 Couple</td><td class="num">$6.99</td><td class="num">$0.85</td><td class="num">≈ $6.14</td><td class="num">≈ $4.98</td></tr>
+        <tr><td>P3 Chat</td><td class="num">$5.99</td><td class="num">$0.80</td><td class="num">≈ $5.19</td><td class="num">≈ $4.19</td></tr>
+        <tr><td>P2 Solo</td><td class="num">$3.99</td><td class="num">$0.70</td><td class="num">≈ $3.29</td><td class="num">≈ $2.63</td></tr>
+        <tr><td>Bundle (after first buy)</td><td class="num">$9.99</td><td class="num">$1.00</td><td class="num">≈ $8.99</td><td class="num">≈ $7.33</td></tr>
+      </table></div>
+      <div class="call note"><div class="lab">NOTE</div><div class="body"><p>The $0.50 fixed fee hurts small prices most. Do not go below $3.99.</p></div></div>
+
+      <h3>8.3 Funnel calculator (P1)</h3>
+      <p>All numbers are guesses (est.). Change them after the first 100 tests.</p>
+      <form class="calc" id="calc" onsubmit="return false">
+        <label for="c-views">Video views<input id="c-views" type="number" min="0" step="1000" value="50000"></label>
+        <label for="c-click">Click link %<input id="c-click" type="number" min="0" max="100" step="0.1" value="1"></label>
+        <label for="c-start">Start test %<input id="c-start" type="number" min="0" max="100" step="1" value="50"></label>
+        <label for="c-send">Send link %<input id="c-send" type="number" min="0" max="100" step="1" value="60"></label>
+        <label for="c-partner">Partner finishes %<input id="c-partner" type="number" min="0" max="100" step="1" value="65"></label>
+        <label for="c-pay">Pays %<input id="c-pay" type="number" min="0" max="100" step="1" value="35"></label>
+        <label for="c-keep">Keep per sale $<input id="c-keep" type="number" min="0" step="0.01" value="5.6"></label>
+      </form>
+      <div class="calc-out" aria-live="polite">
+        <div><span>Tests started</span><b id="o-start">—</b></div>
+        <div><span>Partners reached</span><b id="o-partner">—</b></div>
+        <div><span>Sales</span><b id="o-sales">—</b></div>
+        <div><span>You keep</span><b id="o-keep">—</b></div>
+      </div>
+      <p class="tag" style="margin-top:6px">Partners reached are also new visitors. They are not in the sales number. They are free marketing.</p>
+
+      <h3>8.4 Monthly cost</h3>
+      <div class="tw"><table>
+        <tr><th>Item</th><th class="num">Cost</th></tr>
+        <tr><td>Domain (≈ $10–35 per year)</td><td class="num">$1–3</td></tr>
+        <tr><td>Hosting, server, database (Cloudflare free)</td><td class="num">$0</td></tr>
+        <tr><td>Email (Resend free: 3,000 per month)</td><td class="num">$0</td></tr>
+        <tr><td>Analytics (PostHog free)</td><td class="num">$0</td></tr>
+        <tr><td>Payments</td><td class="num">per sale only</td></tr>
+        <tr><td><b>Total</b></td><td class="num"><b>≈ $1–3</b></td></tr>
+      </table></div>
+    </section>
+
+    <!-- CH 09 -->
+    <section class="ch" id="ch09">
+      <div class="ch-head"><div class="ch-code">CH 09</div><h2>Tech build</h2></div>
+      <h3>9.1 Stack</h3>
+      <div class="tw"><table>
+        <tr><th>Part</th><th>Pick</th><th>Why</th></tr>
+        <tr><td>Front end</td><td>Vite + React + TypeScript</td><td>You already used Vite for LUNA. Claude Code knows it well.</td></tr>
+        <tr><td>Hosting</td><td>Cloudflare Pages</td><td>Free plan allows commercial use. Fast everywhere.</td></tr>
+        <tr><td>Server code</td><td>Cloudflare Pages Functions</td><td>Same project. Free daily quota.</td></tr>
+        <tr><td>Database</td><td>Cloudflare D1 (SQLite)</td><td>Same project. Free tier.</td></tr>
+        <tr><td>Email</td><td>Resend</td><td>Free 3,000 per month.</td></tr>
+        <tr><td>Payments</td><td>Polar checkout + webhook</td><td>See CH 08.</td></tr>
+        <tr><td>Analytics</td><td>PostHog (funnels) + Cloudflare Web Analytics</td><td>See where people stop.</td></tr>
+        <tr><td>Share images</td><td>Canvas in browser → PNG 1080×1920</td><td>Instagram Story size. $0.</td></tr>
+        <tr><td>Chat parsing</td><td>Web Worker + fflate (unzip) + vader-sentiment</td><td>Runs on the phone. Free libraries.</td></tr>
+      </table></div>
+      <div class="call caut"><div class="lab">CAUTION</div><div class="body"><p>Do not host on Vercel's free (Hobby) plan. It is for non-commercial use only. Taking payments counts as commercial.</p></div></div>
+
+      <h3>9.2 Data</h3>
+      <div class="tw"><table>
+        <tr><th>Table</th><th>Fields</th></tr>
+        <tr><td class="mono">tests</td><td>id, product, a_name, b_name, a_token, b_token, a_answers (JSON), b_answers (JSON), a_message, b_message, a_email, b_email, status (a_done / b_done / paid), order_id, created_at, paid_at</td></tr>
+        <tr><td class="mono">chat_reports</td><td>id, token, stats (JSON, numbers only), email, status, order_id, created_at</td></tr>
+        <tr><td class="mono">events</td><td>Use PostHog. Do not build your own.</td></tr>
+      </table></div>
+
+      <h3>9.3 Endpoints</h3>
+      <div class="tw"><table>
+        <tr><th>Call</th><th>Does</th></tr>
+        <tr><td class="mono">POST /api/test</td><td>Make a new test. Return A token.</td></tr>
+        <tr><td class="mono">POST /api/answers</td><td>Save answers for A or B (by token). Return B questions after A finishes.</td></tr>
+        <tr><td class="mono">GET /api/report?t=</td><td>Build report on the server. Return teaser if not paid. Return full if paid.</td></tr>
+        <tr><td class="mono">POST /api/checkout</td><td>Make a Polar checkout. Put test id in metadata.</td></tr>
+        <tr><td class="mono">POST /api/webhook</td><td>Check signature. Mark paid. Email both people.</td></tr>
+      </table></div>
+
+      <h3>9.4 Security rules</h3>
+      <ul class="tight">
+        <li>Build the full report text on the server only. The browser never gets paid text before payment.</li>
+        <li>Tokens: 128-bit random. One for A, one for B. Never put names in URLs.</li>
+        <li>Check the webhook signature on every call.</li>
+        <li>Delete test data 60 days after creation. Say so in the privacy page.</li>
+        <li>Rate-limit test creation per IP.</li>
+      </ul>
+    </section>
+
+    <!-- CH 10 -->
+    <section class="ch" id="ch10">
+      <div class="ch-head"><div class="ch-code">CH 10</div><h2>5-day build schedule</h2></div>
+      <div class="days">
+        <div class="day"><div class="dh"><b>Day 0 · prep</b><span>1–2 h, before you quit</span></div>
+          <ul><li>Check and buy the domain.</li><li>Apply to Polar and Paddle.</li><li>Open Instagram, TikTok, YouTube with the same handle.</li><li>Post 1 short video per day to warm the accounts.</li><li>Open Cloudflare, Resend, PostHog accounts.</li></ul>
+          <div class="done"><b>DONE WHEN</b> · All accounts exist. Payment applications are sent.</div></div>
+        <div class="day"><div class="dh"><b>Day 1 · base</b><span>foundation</span></div>
+          <ul><li>Make the Vite project with brand tokens (CH 02).</li><li>Landing page with 3 product tiles.</li><li>Quiz engine: questions from JSON, one per screen, autosave, back button, progress.</li><li>D1 tables. Deploy to Cloudflare on the real domain.</li></ul>
+          <div class="done"><b>DONE WHEN</b> · You take a sample quiz on your phone on the live domain.</div></div>
+        <div class="day"><div class="dh"><b>Day 2 · couple test</b><span>P1 flow</span></div>
+          <ul><li>Claude drafts 18 + 18 questions. You edit.</li><li>Part A, share screen, Story image, DM text.</li><li>Part B with mirror and deep-question logic.</li><li>Email to A when B finishes. Teaser screen.</li></ul>
+          <div class="done"><b>DONE WHEN</b> · You and a friend finish both halves on 2 phones.</div></div>
+        <div class="day"><div class="dh"><b>Day 3 · money + report</b><span>P1 complete</span></div>
+          <ul><li>Polar checkout + webhook.</li><li>Scoring (CH 04.3). Text bank for P1.</li><li>Full report page. B copy unlock. Share card.</li><li>Reminder emails.</li></ul>
+          <div class="done"><b>DONE WHEN</b> · A test payment unlocks both reports.</div></div>
+        <div class="day"><div class="dh"><b>Day 4 · solo + chat</b><span>P2, P3</span></div>
+          <ul><li>P2 on the same quiz engine. 3 landing pages.</li><li>P3 WhatsApp parser in a Web Worker.</li><li>P3 report. Text banks for P2 and P3.</li><li>Free safety page (P0).</li></ul>
+          <div class="done"><b>DONE WHEN</b> · Your own WhatsApp export gives a correct report.</div></div>
+        <div class="day"><div class="dh"><b>Day 5 · ship</b><span>launch</span></div>
+          <ul><li>Terms, Privacy, Refund, Disclaimer pages. 18+ gate.</li><li>PostHog funnel for each product.</li><li>Test on a cheap Android phone and an iPhone.</li><li>Record 6 videos from the real app (CH 11).</li><li>Put the link in all bios. Post.</li></ul>
+          <div class="done"><b>DONE WHEN</b> · A stranger pays.</div></div>
+      </div>
+      <h3>10.1 Work with your Claude plan</h3>
+      <ul class="tight">
+        <li>Start each session with: "Read side-hustles/halves/plan.html. Today is Day N. Do the Day N card."</li>
+        <li>Ask for one finished piece at a time. Test it. Then ask for the next.</li>
+        <li>If you reach the usage limit, write question text, edit the text bank, or make videos. Do not wait.</li>
+        <li>If Day 4 runs late, ship P1 alone on Day 5. Add P2 and P3 in week 2.</li>
+      </ul>
+    </section>
+
+    <!-- CH 11 -->
+    <section class="ch" id="ch11">
+      <div class="ch-head"><div class="ch-code">CH 11</div><h2>Marketing</h2></div>
+      <h3>11.1 Channels</h3>
+      <p>Make one vertical video. Post it on TikTok, Instagram Reels and YouTube Shorts. TikTok usually gives new accounts more free reach.</p>
+      <div class="spec">
+        <div>Bio</div><div>"Find out what they never said 💔 Free test ↓"</div>
+        <div>Link</div><div>Straight to the test. No link-in-bio page in between.</div>
+        <div>Tools</div><div>CapCut (free templates, free text-to-speech), Canva free, phone screen recorder.</div>
+        <div>Schedule</div><div>2 videos per day for 30 days. After 10 posts of one format, keep winners, stop losers.</div>
+      </div>
+
+      <h3>11.2 Five video formats</h3>
+      <div class="tw"><table>
+        <tr><th>Format</th><th>How to make it</th><th>Example</th></tr>
+        <tr><td>Text-on-screen POV</td><td>Stock or CapCut clip + big text + trending sound</td><td>"POV: you made him take the couple test and he guessed wrong 4 times"</td></tr>
+        <tr><td>Result reveal</td><td>Screen-record the real app. Zoom on the score.</td><td>"We got 41% in sync. Should I be worried?"</td></tr>
+        <tr><td>Type carousel</td><td>Canva, 1 slide per love type</td><td>"8 reasons people stay single. Which one are you?"</td></tr>
+        <tr><td>Voiceover list</td><td>CapCut TTS over simple motion text</td><td>"5 signs they are losing interest, from real chats"</td></tr>
+        <tr><td>Data drop</td><td>Anonymous totals from your own data, after 500+ tests</td><td>"In 1,000 couples, 64% guessed wrong about this one thing"</td></tr>
+      </table></div>
+
+      <h3>11.3 Ten hooks</h3>
+      <div class="two">
+        <ol class="tight">
+          <li>They will never tell you this. The test will.</li>
+          <li>Send this to your partner. Do not tell them why.</li>
+          <li>You are not single by accident.</li>
+          <li>Your chat already knows if they are losing interest.</li>
+          <li>Who loves more? Your messages have the answer.</li>
+        </ol>
+        <ol class="tight" start="6">
+          <li>I made my boyfriend take this. He went quiet.</li>
+          <li>The real reason you push people away.</li>
+          <li>Is it love, or is it a pattern?</li>
+          <li>She answered 18 questions about us. I was not ready.</li>
+          <li>If this test hurts, you needed it.</li>
+        </ol>
+      </div>
+      <div class="call caut"><div class="lab">CAUTION</div><div class="body"><p>Hooks can be emotional. They cannot be false. Do not say "free" alone if the full report is paid. Say "free test".</p></div></div>
+
+      <h3>11.4 Built-in growth loops</h3>
+      <ol class="steps">
+        <li><div><b>Partner link.</b> Every P1 test sends a second person to the site.</div></li>
+        <li><div><b>Share card.</b> After the report: "We are 68% in sync" Story image with the link.</div></li>
+        <li><div><b>Cross-sell.</b> Sam's last screen: "Take your own test". The solo report links to the couple test.</div></li>
+      </ol>
+
+      <h3>11.5 Therapy route (referral income)</h3>
+      <p>Make content and a free page: "Do you need a therapist? Take this 2-minute check." Link to online therapy at the end of P0 and in section 8 of each report.</p>
+      <div class="tw"><table>
+        <tr><th>Program</th><th>Pays (check)</th><th>Network (check)</th></tr>
+        <tr><td>BetterHelp affiliate</td><td>Third-party sites say $10 to $150+ per paid signup. Sources disagree.</td><td>Impact or CJ</td></tr>
+        <tr><td>Online-Therapy.com affiliate</td><td>Read their terms</td><td>Own program</td></tr>
+      </table></div>
+      <div class="call caut"><div class="lab">CAUTION</div><div class="body"><p>Say "affiliate link" near every therapy link (FTC rule). Read each program's terms. Some do not allow their brand name in ads.</p></div></div>
+
+      <h3>11.6 Paid ads</h3>
+      <p>Do not pay for ads in month 1. Start a $5 per day Instagram test only when organic traffic converts at 2% or more from visit to sale.</p>
+    </section>
+
+    <!-- CH 12 -->
+    <section class="ch" id="ch12">
+      <div class="ch-head"><div class="ch-code">CH 12</div><h2>Legal and safety</h2></div>
+      <div class="call warn"><div class="lab">WARNING</div><div class="body"><ul>
+        <li>Show the price to the payer before part 1 (CH 03).</li>
+        <li>Tell the partner that the other person sees their answers. Use a tick box (CH 03).</li>
+        <li>Never put safety help behind the pay button. The safety page is free. Add a "Leave this page fast" button on it.</li>
+        <li>18+ only. Use a tick box on every product.</li>
+        <li>Show help lines on the safety page and at the end of every report. US: National Domestic Violence Hotline, 1-800-799-7233. UK: Refuge, 0808 2000 247. EU: link to a list of national help lines.</li>
+      </ul></div></div>
+      <div class="call caut"><div class="lab">CAUTION</div><div class="body"><ul>
+        <li>Put "For self-reflection. Not therapy. Not a diagnosis." on every report.</li>
+        <li>Do not ask about sex, health or religion. In the EU these are special-category data with strict rules.</li>
+        <li>Do not use "5 Love Languages". Do not copy published psychology scales.</li>
+        <li>Allow refunds when a report is broken. A refund costs less than a chargeback.</li>
+        <li>If you add an Instagram or TikTok ad pixel, add a cookie banner for EU visitors.</li>
+      </ul></div></div>
+      <h3>12.1 Required pages</h3>
+      <div class="tw"><table>
+        <tr><th>Page</th><th>Must say</th></tr>
+        <tr><td>Terms</td><td>Digital product, 18+, no medical advice, refund rule</td></tr>
+        <tr><td>Privacy</td><td>What you store, 60-day delete, chats never uploaded, processors (Cloudflare, Polar, Resend, PostHog)</td></tr>
+        <tr><td>Refund policy</td><td>Refund if broken or not delivered, within 14 days</td></tr>
+        <tr><td>Disclaimer</td><td>Self-reflection, not therapy, not diagnosis</td></tr>
+        <tr><td>Safety (P0)</td><td>Free check, help lines, quick-exit button</td></tr>
+      </table></div>
+    </section>
+
+    <!-- CH 13 -->
+    <section class="ch" id="ch13">
+      <div class="ch-head"><div class="ch-code">CH 13</div><h2>Other ways to run it</h2></div>
+      <div class="tw"><table>
+        <tr><th>Option</th><th>Speed</th><th>Cost</th><th>Platform cut</th><th>Verdict</th></tr>
+        <tr><td><b>Web app on own domain</b> (this plan)</td><td>5 days</td><td>≈ $1–3 / mo</td><td>≈ 10–15% (MoR)</td><td><span class="pill p-ok">DO THIS</span></td></tr>
+        <tr><td>No-code test: Tally form + Gumroad PDF</td><td>1–2 days</td><td>$0</td><td>≈ 10%</td><td><span class="pill p-mid">ONLY TO TEST HOOKS</span><br><span class="tag">no two-part test, manual reports</span></td></tr>
+        <tr><td>Mobile app (App Store, Google Play)</td><td>3–6 weeks + review</td><td>$99/yr Apple + $25 Google</td><td>15–30%</td><td><span class="pill p-no">NOT NOW</span></td></tr>
+        <tr><td>Instagram DM bot</td><td>—</td><td>—</td><td>—</td><td><span class="pill p-no">NO</span><br><span class="tag">platform rules, weak UX</span></td></tr>
+        <tr><td>Printable couple workbooks on Etsy</td><td>1 day</td><td>$0.20 per listing</td><td>≈ 6.5% + fees</td><td><span class="pill p-mid">LATER, SIDE PRODUCT</span></td></tr>
+        <tr><td>Sell the engine to coaches and therapists</td><td>After 1,000 users</td><td>—</td><td>—</td><td><span class="pill p-mid">PHASE 3</span></td></tr>
+      </table></div>
+    </section>
+
+    <!-- CH 14 -->
+    <section class="ch" id="ch14">
+      <div class="ch-head"><div class="ch-code">CH 14</div><h2>Launch checklist</h2></div>
+      <p class="tag">Ticks save in this browser only.</p>
+      <ul class="check" id="checklist">
+        <li><label><input type="checkbox" id="k1"> Domain bought and on Cloudflare</label></li>
+        <li><label><input type="checkbox" id="k2"> Polar or Paddle approved</label></li>
+        <li><label><input type="checkbox" id="k3"> Apple Pay and Google Pay on</label></li>
+        <li><label><input type="checkbox" id="k4"> Price line under the start button</label></li>
+        <li><label><input type="checkbox" id="k5"> Partner consent + 18+ tick box</label></li>
+        <li><label><input type="checkbox" id="k6"> Webhook signature checked</label></li>
+        <li><label><input type="checkbox" id="k7"> Full report text only from server after payment</label></li>
+        <li><label><input type="checkbox" id="k8"> Test payment unlocks both copies</label></li>
+        <li><label><input type="checkbox" id="k9"> Reminder emails (max 2)</label></li>
+        <li><label><input type="checkbox" id="k10"> Share card works on Instagram Story</label></li>
+        <li><label><input type="checkbox" id="k11"> WhatsApp export tested on iPhone and Android</label></li>
+        <li><label><input type="checkbox" id="k12"> Safety page with help lines and quick exit</label></li>
+        <li><label><input type="checkbox" id="k13"> Terms, Privacy, Refund, Disclaimer pages</label></li>
+        <li><label><input type="checkbox" id="k14"> "Not therapy" line on every report</label></li>
+        <li><label><input type="checkbox" id="k15"> PostHog funnel for each product</label></li>
+        <li><label><input type="checkbox" id="k16"> Loads under 2 s on a cheap Android</label></li>
+        <li><label><input type="checkbox" id="k17"> 6 videos recorded</label></li>
+        <li><label><input type="checkbox" id="k18"> Link in all 3 bios</label></li>
+      </ul>
+    </section>
+
+    <!-- CH 15 -->
+    <section class="ch" id="ch15">
+      <div class="ch-head"><div class="ch-code">CH 15</div><h2>Open items and sources</h2></div>
+      <h3>15.1 Questions for you</h3>
+      <div class="tw"><table>
+        <tr><th>#</th><th>Question</th><th>Why it matters</th></tr>
+        <tr><td class="mono">Q1</td><td>Send the "Ask Brandon" link.</td><td>I could not find it. I will add it to the competitor table.</td></tr>
+        <tr><td class="mono">Q2</td><td>Which country will you receive payouts in?</td><td>Picks the payment provider. CH 08 assumes a non-Stripe country.</td></tr>
+        <tr><td class="mono">Q3</td><td>Do you accept "Halves"?</td><td>Domain and handles must be bought on Day 0.</td></tr>
+      </table></div>
+
+      <h3>15.2 Sources</h3>
+      <ul class="tight" style="font-size:13.5px">
+        <li><a href="https://polar.sh/docs/merchant-of-record/supported-countries">Polar supported countries</a> · <a href="https://getpaidatlas.com/provider/paddle">Paddle countries (GetPaidAtlas)</a> · <a href="https://gumroad.com/help/article/13-getting-paid">Gumroad getting paid</a></li>
+        <li><a href="https://techstartups.com/?p=140481">Lemon Squeezy shutdown report</a> · <a href="https://www.lemonsqueezy.com/blog/2026-update">Lemon Squeezy 2026 update</a> · <a href="https://stripe.com/managed-payments">Stripe Managed Payments</a></li>
+        <li><a href="https://dev.to/devtoolpicks/polar-vs-lemon-squeezy-vs-creem-in-2026-which-mor-is-right-for-indie-hackers-506m">Polar vs Lemon Squeezy fees</a> · <a href="https://resources.rework.com/tools/billing-revenue/paddle-vs-lemon-squeezy">Paddle vs Lemon Squeezy</a></li>
+        <li><a href="https://incorpuk.com/blog/open-stripe-account-in-saudi-arabia/">Stripe in Saudi Arabia</a> · <a href="https://community.shopify.com/t/payment-gateway/399632">Shopify community on Stripe in Saudi Arabia</a></li>
+        <li><a href="https://vercel.com/docs/platform/fair-use-policy">Vercel fair use policy</a> · <a href="https://dev.to/libme/vercel-vs-netlify-vs-cloudflare-pages-where-your-side-project-should-actually-live-1j30">Cloudflare Pages vs Vercel</a></li>
+        <li><a href="https://apps.apple.com/us/app/decoded-chat-text-analyzer/id6759509185">Decoded</a> · <a href="https://apps.apple.com/us/app/id6747853549">Chat Analyzer &amp; Toxic Test</a> · <a href="https://apps.apple.com/us/app/id6743008000">LoveLog</a> · <a href="https://apps.apple.com/us/app/-/id6757682149">Relationship AI</a> · <a href="https://apps.apple.com/us/app/knowusbetter/id6754946265">KnowUsBetter</a> · <a href="https://www.producthunt.com/p/do-we-match/do-we-match">Do We Match</a> · <a href="https://empathi.com/blog/relationship-quiz/">Empathi</a></li>
+        <li><a href="https://apps.apple.com/us/app/id6764570503">Unsaid: Message Decoder</a> · <a href="https://apps.apple.com/app/id6761311939">Unsaid (second app)</a></li>
+        <li><a href="https://www.moodypublishers.com/About/permissions-form">5 Love Languages permissions</a> · <a href="https://trademarks.justia.com/862/36/the-5-love-86236645.html">5 Love Languages trademark</a> · <a href="https://labs.psychology.illinois.edu/~rcfraley/measures/ecrr.htm">ECR-R (Fraley)</a></li>
+        <li><a href="https://www.ftc.gov/system/files/ftc_gov/pdf/P214800%20Dark%20Patterns%20Report%209.14.2022%20-%20FINAL.pdf">FTC Dark Patterns report</a> · <a href="https://www.dglaw.com/ftc-continues-crackdown-on-subscription-businesses/">FTC funnel disclosures</a></li>
+        <li><a href="https://reacheffect.com/blog/betterhelp-affiliate-program-complete-2025-guide-to-high-paying-mental-health-commissions/">BetterHelp affiliate guide</a> · <a href="https://strackr.com/blog/mental-health-affiliate-programs">Mental health affiliate programs</a> · <a href="https://online-therapy.com/affiliate.php">Online-Therapy.com affiliate</a></li>
+        <li><a href="https://ai.google.dev/gemini-api/docs/rate-limits">Gemini API rate limits</a> · <a href="https://neuraplus-ai.github.io/blog/gemini-api-free-tier.html">Gemini free tier notes</a></li>
+      </ul>
+
+      <h3>15.3 Change log</h3>
+      <div class="tw"><table>
+        <tr><th>Rev</th><th>Date</th><th>Change</th></tr>
+        <tr><td class="mono">A</td><td class="mono">20 NOV 2026</td><td>First issue.</td></tr>
+      </table></div>
+    </section>
+  </div>
+  <div class="foot">SH-001 · HALVES · REV A · PLAN ONLY · END OF DOCUMENT</div>
+</div>
+
+<script>
+(function(){
+  var ids=["views","click","start","send","partner","pay","keep"];
+  function v(id){var n=parseFloat(document.getElementById("c-"+id).value);return isNaN(n)?0:n;}
+  function fmt(n){return Math.round(n).toLocaleString("en-US");}
+  function run(){
+    var started=v("views")*v("click")/100*v("start")/100;
+    var partners=started*v("send")/100*v("partner")/100;
+    var sales=partners*v("pay")/100;
+    document.getElementById("o-start").textContent=fmt(started);
+    document.getElementById("o-partner").textContent=fmt(partners);
+    document.getElementById("o-sales").textContent=fmt(sales);
+    document.getElementById("o-keep").textContent="$"+fmt(sales*v("keep"));
+  }
+  ids.forEach(function(id){document.getElementById("c-"+id).addEventListener("input",run);});
+  run();
+
+  var KEY="halves-checklist";
+  var saved={};
+  try{saved=JSON.parse(localStorage.getItem(KEY)||"{}")||{};}catch(e){saved={};}
+  var boxes=document.querySelectorAll("#checklist input");
+  boxes.forEach(function(b){
+    if(saved[b.id])b.checked=true;
+    b.addEventListener("change",function(){
+      saved[b.id]=b.checked;
+      try{localStorage.setItem(KEY,JSON.stringify(saved));}catch(e){}
+    });
+  });
+})();
+</script>
